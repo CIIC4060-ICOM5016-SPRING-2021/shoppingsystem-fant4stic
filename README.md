@@ -1,7 +1,11 @@
-Grupo Fant4stic Team
+Group: Fant4stic Team
 
-Integrantes:
-Jeremy Márquez - jeremy.marquez@upr.edu
+Members:
+
+Jeremy MÃ¡rquez - jeremy.marquez@upr.edu
+
 Giomar Santiago - giomar.santiago@upr.edu
-William Negrón - william.negron2@upr.edu
-Hedin García - hedin.garcia@upr.edu
+
+William NegrÃ³n - william.negron2@upr.edu
+
+Hedin GarcÃ­a - hedin.garcia@upr.edu
