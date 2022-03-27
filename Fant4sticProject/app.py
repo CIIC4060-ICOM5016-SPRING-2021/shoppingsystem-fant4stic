@@ -36,6 +36,10 @@ def getAllAuthors():
 def inventoryAddBookProduct():
     return InventoryController().addBookProduct()
 
+@app.route('/fant4stic/inventory/deleteproduct')
+def inventoryDeleteBookProduct():
+    return InventoryController().deleteBookProduct()
+
 # Check if an element is inside a list of records or a single record
 def member_of_Record(element, records):
     bool_const = False
