@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from databaseConnect import DatabaseConnect
+from controller.inventory import InventoryController
 import psycopg2
 
 # Activate
@@ -9,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Connect to server
-connection = psycopg2.connect(user = "cphcapypqzssdm", password = "815b0599c4c49e37f0e62528386cf2e3e22eb4abe234d8b2c68e74c8c48e8838", host = "ec2-3-231-254-204.compute-1.amazonaws.com", port = "5432", database = "d7i8e69i0cdo3j")
+connection = DatabaseConnect().getConnection()
 
 # Object to operate the DB
 cursor = connection.cursor()
@@ -29,6 +31,24 @@ def getAllAuthors():
     cursor.execute("Select * from author")
     record = cursor.fetchall()
     return jsonify(record)
+
+@app.route('/fant4stic/inventory/addproduct')
+def inventoryAddBookProduct():
+    return InventoryController().addBookProduct()
+
+# Check if an element is inside a list of records or a single record
+def member_of_Record(element, records):
+    bool_const = False
+    #Check if records is an array of tuples
+    if(not(type(records) is tuple)):
+        for record in records:
+            if(element in record):
+                bool_const = True
+                break
+    else:
+        #records is a single tuple
+        bool_const = element in records
+    return bool_const
 
 if __name__ == '__main__':
     app.run()
