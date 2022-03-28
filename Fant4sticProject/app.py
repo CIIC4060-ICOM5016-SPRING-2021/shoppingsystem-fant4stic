@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from databaseConnect import DatabaseConnect
+from src.databaseConnect import DatabaseConnect
 from controller.inventory import InventoryController
+from controller.order import OrderController
 import psycopg2
 
 # Activate
@@ -39,6 +40,10 @@ def inventoryAddBookProduct():
 @app.route('/fant4stic/inventory/deleteproduct')
 def inventoryDeleteBookProduct():
     return InventoryController().deleteBookProduct()
+
+@app.route('/fant4stic/order/historyoforders')
+def getOrderHistoryCustomer():
+    return OrderController().historyOfCustomer()
 
 # Check if an element is inside a list of records or a single record
 def member_of_Record(element, records):

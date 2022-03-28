@@ -1,4 +1,4 @@
-from databaseConnect import DatabaseConnect
+from src.databaseConnect import DatabaseConnect
 from flask import jsonify
 # Class Controller for Inventory table
 class InventoryController:
