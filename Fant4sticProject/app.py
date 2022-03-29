@@ -45,6 +45,10 @@ def inventoryDeleteBookProduct():
 def getOrderHistoryCustomer():
     return OrderController().historyOfCustomer()
 
+@app.route('/fant4stic/order/get all')
+def getOrderHistoryAll():
+    return OrderController().historyAll()
+
 # Check if an element is inside a list of records or a single record
 def member_of_Record(element, records):
     bool_const = False

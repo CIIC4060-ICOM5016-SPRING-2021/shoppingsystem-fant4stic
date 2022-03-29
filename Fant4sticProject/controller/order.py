@@ -17,12 +17,31 @@ class OrderController:
         query = "select extract(year from order_date) as year, extract(mon from order_date) as month, "
         query += "extract(day from order_date) as day, extract(hour from order_time) as hour_time, "
         query += "extract(min from order_time) as min_time, extract(sec from order_time) as sec_time, "
-        query += "title, num_items, price_unit "
+        query += "o.customer_id, title, num_items, price_unit "
         query += "from \"Order\" as o,book_order as bor,book as b, inventory as i "
         query += "where o.order_id = bor.order_id and b.book_id = bor.book_id and b.book_id = i.book_id and o.customer_id =" +str(customerId)+ " "
-        query += "order by order_time;"
+        query += "order by order_date, order_time;"
         cursor.execute(query)
         records = cursor.fetchall()
+        cursor.close()
+        self.connection.close()
+        ordRecords = self.orderRecords(records)
+        print(ordRecords)
+        return jsonify(ordRecords)
+
+    def historyAll(self):
+        cursor = self.connection.cursor()
+        query = "select extract(year from order_date) as year, extract(mon from order_date) as month, "
+        query += "extract(day from order_date) as day, extract(hour from order_time) as hour_time, "
+        query += "extract(min from order_time) as min_time, extract(sec from order_time) as sec_time, "
+        query += "o.customer_id, title, num_items, price_unit "
+        query += "from \"Order\" as o,book_order as bor,book as b, inventory as i "
+        query += "where o.order_id = bor.order_id and b.book_id = bor.book_id and b.book_id = i.book_id "
+        query += "order by customer_id, order_date,order_time;"
+        cursor.execute(query)
+        records = cursor.fetchall()
+        cursor.close()
+        self.connection.close()
         ordRecords = self.orderRecords(records)
         print(ordRecords)
         return jsonify(ordRecords)
@@ -32,9 +51,9 @@ class OrderController:
         dict = {}
         for rec in records:
             string = str(int(rec[0])) + "-" + str(int(rec[1])) + "-" + str(int(rec[2])) + "-" + str(
-                int(rec[3])) + "-" + str(int(rec[4])) + "-" + str(int(rec[5]))
+                int(rec[3])) + "-" + str(int(rec[4])) + "-" + str(int(rec[5])) + " | Customer Id:" + str(int(rec[6]))
             value = string
-            key = str(rec[6]) + "|" + str(rec[7]) + "|" + str(rec[8])
+            key = str(rec[7]) + "|" + str(rec[8]) + "|" + str(rec[9])
             dict[key] = value
         return dict
 
@@ -48,7 +67,7 @@ class OrderController:
             newDict[val] = [k for k in dict.keys() if dict[k] == val]
         return newDict
 
-    # Calculate total or order for each record
+    # Calculate total order for each record
     def orderRecords(self,records):
         dictRecord = self.groupOrders(records)
         keysRecord = dictRecord.keys()

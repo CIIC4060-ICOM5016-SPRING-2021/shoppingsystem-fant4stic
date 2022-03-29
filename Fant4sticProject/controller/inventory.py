@@ -81,5 +81,7 @@ class InventoryController:
         self.connection.commit()
         cursor.execute("delete from inventory where book_id =" + str(bookId)+";")
         self.connection.commit()
+        cursor.close()
+        self.connection.close()
         print("Product was successfully deleted.")
         return jsonify(("Product was successfully deleted."))
