@@ -1,4 +1,4 @@
-from src.databaseConnect import DatabaseConnect
+from config.databaseConnect import DatabaseConnect
 from flask import jsonify
 # Class Controller for Order table
 class OrderController:

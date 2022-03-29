@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from src.databaseConnect import DatabaseConnect
+from config.databaseConnect import DatabaseConnect
 from controller.inventory import InventoryController
 from controller.order import OrderController
 import psycopg2
