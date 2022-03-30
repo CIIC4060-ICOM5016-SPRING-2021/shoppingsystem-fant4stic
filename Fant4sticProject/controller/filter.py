@@ -1,4 +1,4 @@
-from databaseConnect import DatabaseConnect
+from config.databaseConnect import DatabaseConnect
 from flask import jsonify
 
 class FilterByController:

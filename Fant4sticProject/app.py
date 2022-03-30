@@ -3,6 +3,7 @@ from flask_cors import CORS
 from config.databaseConnect import DatabaseConnect
 from controller.inventory import InventoryController
 from controller.filter import FilterByController
+from controller.order import OrderController
 import psycopg2
 
 # Activate
@@ -52,6 +53,14 @@ def getBooksInOrder():
 @app.route('/fant4stic/book/orderInPrice')
 def getBooksByPrice():
     return FilterByController().orderByPrice()
+
+@app.route('/fant4stic/order/get all')
+def getOrderHistoryAll():
+    return OrderController().historyAll()
+
+@app.route('/fant4stic/order/historyoforders')
+def getOrderHistoryCustomer():
+    return OrderController().historyOfCustomer()
 
 
 # Check if an element is inside a list of records or a single record
