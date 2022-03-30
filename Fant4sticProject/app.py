@@ -1,9 +1,11 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, json
 from flask_cors import CORS
 from config.databaseConnect import DatabaseConnect
 from controller.inventory import InventoryController
 from controller.filter import FilterByController
 from controller.order import OrderController
+from controller.cart import CartController
+
 import psycopg2
 
 # Activate
@@ -61,6 +63,14 @@ def getOrderHistoryAll():
 @app.route('/fant4stic/order/historyoforders')
 def getOrderHistoryCustomer():
     return OrderController().historyOfCustomer()
+
+@app.route('/fant4stic/cart/addproduct')
+def addBookToCart():
+    return CartController().addBook()
+
+@app.route('/fant4stic/cart/deleteproduct')
+def deleteBookFromCart():
+    return CartController().deleteBook()
 
 
 # Check if an element is inside a list of records or a single record
