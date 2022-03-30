@@ -1,4 +1,4 @@
-from Fant4sticProject.databaseConnect import DatabaseConnect
+from Fant4sticProject.config.databaseConnect import DatabaseConnect
 class CartDao:
     def __init__(self):
        self.connection = DatabaseConnect().getConnection()
