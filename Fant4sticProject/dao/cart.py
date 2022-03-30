@@ -1,4 +1,4 @@
-from Fant4sticProject.config.databaseConnect import DatabaseConnect
+from config.databaseConnect import DatabaseConnect
 class CartDao:
     def __init__(self):
        self.connection = DatabaseConnect().getConnection()
@@ -56,4 +56,41 @@ class CartDao:
         self.connection.commit()
         cursor.close()
 
+    def getCopies(self, bookToAdd):
+        cursor = self.connection.cursor()
 
+        query = "select num_addeditems from add_to_cart where book_id = "
+        cursor.execute(query + str(bookToAdd))
+
+        result = cursor.fetchone()[0]
+
+        cursor.close()
+        return result
+
+    def addExtraCopies(self, howMuchBooks, currentCopies, bookToAdd):
+        cursor = self.connection.cursor()
+
+        #Calculate total copies after addition
+        totalItems = int(currentCopies) + int(howMuchBooks)
+
+        query = "update add_to_cart set num_addeditems = "
+        queryTwo = "where book_id = "
+
+        cursor.execute(query + str(totalItems) + queryTwo + str(bookToAdd))
+
+        self.connection.commit()
+        cursor.close()
+
+    def deleteCopies(self, howMuchBooks, currentCopies, bookToDelete):
+        cursor = self.connection.cursor()
+
+        #Calculate total copies after substraction
+        totalItems = int(currentCopies) - int(howMuchBooks)
+
+        query = "update add_to_cart set num_addeditems = "
+        queryTwo = "where book_id = "
+
+        cursor.execute(query + str(totalItems) + queryTwo + str(bookToDelete))
+
+        self.connection.commit()
+        cursor.close()
