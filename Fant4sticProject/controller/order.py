@@ -1,4 +1,5 @@
 from config.databaseConnect import DatabaseConnect
+from dao.order import OrderDAO
 from flask import jsonify
 # Class Controller for Order table
 class OrderController:
@@ -7,40 +8,20 @@ class OrderController:
 
     def historyOfCustomer(self):
         customerId = input("Enter a customer_id to view its corresponding orders: ")
-        cursor = self.connection.cursor()
-        cursor.execute("select exists( select customer_id from \"Order\" where customer_id =" + str(customerId) +");")
-        cust_record = cursor.fetchone()
-        exist = cust_record[0]
+        dao = OrderDAO()
+        exist = dao.existCustomerOrder(customerId)
         if (not exist):
             print("This customer_id does not have any orders.")
             return jsonify(("This customer_id does not have any orders."))
-        query = "select extract(year from order_date) as year, extract(mon from order_date) as month, "
-        query += "extract(day from order_date) as day, extract(hour from order_time) as hour_time, "
-        query += "extract(min from order_time) as min_time, extract(sec from order_time) as sec_time, "
-        query += "o.customer_id, title, num_items, price_unit "
-        query += "from \"Order\" as o,book_order as bor,book as b, inventory as i "
-        query += "where o.order_id = bor.order_id and b.book_id = bor.book_id and b.book_id = i.book_id and o.customer_id =" +str(customerId)+ " "
-        query += "order by order_date, order_time;"
-        cursor.execute(query)
-        records = cursor.fetchall()
-        cursor.close()
+        records = dao.getOrderHistoryOf(customerId)
         self.connection.close()
         ordRecords = self.orderRecords(records)
         print(ordRecords)
         return jsonify(ordRecords)
 
     def historyAll(self):
-        cursor = self.connection.cursor()
-        query = "select extract(year from order_date) as year, extract(mon from order_date) as month, "
-        query += "extract(day from order_date) as day, extract(hour from order_time) as hour_time, "
-        query += "extract(min from order_time) as min_time, extract(sec from order_time) as sec_time, "
-        query += "o.customer_id, title, num_items, price_unit "
-        query += "from \"Order\" as o,book_order as bor,book as b, inventory as i "
-        query += "where o.order_id = bor.order_id and b.book_id = bor.book_id and b.book_id = i.book_id "
-        query += "order by customer_id, order_date,order_time;"
-        cursor.execute(query)
-        records = cursor.fetchall()
-        cursor.close()
+        dao = OrderDAO()
+        records = dao.getOrderHistoryOfAllCustomers()
         self.connection.close()
         ordRecords = self.orderRecords(records)
         print(ordRecords)

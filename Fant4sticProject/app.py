@@ -22,13 +22,13 @@ cursor = connection.cursor()
 def hello_world():  # put application's code here
     return 'Hello World!'
 
-@app.route('/fant4stic/book/get all')
+@app.route('/fant4stic/book/get_all')
 def getAllBooks():
     cursor.execute("Select * from book")
     record = cursor.fetchall()
     return jsonify(record)
 
-@app.route('/fant4stic/author/get all')
+@app.route('/fant4stic/author/get_all')
 def getAllAuthors():
     cursor.execute("Select * from author")
     record = cursor.fetchall()
@@ -54,7 +54,7 @@ def getBooksInOrder():
 def getBooksByPrice():
     return FilterByController().orderByPrice()
 
-@app.route('/fant4stic/order/get all')
+@app.route('/fant4stic/order/get_all')
 def getOrderHistoryAll():
     return OrderController().historyAll()
 
