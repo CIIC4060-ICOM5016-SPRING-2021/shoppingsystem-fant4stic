@@ -36,13 +36,19 @@ def getAllAuthors():
     record = cursor.fetchall()
     return jsonify(record)
 
-@app.route('/fant4stic/inventory/addproduct')
+@app.route('/fant4stic/inventory/addproduct', methods = ['POST'])
 def inventoryAddBookProduct():
-    return InventoryController().addBookProduct()
+    if request.method == 'POST':
+        return InventoryController().addBookProduct(request.json)
+    else:
+        return jsonify("Method not supported"),405
 
-@app.route('/fant4stic/inventory/deleteproduct')
+@app.route('/fant4stic/inventory/deleteproduct', methods = ['DELETE'])
 def inventoryDeleteBookProduct():
-    return InventoryController().deleteBookProduct()
+    if request.method == 'DELETE':
+        return InventoryController().deleteBookProduct(request.json)
+    else:
+        return jsonify("Method not supported"),405
 
 @app.route('/fant4stic/book/desiredgenre')
 def getBooksInGenres():
@@ -71,7 +77,6 @@ def addBookToCart():
 @app.route('/fant4stic/cart/deleteproduct')
 def deleteBookFromCart():
     return CartController().deleteBook()
-
 
 # Check if an element is inside a list of records or a single record
 def member_of_Record(element, records):

@@ -4,18 +4,18 @@ class InventoryDAO:
     def __init__(self):
         self.connection = DatabaseConnect().getConnection()
 
-    def existBook(self,bookId):
+    def existBookInv(self,bookId):
         cursor = self.connection.cursor()
         cursor.execute("select exists (Select inventory_id from inventory where book_id =" + str(bookId) + ");")
-        resquery = cursor.fetchone()
+        resquery = cursor.fetchone()[0]
         cursor.close()
         return resquery
 
-    # Exist Admin in Inventory
-    def existAdminInv(self,adminId):
+    # Exist Admin
+    def existAdmin(self,adminId):
         cursor = self.connection.cursor()
         cursor.execute("select exists (Select admin_id from admin where admin_id =" + str(adminId) + ");")
-        resquery = cursor.fetchone()
+        resquery = cursor.fetchone()[0]
         cursor.close()
         return resquery
 
@@ -28,7 +28,7 @@ class InventoryDAO:
         return resquery
 
     # Add book and return the inventory's id
-    def addBook(self,bookId,price,num_units):
+    def addBookInv(self,bookId,price,num_units):
         cursor = self.connection.cursor()
         cursor.execute("insert into inventory(book_id, price_unit, available_units) values (%s,%s,%s) returning inventory_id",
             (bookId, price, num_units))
