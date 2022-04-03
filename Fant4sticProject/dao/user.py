@@ -11,6 +11,13 @@ class UserDAO():
         cursor.close()
         return resquery
 
+    def existUserType(self, userType):
+        cursor = self.connection.cursor()
+        cursor.execute("select exists (Select userType from \"User\" where userType = %s);", (userType,));
+        resquery = cursor.fetchone()
+        cursor.close()
+        return resquery
+
     def registerNewUser(self, role_id, first_name, last_name, user_name, email, password, age, sex, phone_num):
         cursor = self.connection.cursor()
         cursor.execute(
