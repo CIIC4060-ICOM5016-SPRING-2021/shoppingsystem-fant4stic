@@ -5,6 +5,7 @@ from controller.inventory import InventoryController
 from controller.filter import FilterByController
 from controller.order import OrderController
 from controller.cart import CartController
+from controller.user import UserController
 
 import psycopg2
 
@@ -98,6 +99,13 @@ def member_of_Record(element, records):
         #records is a single tuple
         bool_const = element in records
     return bool_const
+
+@app.route('/fant4stic/user/register_new_user', methods=['POST'])
+def registerNewUser():
+    return UserController().registerNewUser(request.json)
+    # else:
+    #     return jsonify("Not supported"), 405
+
 
 if __name__ == '__main__':
     app.run()
