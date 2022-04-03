@@ -78,13 +78,12 @@ def getOrderHistoryCustomer(customerId):
     else:
         return jsonify("Method not supported"), 405
 
-@app.route('/fant4stic/cart/addproduct')
-def addBookToCart():
-    return CartController().addBook()
-
-@app.route('/fant4stic/cart/deleteproduct')
-def deleteBookFromCart():
-    return CartController().deleteBook()
+@app.route('/fant4stic/cart/', methods = ['POST', 'DELETE'])
+def cartController():
+    if request.method == 'POST':
+        return CartController().addBook(request.json)
+    if request.method == 'DELETE':
+        return CartController().deleteBook(request.json)
 
 # Check if an element is inside a list of records or a single record
 def member_of_Record(element, records):
