@@ -10,6 +10,7 @@ import psycopg2
 
 # Activate
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 
 # Apply CORS to this app
 CORS(app)
@@ -62,13 +63,19 @@ def getBooksInOrder():
 def getBooksByPrice():
     return FilterByController().orderByPrice()
 
-@app.route('/fant4stic/order/get_all')
+@app.route('/fant4stic/order/get_all', methods = ['GET'])
 def getOrderHistoryAll():
-    return OrderController().historyAll()
+    if request.method == 'GET':
+        return OrderController().historyAll()
+    else:
+        return jsonify("Method not supported"), 405
 
-@app.route('/fant4stic/order/historyoforders')
-def getOrderHistoryCustomer():
-    return OrderController().historyOfCustomer()
+@app.route('/fant4stic/order/historyoforders/<int:customerId>', methods = ['GET'])
+def getOrderHistoryCustomer(customerId):
+    if request.method == 'GET':
+        return OrderController().historyOfCustomer(customerId)
+    else:
+        return jsonify("Method not supported"), 405
 
 @app.route('/fant4stic/cart/addproduct')
 def addBookToCart():

@@ -1,72 +1,81 @@
-from config.databaseConnect import DatabaseConnect
 from dao.order import OrderDAO
 from flask import jsonify
 # Class Controller for Order table
 class OrderController:
-    def __init__(self):
-        self.connection = DatabaseConnect().getConnection()
 
-    def historyOfCustomer(self):
-        customerId = input("Enter a customer_id to view its corresponding orders: ")
+    def historyOfCustomer(self,customerId):
         dao = OrderDAO()
         exist = dao.existCustomerOrder(customerId)
         if (not exist):
-            print("This customer_id does not have any orders.")
-            return jsonify(("This customer_id does not have any orders."))
+            print("This CustomerId does not have any orders.")
+            return jsonify("This CustomerId does not have any orders.") , 404
         records = dao.getOrderHistoryOf(customerId)
-        self.connection.close()
-        ordRecords = self.orderRecords(records)
-        print(ordRecords)
-        return jsonify(ordRecords)
+        groupRecords = self.groupOrders(records)
+        result = []
+        for row in groupRecords:
+            dict = self.build_dict_order(row)
+            result.append(dict)
+        return jsonify(result)
 
     def historyAll(self):
         dao = OrderDAO()
         records = dao.getOrderHistoryOfAllCustomers()
-        self.connection.close()
-        ordRecords = self.orderRecords(records)
-        print(ordRecords)
-        return jsonify(ordRecords)
+        groupRecords = self.groupOrders(records)
+        result = []
+        for row in groupRecords:
+            dict = self.build_dict_order(row)
+            result.append(dict)
+        return jsonify(result)
 
-    # Store in a dictionary the date and time as values for each order
-    def separateOrders(self,records):
-        dict = {}
-        for rec in records:
-            string = str(int(rec[0])) + "-" + str(int(rec[1])) + "-" + str(int(rec[2])) + "-" + str(
-                int(rec[3])) + "-" + str(int(rec[4])) + "-" + str(int(rec[5])) + " | Customer Id:" + str(int(rec[6]))
-            value = string
-            key = str(rec[7]) + "|" + str(rec[8]) + "|" + str(rec[9])
-            dict[key] = value
-        return dict
+    def build_dict_order(self,row):
+        result ={}
+        result['OrderId'] = row[0]
+        result['UserId'] = row[1]
+        result['OrderDate'] = row[2]
+        result['OrderTime'] = row[3]
+        result['ListOfProductsBought'] = row[4]
+        result['TotalPrice'] = row[5]
+        return result
 
-    # Change the values to keys and group orders that have same date and time
-    def groupOrders(self,records):
-        dict = self.separateOrders(records)
-        # Get unique keys
-        values = set(dict.values())
-        newDict = {}
-        for val in values:
-            newDict[val] = [k for k in dict.keys() if dict[k] == val]
-        return newDict
+    def build_dict_book(self, row):
+        result = {}
+        result['BookTitle'] = row[8]
+        result['NumberOfQuantities'] = row[9]
+        result['BookPrice'] = row[10]/row[9] # Unit Price of Book
+        return result
 
-    # Calculate total order for each record
-    def orderRecords(self,records):
-        dictRecord = self.groupOrders(records)
-        keysRecord = dictRecord.keys()
-        valuesRecord = dictRecord.values()
-        sum = 0
-        for val in valuesRecord:
-            sum = 0
-            if len(val) > 1:
-                for v in val:
-                    x = v.split("|")
-                    sum += float(x[len(x) - 1]) * float(x[len(x) - 2])  # Get the total price for v
-                val.append("Total Price: " + str(sum))
-            else:
-                x = val[0].split("|")
-                sum += float(x[len(x) - 1]) * float(x[len(x) - 2])  # Get the total price for val
-                val.append("Total Price: " + str(sum))
-        arrRecords = []
-        for key in keysRecord:
-            arrRecords.append(tuple([key] + dictRecord[key]))
-        return arrRecords
+    def create_newRow(self,orderId):
+        newRow = []
+        newRow.append(orderId)
+        return newRow
 
+    # Group orders with same order_id
+    def groupOrders(self,orders):
+        difOrderId = []
+        # Generate list of distinct order_id
+        for row in orders:
+            if difOrderId.count(row[0]) == 0:
+                difOrderId.append(row[0])
+        resultOrders = []
+        #Group books together that have the same order_id
+        for ordId in difOrderId:
+            newOrderRow = self.create_newRow(ordId) #Add order_id
+            totalPrice = 0
+            listProducts = []
+            ordIdChanged = True
+            for i in range(len(orders)):
+                if ordIdChanged == True and ordId == orders[i][0]:
+                    newOrderRow.append(orders[i][1]) #Add user_id
+                    date = str(int(orders[i][2])) +"-"+ str(int(orders[i][3])) +"-"+ str(int(orders[i][4]))
+                    newOrderRow.append(date) #Add order_date
+                    time = str(int(orders[i][5])) + "-" + str(int(orders[i][6])) + "-" + str(int(orders[i][7]))
+                    ordIdChanged = False
+                    newOrderRow.append(time) #Add order_time
+                if ordId == orders[i][0]:
+                    dict = self.build_dict_book(orders[i])
+                    totalPrice += orders[i][10]
+                    listProducts.append(dict)
+            newOrderRow.append(listProducts) #Add listProducts
+            newOrderRow.append(totalPrice) #Add totalprice
+            resultOrders.append(newOrderRow)
+        return resultOrders
