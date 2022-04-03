@@ -10,6 +10,19 @@ William Negrón - william.negron2@upr.edu
 
 Hedin García - hedin.garcia@upr.edu
 
+## Categories of Book Shopping System:
+
+1. Fantasy
+2. Romance
+3. Horror
+4. Dystopian
+5. Science Fiction
+6. Development
+7. Health 
+8. Art
+9. Comics
+10. History
+
 ## Database Credentials:
 
 **_Host:_**       ec2-3-231-254-204.compute-1.amazonaws.com
