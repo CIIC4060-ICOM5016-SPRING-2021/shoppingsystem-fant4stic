@@ -24,15 +24,20 @@ class UserController:
         sex = json['Sex']
         phone_num = json['PhoneNumber']
         userType = json['UserType']
-        role_id = dao.getRoleID(userType)
 
-        if userType == 'Admin':
-            user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex, phone_num)
-            json['User_id'] = user_id
+        record2 = dao.existUser(userType)
+        exist2 = record2[0]
 
-        elif userType == 'Customer':
-            user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex, phone_num)
-            json['User_id'] = user_id
+        if exist2:
+            role_id = dao.getRoleID(userType)
+
+            if userType == 'Admin':
+                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex, phone_num)
+                json['User_id'] = user_id
+
+            elif userType == 'Customer':
+                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex, phone_num)
+                json['User_id'] = user_id
 
         else:
             return jsonify("Invalid user type."), 400
