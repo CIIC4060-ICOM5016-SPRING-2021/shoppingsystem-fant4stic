@@ -13,7 +13,7 @@ class UserDAO():
 
     def existUserType(self, userType):
         cursor = self.connection.cursor()
-        cursor.execute("select exists (Select userType from \"User\" where userType = %s);", (userType,));
+        cursor.execute("select exists (Select user_role from roles where user_role = %s);", (userType,));
         resquery = cursor.fetchone()
         cursor.close()
         return resquery

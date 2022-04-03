@@ -25,7 +25,7 @@ class UserController:
         phone_num = json['PhoneNumber']
         userType = json['UserType']
 
-        record2 = dao.existUser(userType)
+        record2 = dao.existUserType(userType)
         exist2 = record2[0]
 
         if exist2:
