@@ -1,4 +1,5 @@
 from dao.inventory import InventoryDAO
+from dao.user import UserDAO
 from flask import jsonify
 # Class Controller for Inventory table
 class InventoryController:
@@ -21,7 +22,7 @@ class InventoryController:
         exist = dao.existBookInv(bookId)
         if (exist):
             return jsonify("Product is already added to Inventory. No need to add it again."), 409
-        is_admin = dao.isUserAdmin(userId)
+        is_admin = UserDAO().isUserAdmin(userId)
         if(not is_admin):
             return jsonify("The UserId passed is not an admin. No book was added."), 404
         # Get the id of the inventory created
@@ -39,7 +40,7 @@ class InventoryController:
             return jsonify("Book is not in Inventory. No book was deleted.") ,409
         # Get the inventoryId of the BookId specified in the input
         invId = dao.getInventory(bookId)
-        is_admin = dao.isUserAdmin(userId)
+        is_admin = UserDAO().isUserAdmin(userId)
         if(not is_admin):
             return jsonify("The UserId passed is not an admin. No book was deleted."),409
         dao.deleteBookInv(bookId)

@@ -56,3 +56,18 @@ class OrderDAO:
             resquery.append(row)
         cursor.close()
         return resquery
+
+    # Group products and sum all the copies of the same book
+    def getCustomerMostBoughtProducts(self,customerId):
+        cursor = self.connection.cursor()
+        query = "select title , sum(num_items) as times_bought "
+        query +="from \"Order\" as o, book_order as bor,book as b "
+        query +="where o.order_id = bor.order_id and bor.book_id = b.book_id "
+        query += "and user_id =" +str(customerId) +" "
+        query += "group by title order by times_bought DESC;"
+        cursor.execute(query)
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery

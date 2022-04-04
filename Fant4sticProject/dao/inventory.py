@@ -11,16 +11,6 @@ class InventoryDAO:
         cursor.close()
         return resquery
 
-    def isUserAdmin(self,userId):
-        cursor = self.connection.cursor()
-        cursor.execute("select role_id from roles where user_role = 'Admin';")
-        adminRoleId = cursor.fetchone()[0]
-        query = "select exists(select user_id from \"User\" where \"User\".role_id =" + str(adminRoleId) + " and user_id =" + str(userId) +");"
-        cursor.execute(query)
-        resquery = cursor.fetchone()[0]
-        cursor.close()
-        return resquery
-
     # Add book and return the inventory's id
     def addBookInv(self,bookId,price,num_units):
         cursor = self.connection.cursor()

@@ -78,10 +78,17 @@ def getOrderHistoryCustomer(customerId):
     else:
         return jsonify("Method not supported"), 405
 
-@app.route('/fant4stic/order/customermostboughtcategory/<int:customerId>', methods = ['GET'])
+@app.route('/fant4stic/order/rankcustomercategoriesbought/<int:customerId>', methods = ['GET'])
 def getCustomerMostBoughtCategories(customerId):
     if request.method == 'GET':
         return OrderController().customerMostBoughtCat(customerId)
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/order/rankcustomerproductsbought/<int:customerId>', methods = ['GET'])
+def getCustomerMostBoughtProduct(customerId):
+    if request.method == 'GET':
+        return OrderController().customerMostBoughtProd(customerId)
     else:
         return jsonify("Method not supported"), 405
 
@@ -97,7 +104,6 @@ def registerNewUser():
     return UserController().registerNewUser(request.json)
     # else:
     #     return jsonify("Not supported"), 405
-
 
 if __name__ == '__main__':
     app.run()

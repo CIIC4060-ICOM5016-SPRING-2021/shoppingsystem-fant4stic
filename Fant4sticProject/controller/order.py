@@ -41,6 +41,19 @@ class OrderController:
             result.append(dict)
         return jsonify(result)
 
+    def customerMostBoughtProd(self,customerId):
+        orderdao, userdao = OrderDAO(), UserDAO()
+        if (not userdao.isUserCustomer(customerId)):
+            return jsonify('The value passed is not a valid customerId.'), 404
+        if (not orderdao.existCustomerOrder(customerId)):
+            return jsonify('This customer does not have any orders yet.'), 404
+        records = orderdao.getCustomerMostBoughtProducts(customerId)
+        result = []
+        for i in range(len(records)):
+            dict = self.build_dict_product(records[i], i + 1)
+            result.append(dict)
+        return jsonify(result)
+
     def build_dict_order(self,row):
         result ={}
         result['OrderId'] = row[0]
@@ -63,6 +76,13 @@ class OrderController:
         result['Position'] = i
         result['Category'] = row[0]
         result['TimesBoughtFromCategory'] = row[1]
+        return result
+
+    def build_dict_product(self,row,i):
+        result = {}
+        result['Position'] = i
+        result['Product'] = row[0]
+        result['TimesBoughtProduct'] = row[1]
         return result
 
     def create_newRow(self,orderId):
