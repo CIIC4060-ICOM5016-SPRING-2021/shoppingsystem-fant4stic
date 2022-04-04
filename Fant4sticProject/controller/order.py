@@ -67,6 +67,19 @@ class OrderController:
             result.append(dict)
         return jsonify(result)
 
+    def customerMostExpensiveProductBought(self,customerId):
+        orderdao, userdao = OrderDAO(), UserDAO()
+        if (not userdao.isUserCustomer(customerId)):
+            return jsonify('The value passed is not a valid customerId.'), 404
+        if (not orderdao.existCustomerOrder(customerId)):
+            return jsonify('This customer does not have any orders yet.'), 404
+        record = orderdao.getCustomerMostExpensiveBoughtProd(customerId)
+        result = []
+        for row in record:
+            dict = self.build_dict_mostExpensiveProduct(row)
+            result.append(dict)
+        return jsonify(result)
+
     def build_dict_order(self,row):
         result ={}
         result['OrderId'] = row[0]
@@ -100,8 +113,14 @@ class OrderController:
 
     def build_dict_cheapestProduct(self,row):
         result ={}
-        result['Product'] = row[0]
-        result['CheapestPrice'] = round(row[1],2)
+        result['CheapestProduct'] = row[0]
+        result['Price'] = round(row[1],2)
+        return result
+
+    def build_dict_mostExpensiveProduct(self,row):
+        result = {}
+        result['MostExpensiveProduct'] = row[0]
+        result['Price'] = round(row[1], 2)
         return result
 
     def create_newRow(self,orderId):

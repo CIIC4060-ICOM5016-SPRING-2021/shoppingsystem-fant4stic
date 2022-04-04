@@ -91,3 +91,23 @@ class OrderDAO:
         resquery = cursor.fetchall()
         cursor.close()
         return resquery
+
+    def getCustomerMostExpensiveBoughtProd(self,customerId):
+        cursor = self.connection.cursor()
+        # Get most expensive price customer has bought
+        query = "select max(order_payment/num_items) as price_unit "
+        query += "from \"Order\" as o, book_order as bor,book as b "
+        query += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
+        query += "and user_id = " + str(customerId) + ";"
+        cursor.execute(query)
+        mostExpensivePrice = cursor.fetchone()[0]
+        # Get Products that its price are equal to most expensive one
+        queryTwo = "select title, order_payment/num_items as price_unit "
+        queryTwo += "from \"Order\" as o, book_order as bor,book as b "
+        queryTwo += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
+        queryTwo += "and user_id =" + str(customerId) + " and order_payment/num_items = " + str(mostExpensivePrice) + " "
+        queryTwo += "group by title, order_payment/num_items;"
+        cursor.execute(queryTwo)
+        resquery = cursor.fetchall()
+        cursor.close()
+        return resquery
