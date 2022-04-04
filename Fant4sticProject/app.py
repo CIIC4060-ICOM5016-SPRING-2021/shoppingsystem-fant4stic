@@ -92,6 +92,13 @@ def getCustomerMostBoughtProduct(customerId):
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/order/cheapestproduct/<int:customerId>', methods = ['GET'])
+def getCustomerCheapestProduct(customerId):
+    if request.method == 'GET':
+        return OrderController().customerCheapestProductBought(customerId)
+    else:
+        return jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/cart/', methods = ['POST', 'DELETE'])
 def cartController():
     if request.method == 'POST':
