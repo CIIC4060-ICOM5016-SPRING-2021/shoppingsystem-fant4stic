@@ -1,4 +1,5 @@
 from dao.order import OrderDAO
+from dao.user import UserDAO
 from flask import jsonify
 # Class Controller for Order table
 class OrderController:
@@ -27,6 +28,19 @@ class OrderController:
             result.append(dict)
         return jsonify(result)
 
+    def customerMostBoughtCat(self,customerId):
+        orderdao , userdao = OrderDAO() , UserDAO()
+        if(not userdao.isUserCustomer(customerId)):
+            return jsonify('The value passed is not a valid customerId.'), 404
+        if (not orderdao.existCustomerOrder(customerId)):
+            return jsonify('This customer does not have any orders yet.') , 404
+        records = orderdao.getCustomerMostBoughtCategories(customerId)
+        result =[]
+        for i in range(len(records)):
+            dict = self.build_dict_category(records[i],i+1)
+            result.append(dict)
+        return jsonify(result)
+
     def build_dict_order(self,row):
         result ={}
         result['OrderId'] = row[0]
@@ -42,6 +56,13 @@ class OrderController:
         result['BookTitle'] = row[8]
         result['NumberOfQuantities'] = row[9]
         result['BookPrice'] = row[10]/row[9] # Unit Price of Book
+        return result
+
+    def build_dict_category(self,row,i):
+        result = {}
+        result['Position'] = i
+        result['Category'] = row[0]
+        result['TimesBoughtFromCategory'] = row[1]
         return result
 
     def create_newRow(self,orderId):

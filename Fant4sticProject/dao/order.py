@@ -40,3 +40,19 @@ class OrderDAO:
             resquery.append(row)
         cursor.close()
         return resquery
+
+    # Group orders of customer by category and sum the number of times bought
+    def getCustomerMostBoughtCategories(self,customerId):
+        cursor = self.connection.cursor()
+        query = "select genre_name , sum(num_items) as times_bought "
+        query += "from \"Order\" as o, book_order as bor,book as b, book_genre as bog, genre as g "
+        query += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
+        query += "and b.book_id = bog.book_id and bog.genre_id = g.genre_id "
+        query += "and user_id =" + str(customerId) + " "
+        query += "group by genre_name order by times_bought DESC;"
+        cursor.execute(query)
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery

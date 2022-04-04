@@ -78,26 +78,19 @@ def getOrderHistoryCustomer(customerId):
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/order/customermostboughtcategory/<int:customerId>', methods = ['GET'])
+def getCustomerMostBoughtCategories(customerId):
+    if request.method == 'GET':
+        return OrderController().customerMostBoughtCat(customerId)
+    else:
+        return jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/cart/', methods = ['POST', 'DELETE'])
 def cartController():
     if request.method == 'POST':
         return CartController().addBook(request.json)
     if request.method == 'DELETE':
         return CartController().deleteBook(request.json)
-
-# Check if an element is inside a list of records or a single record
-def member_of_Record(element, records):
-    bool_const = False
-    #Check if records is an array of tuples
-    if(not(type(records) is tuple)):
-        for record in records:
-            if(element in record):
-                bool_const = True
-                break
-    else:
-        #records is a single tuple
-        bool_const = element in records
-    return bool_const
 
 @app.route('/fant4stic/user/register_new_user', methods=['POST'])
 def registerNewUser():

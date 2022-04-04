@@ -23,7 +23,7 @@ class CartDao:
     def generateCart(self, userAddingTheBook):
         cursor = self.connection.cursor()
 
-        cursor.execute("insert into cart(user_id) values(%s)", (userAddingTheBook))
+        cursor.execute("insert into cart(user_id) values(%s)", (userAddingTheBook,))
 
         self.connection.commit()
         cursor.close()
