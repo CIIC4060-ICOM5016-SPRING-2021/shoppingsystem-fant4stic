@@ -1,7 +1,8 @@
 from config.databaseConnect import DatabaseConnect
+from dao.book import BookDAO
 from flask import jsonify
-
-class FilterByController:
+# Class Controller for Book table
+class BookController:
     def __init__(self):
         self.connection = DatabaseConnect().getConnection()
 
@@ -41,4 +42,23 @@ class FilterByController:
 
         record = cursor.fetchall()
         return jsonify(record)
+
+    def getAllBooks(self):
+        dao = BookDAO()
+        records = dao.getAllBooks()
+        result =[]
+        for row in records:
+            dict = self.build_dict_book(row)
+            result.append(dict)
+        return jsonify(result) , 200
+
+    def build_dict_book(self,row):
+        result = {}
+        result['BookId'] = row[0]
+        result['BookTitle'] = row[1]
+        result['Language'] = row[2]
+        result['NumberPages'] = row[3]
+        result['YearPublished'] = row[4]
+        return result
+
 
