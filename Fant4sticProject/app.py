@@ -7,6 +7,8 @@ from controller.author import AuthorController
 from controller.order import OrderController
 from controller.cart import CartController
 from controller.user import UserController
+from controller.genre import GenreController
+from controller.wishlist import WishlistController
 
 # Activate
 app = Flask(__name__)
@@ -57,6 +59,20 @@ def inventoryDeleteBookProduct():
 def getAllInventories():
     if request.method == 'GET':
         return InventoryController().getAllInventories()
+    else:
+        jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/wishlist/get_all', methods = ['GET'])
+def getAllWishlists():
+    if request.method == 'GET':
+        return WishlistController().getAllWishlists()
+    else:
+        jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/genre/get_all', methods = ['GET'])
+def getAllGenre():
+    if request.method == 'GET':
+        return GenreController().getAllGenres()
     else:
         jsonify("Method not supported"), 405
 
