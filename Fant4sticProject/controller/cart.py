@@ -1,5 +1,6 @@
 from flask import jsonify
 from dao.cart import CartDao
+from dao.user import UserDAO
 
 class CartController:
     #def getAllBooks(self):
@@ -208,3 +209,11 @@ class CartController:
 
         return jsonify("Could not delete the desired book from your cart")
         """
+
+    def clearCartContent(self, userId):
+        cartDao, userDao = CartDao(), UserDAO()
+        if not userDao.isUserCustomer(userId):
+            return jsonify('This user is not a customer.'), 404
+        cartID = cartDao.getCartID(userId)
+        cartDao.clearCartContent(cartID)
+        return jsonify("Cart cleared successfully"), 201

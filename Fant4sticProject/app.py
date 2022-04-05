@@ -116,9 +116,17 @@ def cartController():
 
 @app.route('/fant4stic/user/register_new_user', methods=['POST'])
 def registerNewUser():
-    return UserController().registerNewUser(request.json)
-    # else:
-    #     return jsonify("Not supported"), 405
+    if request.method == 'POST':
+        return UserController().registerNewUser(request.json)
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/user/clear_cart_content/<int:userId>', methods=['DELETE'])
+def clearCartContent(userId):
+    if request.method == 'DELETE':
+        return CartController().clearCartContent(userId)
+    else:
+        return jsonify("Method not supported"), 405
 
 if __name__ == '__main__':
     app.run()

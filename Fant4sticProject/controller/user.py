@@ -1,10 +1,8 @@
-from config.databaseConnect import DatabaseConnect
 from dao.user import UserDAO
-from flask import jsonify, request
+from dao.cart import CartDao
+from flask import jsonify
 
 class UserController:
-    def __init__(self):
-        self.connection = DatabaseConnect().getConnection()
 
     def registerNewUser(self, json):
         dao = UserDAO()
@@ -32,14 +30,19 @@ class UserController:
             role_id = dao.getRoleID(userType)
 
             if userType == 'Admin':
-                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex, phone_num)
+                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex,
+                                              phone_num)
                 json['User_id'] = user_id
 
             elif userType == 'Customer':
-                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex, phone_num)
+                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex,
+                                              phone_num)
+                cartDao = CartDao()
+                cartDao.createCart(user_id)
                 json['User_id'] = user_id
 
         else:
             return jsonify("Invalid user type."), 400
 
         return jsonify(json), 201
+
