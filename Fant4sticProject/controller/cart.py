@@ -51,8 +51,14 @@ class CartController:
         if(not existsOnInventory):
             return jsonify("The book is not currently available :("), 404
 
-        #Now verify the user is a customer
-        userRole = dao.getUserRole(userAddingTheBook)
+        #Now verify the user exists
+        userExists = dao.checkIfUserExists(userAddingTheBook)
+
+        if(userExists):
+            #Now verify the user is a customer
+            userRole = dao.getUserRole(userAddingTheBook)
+        else:
+            return jsonify("Your user ID does not belong to a registered user"), 404
 
         if(userRole != "Customer"):
             return jsonify("User is unavailable to add items to a cart, because he/she is not a customer"), 405
@@ -94,12 +100,6 @@ class CartController:
         bookExists = dao.checkIfBookExists(bookToAdd, userAddingTheBook)
 
         if(bookExists):
-            #Get how many units were available before addition
-            unitsAvailableBefore = dao.getInventoryUnits(bookToAdd)
-
-            #Now update inventory
-            dao.updateInventoryAfterAddition(bookToAdd,howMuchBooks,unitsAvailableBefore)
-
             #Build json for output
             row = [bookTitle, userAddingTheBook, howMuchBooks, bookToAdd, existingCart]
             dictionary = self.build_dict(row)
@@ -124,6 +124,15 @@ class CartController:
 
         #Now get the book id
         bookToDelete = dao.getBookID(bookTitle)
+
+        #Now verify the user exists
+        userExists = dao.checkIfUserExists(userDeletingTheBook)
+
+        if(userExists):
+            #Now verify the user is a customer
+            userRole = dao.getUserRole(userDeletingTheBook)
+        else:
+            return jsonify("Your user ID does not belong to a registered user"), 404
 
         #Now verify the user is a customer
         userRole = dao.getUserRole(userDeletingTheBook)
@@ -150,12 +159,6 @@ class CartController:
 
             # Delete the book now
             dao.deleteBook(bookToDelete)
-
-            # Get units available in inventory
-            inventoryUnits = dao.getInventoryUnits(bookToDelete)
-
-            # Update the inventory now
-            dao.updateInventoryAfterDeletion(bookToDelete,copiesStored, inventoryUnits)
         else:
             return jsonify("The desired book could not be deleted, because it was not present in your cart"), 404
 

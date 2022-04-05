@@ -65,45 +65,6 @@ class CartDao:
         self.connection.commit()
         cursor.close()
 
-    """
-    def getCopies(self, bookToAdd):
-        cursor = self.connection.cursor()
-
-        query = "select num_addeditems from add_to_cart where book_id = %s;"
-        cursor.execute(query, (bookToAdd,))
-
-        result = cursor.fetchone()[0]
-
-        cursor.close()
-        return result
-
-    def addExtraCopies(self, howMuchBooks, currentCopies, bookToAdd):
-        cursor = self.connection.cursor()
-
-        #Calculate total copies after addition
-        totalItems = int(currentCopies) + int(howMuchBooks)
-
-        query = "update add_to_cart set num_addeditems = %s where book_id = %s;"
-
-        cursor.execute(query, (totalItems, bookToAdd,))
-
-        self.connection.commit()
-        cursor.close()
-
-    def deleteCopies(self, howMuchBooks, currentCopies, bookToDelete):
-        cursor = self.connection.cursor()
-
-        #Calculate total copies after substraction
-        totalItems = int(currentCopies) - int(howMuchBooks)
-
-        query = "update add_to_cart set num_addeditems = %s where book_id = %s;"
-
-        cursor.execute(query, (totalItems, bookToDelete,))
-
-        self.connection.commit()
-        cursor.close()
-    """
-
     def getBookID(self, bookTitle):
         cursor = self.connection.cursor()
 
@@ -199,6 +160,17 @@ class CartDao:
 
         self.connection.commit()
         cursor.close()
+
+    def checkIfUserExists(self, userAddingTheBook):
+        cursor = self.connection.cursor()
+
+        query = "select exists(select user_id from" + """  "User"  """ + "where user_id = %s);"
+
+        cursor.execute(query, (userAddingTheBook,))
+        result = cursor.fetchone()[0]
+
+        cursor.close()
+        return result
 
     def createCart(self,userId):
         cursor = self.connection.cursor()
