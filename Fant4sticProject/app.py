@@ -53,6 +53,13 @@ def inventoryDeleteBookProduct():
     else:
         return jsonify("Method not supported"),405
 
+@app.route('/fant4stic/inventory/get_all', methods = ['GET'])
+def getAllInventories():
+    if request.method == 'GET':
+        return InventoryController().getAllInventories()
+    else:
+        jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/book/desiredgenre')
 def getBooksInGenres():
     return BookController().filterByGenre()
@@ -125,6 +132,13 @@ def registerNewUser():
 def clearCartContent(userId):
     if request.method == 'DELETE':
         return CartController().clearCartContent(userId)
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/user/get_all', methods=['GET'])
+def getAllUsers():
+    if request.method == 'GET':
+        return UserController().getAllUsers()
     else:
         return jsonify("Method not supported"), 405
 

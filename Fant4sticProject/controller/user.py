@@ -46,3 +46,26 @@ class UserController:
 
         return jsonify(json), 201
 
+    def getAllUsers(self):
+        dao = UserDAO()
+        records = dao.getAllUsers()
+        result = []
+        for row in records:
+            dict = self.build_dict_user(row)
+            result.append(dict)
+        return jsonify(result),200
+
+    def build_dict_user(self,row):
+        result = {}
+        result['UserId'] = row[0]
+        result['RoleId'] = row[1]
+        result['FirstName'] = row[2]
+        result['LastName'] = row[3]
+        result['UserName'] = row[4]
+        result['Email'] = row[5]
+        result['Password'] = row[6]
+        result['Age'] = row[7]
+        result['Sex'] = row[8]
+        result['PhoneNumber'] = row[9]
+        return result
+
