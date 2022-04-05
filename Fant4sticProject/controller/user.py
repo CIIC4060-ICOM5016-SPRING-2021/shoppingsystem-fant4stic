@@ -1,10 +1,8 @@
-from config.databaseConnect import DatabaseConnect
 from dao.user import UserDAO
-from flask import jsonify, request
+from dao.cart import CartDao
+from flask import jsonify
 
 class UserController:
-    def __init__(self):
-        self.connection = DatabaseConnect().getConnection()
 
     def registerNewUser(self, json):
         dao = UserDAO()
@@ -32,14 +30,42 @@ class UserController:
             role_id = dao.getRoleID(userType)
 
             if userType == 'Admin':
-                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex, phone_num)
+                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex,
+                                              phone_num)
                 json['User_id'] = user_id
 
             elif userType == 'Customer':
-                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex, phone_num)
+                user_id = dao.registerNewUser(role_id, first_name, last_name, user_name, email, password, age, sex,
+                                              phone_num)
+                cartDao = CartDao()
+                cartDao.createCart(user_id)
                 json['User_id'] = user_id
 
         else:
             return jsonify("Invalid user type."), 400
 
         return jsonify(json), 201
+
+    def getAllUsers(self):
+        dao = UserDAO()
+        records = dao.getAllUsers()
+        result = []
+        for row in records:
+            dict = self.build_dict_user(row)
+            result.append(dict)
+        return jsonify(result),200
+
+    def build_dict_user(self,row):
+        result = {}
+        result['UserId'] = row[0]
+        result['RoleId'] = row[1]
+        result['FirstName'] = row[2]
+        result['LastName'] = row[3]
+        result['UserName'] = row[4]
+        result['Email'] = row[5]
+        result['Password'] = row[6]
+        result['Age'] = row[7]
+        result['Sex'] = row[8]
+        result['PhoneNumber'] = row[9]
+        return result
+

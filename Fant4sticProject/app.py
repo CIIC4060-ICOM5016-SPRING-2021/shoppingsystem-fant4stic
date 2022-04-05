@@ -2,12 +2,11 @@ from flask import Flask, jsonify, request, json
 from flask_cors import CORS
 from config.databaseConnect import DatabaseConnect
 from controller.inventory import InventoryController
-from controller.filter import FilterByController
+from controller.book import BookController
+from controller.author import AuthorController
 from controller.order import OrderController
 from controller.cart import CartController
 from controller.user import UserController
-
-import psycopg2
 
 # Activate
 app = Flask(__name__)
@@ -26,17 +25,19 @@ cursor = connection.cursor()
 def hello_world():  # put application's code here
     return 'Hello World!'
 
-@app.route('/fant4stic/book/get_all')
+@app.route('/fant4stic/book/get_all', methods = ['GET'])
 def getAllBooks():
-    cursor.execute("Select * from book")
-    record = cursor.fetchall()
-    return jsonify(record)
+    if request.method == 'GET':
+        return BookController().getAllBooks()
+    else:
+        jsonify("Method not supported"),405
 
-@app.route('/fant4stic/author/get_all')
+@app.route('/fant4stic/author/get_all', methods = ['GET'])
 def getAllAuthors():
-    cursor.execute("Select * from author")
-    record = cursor.fetchall()
-    return jsonify(record)
+    if request.method == 'GET':
+        return AuthorController().getAllAuthors()
+    else:
+        jsonify("Method not supported"), 405
 
 @app.route('/fant4stic/inventory/addproduct', methods = ['POST'])
 def inventoryAddBookProduct():
@@ -52,17 +53,24 @@ def inventoryDeleteBookProduct():
     else:
         return jsonify("Method not supported"),405
 
+@app.route('/fant4stic/inventory/get_all', methods = ['GET'])
+def getAllInventories():
+    if request.method == 'GET':
+        return InventoryController().getAllInventories()
+    else:
+        jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/book/desiredgenre')
 def getBooksInGenres():
-    return FilterByController().filterByGenre()
+    return BookController().filterByGenre()
 
 @app.route('/fant4stic/book/orderInAscOrDes')
 def getBooksInOrder():
-    return FilterByController().orderByTitle()
+    return BookController().orderByTitle()
 
 @app.route('/fant4stic/book/orderInPrice')
 def getBooksByPrice():
-    return FilterByController().orderByPrice()
+    return BookController().orderByPrice()
 
 @app.route('/fant4stic/order/get_all', methods = ['GET'])
 def getOrderHistoryAll():
@@ -115,9 +123,24 @@ def cartController():
 
 @app.route('/fant4stic/user/register_new_user', methods=['POST'])
 def registerNewUser():
-    return UserController().registerNewUser(request.json)
-    # else:
-    #     return jsonify("Not supported"), 405
+    if request.method == 'POST':
+        return UserController().registerNewUser(request.json)
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/user/clear_cart_content/<int:userId>', methods=['DELETE'])
+def clearCartContent(userId):
+    if request.method == 'DELETE':
+        return CartController().clearCartContent(userId)
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/user/get_all', methods=['GET'])
+def getAllUsers():
+    if request.method == 'GET':
+        return UserController().getAllUsers()
+    else:
+        return jsonify("Method not supported"), 405
 
 if __name__ == '__main__':
     app.run()

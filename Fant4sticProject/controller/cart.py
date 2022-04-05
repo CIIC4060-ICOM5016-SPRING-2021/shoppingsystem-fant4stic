@@ -1,5 +1,6 @@
 from flask import jsonify
 from dao.cart import CartDao
+from dao.user import UserDAO
 
 class CartController:
     def build_dict(self, row):
@@ -156,3 +157,12 @@ class CartController:
             return jsonify("The following book and copies were deleted from your cart:", dictionary), 200
         else:
             return jsonify("Book could not be deleted from cart"), 500
+
+    def clearCartContent(self, userId):
+        cartDao, userDao = CartDao(), UserDAO()
+        if not userDao.isUserCustomer(userId):
+            return jsonify('This user is not a customer.'), 404
+        cartID = cartDao.getCartID(userId)
+        cartDao.clearCartContent(cartID)
+        return jsonify("Cart cleared successfully"), 201
+

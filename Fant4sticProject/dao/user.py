@@ -54,3 +54,12 @@ class UserDAO():
         resquery = cursor.fetchone()[0]
         cursor.close()
         return resquery
+
+    def getAllUsers(self):
+        cursor = self.connection.cursor()
+        cursor.execute("select user_id, role_id, first_name, last_name,user_name, email,password,age,sex,phone_num from \"User\";")
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery
