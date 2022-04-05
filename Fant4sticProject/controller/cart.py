@@ -2,13 +2,22 @@ from flask import jsonify
 from dao.cart import CartDao
 
 class CartController:
+    def build_dict(self, row):
+        result = {}
+        result['Title'] = row[0]
+        result['Customer_id'] = row[1]
+        result['Copies'] = row[2]
+        result['Book_id'] = row[3]
+        result['Cart_id'] = row[4]
+        return result
+
     #def getAllBooks(self):
 
 
     def addBook(self, json):
-        bookTitle = json[0]['title']
-        userAddingTheBook = json[0]['user_id']
-        howMuchBooks = json[0]['num_addeditems']
+        bookTitle = json['Title']
+        userAddingTheBook = json['Customer_id']
+        howMuchBooks = json['Copies']
 
         dao = CartDao()
 
@@ -66,33 +75,6 @@ class CartController:
             dao.addBook(bookToAdd,existingCart,howMuchBooks)
         else:
             return jsonify("Book was not added, because it already existed in your cart"), 409
-        """
-        else:
-            wantToAdd = input("The desired book already exists in your cart.\n"
-                               "Do you wish to add more copies of the book? (Yes or No): ")
-
-            #Keep asking until input is the desired string
-            while(wantToAdd != "Yes" and wantToAdd != "No"):
-                wantToAdd = input("Please answer Yes or No (use capital letter for the Y or N)")
-
-            if(wantToAdd == "Yes"):
-                howMuchBooks = input("How many copies you want to add: ")
-            else:
-                return jsonify("Process concluded!")
-
-            if(bookExists and wantToAdd == "Yes"):
-                #Get the current copies in cart of the desired book
-                currentCopies = dao.getCopies(bookToAdd)
-
-                #Add the desired copies
-                dao.addExtraCopies(howMuchBooks, currentCopies, bookToAdd)
-
-                #Verify the desired copies were added
-                totalCopies = int(howMuchBooks)+int(currentCopies)
-
-                if(totalCopies == dao.getCopies(bookToAdd)):
-                    return jsonify("Copies added successfully")
-        """
 
         #Verify the book was added
         bookExists = dao.checkIfBookExists(bookToAdd, userAddingTheBook)
@@ -104,13 +86,18 @@ class CartController:
             #Now update inventory
             dao.updateInventoryAfterAddition(bookToAdd,howMuchBooks,unitsAvailableBefore)
 
-            return jsonify("Book added to cart!"), 200
+            #Build json for output
+            row = [bookTitle, userAddingTheBook, howMuchBooks, bookToAdd, existingCart]
+            dictionary = self.build_dict(row)
+
+            return jsonify("Book added to cart!",
+                           dictionary), 200
         else:
             return jsonify("Book could not be added to cart!"), 500
 
     def deleteBook(self, json):
-        bookTitle = json[0]['title']
-        userDeletingTheBook = json[0]['user_id']
+        bookTitle = json['Title']
+        userDeletingTheBook = json['Customer_id']
 
         dao = CartDao()
 
@@ -128,7 +115,7 @@ class CartController:
         userRole = dao.getUserRole(userDeletingTheBook)
 
         if(userRole != "Customer"):
-            return jsonify("User is unavailable to add items to a cart, because he/she is not a customer"), 405
+            return jsonify("User is unavailable to delete items from a cart, because he/she is not a customer"), 405
 
 
         #Check if a cart associated with the customer exists
@@ -155,56 +142,17 @@ class CartController:
 
             # Update the inventory now
             dao.updateInventoryAfterDeletion(bookToDelete,copiesStored, inventoryUnits)
+        else:
+            return jsonify("The desired book could not be deleted, because it was not present in your cart"), 404
 
         # Verify the book was deleted
-        bookExists = dao.checkIfBookExists(bookToDelete,userDeletingTheBook)
+        bookExists = dao.checkIfBookExists(bookToDelete, userDeletingTheBook)
 
         if(not bookExists):
-            return jsonify("Book was deleted from your cart"), 200
+            # Build the Json for output
+            row = [bookTitle, userDeletingTheBook, copiesStored, bookToDelete, customerCart]
+            dictionary = self.build_dict(row)
+
+            return jsonify("The following book and copies were deleted from your cart:", dictionary), 200
         else:
             return jsonify("Book could not be deleted from cart"), 500
-
-        """
-        if(bookExists):
-            #Ask if he wants to eliminate a certain amount of copies instead of the book
-            wantToDelete = input("The desired book already exists in the car\n"
-                                 "Do you wish to eliminate a certain amount of copies instead of the book? (Yes or No): ")
-
-            #Keep asking until input is the desired string
-            while(wantToDelete != "Yes" and wantToDelete != "No"):
-                wantToDelete = input("Please answer Yes or No (use capital letter for the Y or N)")
-
-            #If the customer desires to not delete copies conclude the process
-            if(wantToDelete == "Yes"):
-                howMuchBooks = input("How many copies you want to delete: ")
-
-            if(bookExists and wantToDelete == "Yes"):
-                #Get the current copies in cart of the desired book
-                currentCopies = dao.getCopies(bookToDelete)
-
-                #Delete the desired copies
-                dao.deleteCopies(howMuchBooks, currentCopies, bookToDelete)
-
-                #Verify the desired copies were subtracted
-                totalCopies = int(currentCopies) - int(howMuchBooks)
-
-                if(totalCopies == dao.getCopies(bookToDelete)):
-                    return jsonify("Copies eliminated successfully")
-
-            if(wantToDelete == "No"):
-                #Delete the book now
-                dao.deleteBook(bookToDelete)
-
-                # Verify the book was deleted
-                bookExists = dao.checkIfBookExists(bookToDelete)
-        
-
-                if (not bookExists):
-                    return jsonify("Book was deleted from cart!")
-                else:
-                    return jsonify("Book could not be deleted from cart!")
-        else:
-            return jsonify("The selected book was not in your cart")
-
-        return jsonify("Could not delete the desired book from your cart")
-        """
