@@ -53,17 +53,29 @@ def inventoryDeleteBookProduct():
     else:
         return jsonify("Method not supported"),405
 
-@app.route('/fant4stic/book/desiredgenre')
-def getBooksInGenres():
-    return BookController().filterByGenre()
+@app.route('/fant4stic/book/desiredgenre/<int:genre_id>', methods = ['GET'])
+def getBooksInGenres(genre_id):
+    if request.method == 'GET':
+        return BookController().getBookByGenre(genre_id)
+    else:
+        return jsonify("Method not supported"), 405
 
-@app.route('/fant4stic/book/orderInAscOrDes')
-def getBooksInOrder():
-    return BookController().orderByTitle()
 
-@app.route('/fant4stic/book/orderInPrice')
-def getBooksByPrice():
-    return BookController().orderByPrice()
+@app.route('/fant4stic/book/orderInAscOrDes/<string:order_in>', methods = ['GET'])
+def getBooksInOrder(order_in):
+    if request.method == 'GET':
+        return BookController().orderByTitle(order_in)
+    else:
+        return jsonify("Method not supported"), 405
+
+
+@app.route('/fant4stic/book/orderInPrice/<string:order_in>', methods = ['GET'])
+def getBooksByPrice(order_in):
+    if request.method == 'GET':
+        return BookController().orderByPrice(order_in)
+    else:
+        return jsonify("Method not supported"), 405
+
 
 @app.route('/fant4stic/order/get_all', methods = ['GET'])
 def getOrderHistoryAll():
