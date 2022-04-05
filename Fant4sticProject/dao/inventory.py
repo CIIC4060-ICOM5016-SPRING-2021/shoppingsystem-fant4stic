@@ -33,3 +33,12 @@ class InventoryDAO:
         cursor.execute("delete from inventory where book_id =" + str(bookId) + ";")
         self.connection.commit()
         cursor.close()
+
+    def getAllInventories(self):
+        cursor = self.connection.cursor()
+        cursor.execute("select inventory_id, book_id, price_unit, available_units from inventory;")
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery

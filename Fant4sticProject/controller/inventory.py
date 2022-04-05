@@ -13,6 +13,14 @@ class InventoryController:
         result['BookNumberUnits'] = row[4]
         return result
 
+    def build_dict_inventory(self,row):
+        result = {}
+        result['InventoryId'] = row[0]
+        result['BookId'] = row[1]
+        result['UnitPrice'] = row[2]
+        result['AvailableUnits'] = row[3]
+        return result
+
     def addBookProduct(self,json):
         bookId = json['BookId']
         userId = json['UserId']
@@ -45,3 +53,12 @@ class InventoryController:
             return jsonify("The UserId passed is not an admin. No book was deleted."),409
         dao.deleteBookInv(bookId)
         return jsonify("Product was successfully deleted.") , 202
+
+    def getAllInventories(self):
+        dao = InventoryDAO()
+        records = dao.getAllInventories()
+        result = []
+        for row in records:
+            dict = self.build_dict_inventory(row)
+            result.append(dict)
+        return jsonify(result), 200
