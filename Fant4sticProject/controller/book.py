@@ -87,4 +87,3 @@ class BookController:
         result['YearPublished'] = row[4]
         result['Price'] = row[5]
         return result
-

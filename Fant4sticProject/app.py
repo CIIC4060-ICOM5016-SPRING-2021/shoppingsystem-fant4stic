@@ -130,6 +130,13 @@ def cartController():
     if request.method == 'DELETE':
         return CartController().deleteBook(request.json)
 
+@app.route('/fant4stic/cart/get_all', methods = ['GET'])
+def getAllCarts():
+    if request.method == 'GET':
+        return CartController().getAllCarts()
+    else:
+        return jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/user/register_new_user', methods=['POST'])
 def registerNewUser():
     if request.method == 'POST':

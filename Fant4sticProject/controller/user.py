@@ -68,4 +68,3 @@ class UserController:
         result['Sex'] = row[8]
         result['PhoneNumber'] = row[9]
         return result
-

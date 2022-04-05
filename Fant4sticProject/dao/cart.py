@@ -3,6 +3,15 @@ class CartDao:
     def __init__(self):
        self.connection = DatabaseConnect().getConnection()
 
+    def getAllCarts(self):
+        cursor = self.connection.cursor()
+        cursor.execute("select cart_id,user_id from cart;")
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery
+
     def checkIfCartExists(self, userAddingTheBook):
         cursor = self.connection.cursor()
 

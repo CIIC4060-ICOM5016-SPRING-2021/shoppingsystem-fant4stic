@@ -12,7 +12,20 @@ class CartController:
         result['Cart_id'] = row[4]
         return result
 
-    #def getAllBooks(self):
+    def build_dict_cart(self,row):
+        result = {}
+        result['CartId'] = row[0]
+        result['Customer_id'] = row[1]
+        return result
+
+    def getAllCarts(self):
+        dao = CartDao()
+        records = dao.getAllCarts()
+        result = []
+        for row in records:
+            dict = self.build_dict_cart(row)
+            result.append(dict)
+        return jsonify(result), 200
 
 
     def addBook(self, json):
@@ -165,4 +178,3 @@ class CartController:
         cartID = cartDao.getCartID(userId)
         cartDao.clearCartContent(cartID)
         return jsonify("Cart cleared successfully"), 201
-
