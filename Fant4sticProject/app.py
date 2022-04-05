@@ -151,5 +151,5 @@ def getAllUsers():
     else:
         return jsonify("Method not supported"), 405
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     app.run()
