@@ -6,6 +6,7 @@ from controller.book import BookController
 from controller.author import AuthorController
 from controller.order import OrderController
 from controller.cart import CartController
+from controller.roles import RolesController
 from controller.user import UserController
 from controller.genre import GenreController
 from controller.wishlist import WishlistController
@@ -171,6 +172,13 @@ def clearCartContent(userId):
 def getAllUsers():
     if request.method == 'GET':
         return UserController().getAllUsers()
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/roles/get_all', methods=['GET'])
+def getAllRoless():
+    if request.method == 'GET':
+        return RolesController().getAllRoles()
     else:
         return jsonify("Method not supported"), 405
 
