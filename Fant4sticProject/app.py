@@ -54,6 +54,7 @@ def inventoryDeleteBookProduct():
         return jsonify("Method not supported"),405
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 @app.route('/fant4stic/book/desiredgenre/<int:genre_id>', methods = ['GET'])
 def getBooksInGenres(genre_id):
     if request.method == 'GET':
@@ -70,6 +71,8 @@ def getBooksInOrder(order_in):
         return jsonify("Method not supported"), 405
 
 =======
+=======
+>>>>>>> main
 @app.route('/fant4stic/inventory/get_all', methods = ['GET'])
 def getAllInventories():
     if request.method == 'GET':
