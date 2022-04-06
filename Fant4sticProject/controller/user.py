@@ -77,3 +77,39 @@ class UserController:
         else:
             user = self.build_dict_user(user)
             return jsonify(user), 200
+
+    def updateUser(self, userId, json):
+        dao = UserDAO()
+        user = dao.getUser(userId)
+        if not user:
+            return jsonify("User Not Found"), 404
+
+        first_name = json['FirstName']
+        last_name = json['LastName']
+        username = json['Username']
+        email = json['Email']
+        password = json['Password']
+        age = json['Age']
+        sex = json['Sex']
+        phone_number = json['PhoneNumber']
+
+        if first_name and last_name and username and email and password and age and sex and phone_number:
+            dao.updateUser(userId, first_name, last_name, username, email, password, age, sex, phone_number)
+            result = self.build_user_attributes(userId, first_name, last_name, username, email, password, age, sex,
+                                                phone_number)
+            return jsonify(result), 200
+        else:
+            return jsonify("Unexpected attributes in update request"), 400
+
+    def build_user_attributes(self, user_id, first_name, last_name, username, email, password, age, sex, phone_number):
+        result = {}
+        result['UserID'] = user_id
+        result['FirstName'] = first_name
+        result['LastName'] = last_name
+        result['Username'] = username
+        result['Email'] = email
+        result['Password'] = password
+        result['Age'] = age
+        result['Sex'] = sex
+        result['PhoneNumber'] = phone_number
+        return result

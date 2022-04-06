@@ -248,12 +248,15 @@ def getAllRoless():
     else:
         return jsonify("Method not supported"), 405
 
-@app.route('/fant4stic/user/crud_operations/<int:userId>', methods=['GET'])
+@app.route('/fant4stic/user/crud_operations/<int:userId>', methods=['GET', 'PUT'])
 def userCrud(userId):
     if request.method == 'GET':
         return UserController().getUser(userId)
+    elif request.method == 'PUT':
+        return UserController().updateUser(userId, request.json)
     else:
         return jsonify("Method not supported"), 405
+
 
 @app.route('/fant4stic/wishlist', methods = ['POST', 'DELETE'])
 def wishlistController():
