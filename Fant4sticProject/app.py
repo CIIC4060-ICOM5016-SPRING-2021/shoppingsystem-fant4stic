@@ -56,6 +56,20 @@ def inventoryDeleteBookProduct():
     else:
         return jsonify("Method not supported"),405
 
+@app.route('/fant4stic/inventory/updatepriceproduct', methods = ['PUT'])
+def inventoryUpdatePriceBookProduct():
+    if request.method == 'PUT':
+        return InventoryController().updatePriceInventory(request.json)
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/inventory/updateavailableunitsproduct', methods = ['PUT'])
+def inventoryUpdateAvailableUnitBookProduct():
+    if request.method == 'PUT':
+        return InventoryController().updateAvailableUnitsInventory(request.json)
+    else:
+        return jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/inventory/get_all', methods = ['GET'])
 def getAllInventories():
     if request.method == 'GET':

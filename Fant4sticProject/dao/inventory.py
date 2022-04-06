@@ -42,3 +42,16 @@ class InventoryDAO:
             resquery.append(row)
         cursor.close()
         return resquery
+
+    def updatePriceInventoryDAO(self, bookId, priceUnit):
+        cursor = self.connection.cursor()
+        cursor.execute("update inventory set price_unit = %s where book_id = %s;", (priceUnit, bookId,))
+        self.connection.commit()
+        cursor.close()
+
+    def updateAvailableUnitsInventory(self, bookId, available_units):
+        cursor = self.connection.cursor()
+        cursor.execute("update inventory set available_units = %s  where book_id = %s;", (available_units, bookId))
+        self.connection.commit()
+        cursor.close()
+

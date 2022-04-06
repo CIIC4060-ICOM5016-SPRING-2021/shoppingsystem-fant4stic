@@ -21,6 +21,22 @@ class InventoryController:
         result['AvailableUnits'] = row[3]
         return result
 
+    def build_dict_update_price(self,row):
+        result = {}
+        result['InventoryId'] = row[0]
+        result['BookId'] = row[1]
+        result['UnitPrice'] = row[2]
+        result['UserId'] = row[3]
+        return result
+
+    def build_dict_update_available(self,row):
+        result = {}
+        result['InventoryId'] = row[0]
+        result['BookId'] = row[1]
+        result['AvailableUnits'] = row[2]
+        result['UserId'] = row[3]
+        return result
+
     def addBookProduct(self,json):
         bookId = json['BookId']
         userId = json['UserId']
@@ -45,12 +61,12 @@ class InventoryController:
         dao = InventoryDAO()
         exist = dao.existBookInv(bookId)
         if(not exist):
-            return jsonify("Book is not in Inventory. No book was deleted.") ,409
+            return jsonify("Book is not in Inventory. No book was deleted."), 409
         # Get the inventoryId of the BookId specified in the input
         invId = dao.getInventory(bookId)
         is_admin = UserDAO().isUserAdmin(userId)
         if(not is_admin):
-            return jsonify("The UserId passed is not an admin. No book was deleted."),409
+            return jsonify("The UserId passed is not an admin. No book was deleted."), 404
         dao.deleteBookInv(bookId)
         return jsonify("Product was successfully deleted.") , 202
 
@@ -61,4 +77,44 @@ class InventoryController:
         for row in records:
             dict = self.build_dict_inventory(row)
             result.append(dict)
+        return jsonify(result), 200
+
+    def updatePriceInventory(self, json):
+        bookId = json['BookId']
+        priceUnit = json['PriceUnit']
+        userId = json['UserId']
+        dao = InventoryDAO()
+        exist = dao.existBookInv(bookId)
+        if not exist:
+            return jsonify("Book is not in Inventory. No book was updated."), 409
+
+        is_admin = UserDAO().isUserAdmin(userId)
+        if not is_admin:
+            return jsonify("The UserId passed is not an admin. No book was updated."), 404
+
+        invId = dao.getInventory(bookId)
+        dao.updatePriceInventoryDAO(bookId, priceUnit)
+        row = [invId, bookId, priceUnit, userId]
+        result = self.build_dict_update_price(row)
+        return jsonify(result), 200
+
+
+    def updateAvailableUnitsInventory(self, json):
+        dao = InventoryDAO()
+        bookId = json['BookId']
+        availableUnits = json['AvailableUnits']
+        userId = json['UserId']
+        exist = dao.existBookInv(bookId)
+
+        if not exist:
+            return jsonify("Book is not in Inventory. No book was updated."), 409
+
+        is_admin = UserDAO().isUserAdmin(userId)
+        if not is_admin:
+            return jsonify("The UserId passed is not an admin. No book was updated."), 404
+
+        invId = dao.getInventory(bookId)
+        dao.updateAvailableUnitsInventory(bookId, availableUnits)
+        row = [invId, bookId, availableUnits, userId]
+        result = self.build_dict_update_available(row)
         return jsonify(result), 200
