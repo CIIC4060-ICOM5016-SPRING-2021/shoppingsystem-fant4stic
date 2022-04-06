@@ -252,6 +252,14 @@ def userCrud(userId):
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/wishlist', methods = ['POST', 'DELETE'])
+def wishlistController():
+    if request.method == 'POST':
+        return WishlistController().addBook(request.json)
+
+    if request.method == 'DELETE':
+        return WishlistController().deleteBook(request.json)
+
 
 if __name__ == '__main__':
     app.run()
