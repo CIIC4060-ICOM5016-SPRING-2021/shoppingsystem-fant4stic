@@ -80,6 +80,15 @@ class OrderController:
             result.append(dict)
         return jsonify(result)
 
+    def getAllBookOrder(self):
+        dao = OrderDAO()
+        records = dao.getAllBookOrder()
+        result = []
+        for row in records:
+            dict = self.build_dict_bookorder(row)
+            result.append(dict)
+        return jsonify(result), 200
+
     def build_dict_order(self,row):
         result ={}
         result['OrderId'] = row[0]
@@ -121,6 +130,14 @@ class OrderController:
         result = {}
         result['MostExpensiveProduct'] = row[0]
         result['Price'] = round(row[1], 2)
+        return result
+
+    def build_dict_bookorder(self,row):
+        result = {}
+        result['OrderId'] = row[0]
+        result['BookId'] = row[1]
+        result['NUmberOfCopies'] = row[2]
+        result['PaymentForCopies'] = row[3]
         return result
 
     def create_newRow(self,orderId):
