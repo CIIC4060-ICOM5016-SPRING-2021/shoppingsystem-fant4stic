@@ -77,6 +77,20 @@ def getAllGenre():
     else:
         jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/author_genre/get_all', methods = ['GET'])
+def getAllAuthorGenre():
+    if request.method == 'GET':
+        return GenreController().getAllAuthorGenre()
+    else:
+        jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/book_genre/get_all', methods = ['GET'])
+def getAllBookGenre():
+    if request.method == 'GET':
+        return GenreController().getAllBookGenre()
+    else:
+        jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/book/desiredgenre/<int:genre_id>', methods = ['GET'])
 def getBooksInGenres(genre_id):
     if request.method == 'GET':
