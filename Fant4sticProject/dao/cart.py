@@ -12,6 +12,15 @@ class CartDao:
         cursor.close()
         return resquery
 
+    def getAllAddToCart(self):
+        cursor = self.connection.cursor()
+        cursor.execute("select book_id,cart_id,num_addeditems from add_to_cart;")
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery
+
     def checkIfCartExists(self, userAddingTheBook):
         cursor = self.connection.cursor()
 

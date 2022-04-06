@@ -18,6 +18,13 @@ class CartController:
         result['Customer_id'] = row[1]
         return result
 
+    def build_dict_addtocart(self,row):
+        result = {}
+        result['BookId'] = row[0]
+        result['CartId'] = row[1]
+        result['NumberOfCopies'] = row[2]
+        return result
+
     def getAllCarts(self):
         dao = CartDao()
         records = dao.getAllCarts()
@@ -27,6 +34,14 @@ class CartController:
             result.append(dict)
         return jsonify(result), 200
 
+    def getAllAddToCart(self):
+        dao = CartDao()
+        records = dao.getAllAddToCart()
+        result = []
+        for row in records:
+            dict = self.build_dict_addtocart(row)
+            result.append(dict)
+        return jsonify(result), 200
 
     def addBook(self, json):
         bookTitle = json['Title']

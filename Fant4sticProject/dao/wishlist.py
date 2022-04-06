@@ -12,3 +12,12 @@ class WishlistDAO:
             resquery.append(row)
         cursor.close()
         return resquery
+
+    def getAllAddToWishlist(self):
+        cursor = self.connection.cursor()
+        cursor.execute("select wishlist_id, book_id, date_added from add_to_wish;")
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery

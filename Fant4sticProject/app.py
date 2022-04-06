@@ -91,6 +91,13 @@ def getAllWishlists():
     else:
         jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/addtowishlist/get_all', methods = ['GET'])
+def getAllAddToWishlist():
+    if request.method == 'GET':
+        return WishlistController().getAllAddToWishlist()
+    else:
+        jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/genre/get_all', methods = ['GET'])
 def getAllGenre():
     if request.method == 'GET':
@@ -193,6 +200,13 @@ def cartController():
 def getAllCarts():
     if request.method == 'GET':
         return CartController().getAllCarts()
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/addtocart/get_all', methods = ['GET'])
+def getAllAddToCart():
+    if request.method == 'GET':
+        return CartController().getAllAddToCart()
     else:
         return jsonify("Method not supported"), 405
 
