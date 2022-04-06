@@ -111,3 +111,12 @@ class OrderDAO:
         resquery = cursor.fetchall()
         cursor.close()
         return resquery
+
+    def getAllBookOrder(self):
+        cursor = self.connection.cursor()
+        cursor.execute("select order_id,book_id,num_items,order_payment from book_order;")
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery

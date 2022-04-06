@@ -12,3 +12,12 @@ class AuthorDAO:
             resquery.append(row)
         cursor.close()
         return resquery
+
+    def getAllWrites(self):
+        cursor = self.connection.cursor()
+        cursor.execute("select author_id, book_id from writes;")
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery
