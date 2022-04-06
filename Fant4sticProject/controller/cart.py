@@ -6,10 +6,8 @@ class CartController:
     def build_dict(self, row):
         result = {}
         result['Title'] = row[0]
-        result['Customer_id'] = row[1]
+        result['Book_id'] = row[1]
         result['Copies'] = row[2]
-        result['Book_id'] = row[3]
-        result['Cart_id'] = row[4]
         return result
 
     def build_dict_cart(self,row):
@@ -51,7 +49,10 @@ class CartController:
         dao = CartDao()
 
         #First verify if a book with the title provided exists
-        existsTitle = dao.checkifTitleExists(bookTitle)
+        if(bookTitle):
+            existsTitle = dao.checkifTitleExists(bookTitle)
+        else:
+            return jsonify("A book title was not provided"), 400
 
         if(not existsTitle):
             return jsonify("The provided title does not match any of our book records"), 404
@@ -67,7 +68,10 @@ class CartController:
             return jsonify("The book is not currently available :("), 404
 
         #Now verify the user exists
-        userExists = dao.checkIfUserExists(userAddingTheBook)
+        if(userAddingTheBook):
+            userExists = dao.checkIfUserExists(userAddingTheBook)
+        else:
+            return jsonify("A user ID was not provided"), 400
 
         if(userExists):
             #Now verify the user is a customer
@@ -79,7 +83,10 @@ class CartController:
             return jsonify("User is unavailable to add items to a cart, because he/she is not a customer"), 405
 
         #Now verify that the amount of copies the customer wants to add does not exceed inventory capacity
-        exceeds = dao.getInventoryUnits(bookToAdd)
+        if(howMuchBooks):
+            exceeds = dao.getInventoryUnits(bookToAdd)
+        else:
+            return jsonify("The quantity of copies wanted was not provided"), 400
 
         if(howMuchBooks > exceeds):
             return jsonify("The amount of units requested exceeds our capacity of " + str(exceeds) + " available units"), 409
@@ -116,10 +123,10 @@ class CartController:
 
         if(bookExists):
             #Build json for output
-            row = [bookTitle, userAddingTheBook, howMuchBooks, bookToAdd, existingCart]
+            row = [bookTitle, bookToAdd, howMuchBooks]
             dictionary = self.build_dict(row)
 
-            return jsonify("Book added to cart!",
+            return jsonify("The indicated amount of copies of the following book were added to cart",
                            dictionary), 200
         else:
             return jsonify("Book could not be added to cart!"), 500
@@ -131,7 +138,10 @@ class CartController:
         dao = CartDao()
 
         #First verify if a book with the title provided exists
-        existsTitle = dao.checkifTitleExists(bookTitle)
+        if(bookTitle):
+            existsTitle = dao.checkifTitleExists(bookTitle)
+        else:
+            return jsonify("A book title was not provided"), 400
 
         if(not existsTitle):
             return jsonify("The provided title does not match any of our book records"), 404
@@ -141,7 +151,10 @@ class CartController:
         bookToDelete = dao.getBookID(bookTitle)
 
         #Now verify the user exists
-        userExists = dao.checkIfUserExists(userDeletingTheBook)
+        if(userDeletingTheBook):
+            userExists = dao.checkIfUserExists(userDeletingTheBook)
+        else:
+            return jsonify("A user ID was not provided"), 400
 
         if(userExists):
             #Now verify the user is a customer
@@ -149,12 +162,8 @@ class CartController:
         else:
             return jsonify("Your user ID does not belong to a registered user"), 404
 
-        #Now verify the user is a customer
-        userRole = dao.getUserRole(userDeletingTheBook)
-
         if(userRole != "Customer"):
             return jsonify("User is unavailable to delete items from a cart, because he/she is not a customer"), 405
-
 
         #Check if a cart associated with the customer exists
         cartExist = dao.checkIfCartExists(userDeletingTheBook)
@@ -182,7 +191,7 @@ class CartController:
 
         if(not bookExists):
             # Build the Json for output
-            row = [bookTitle, userDeletingTheBook, copiesStored, bookToDelete, customerCart]
+            row = [bookTitle, bookToDelete, copiesStored]
             dictionary = self.build_dict(row)
 
             return jsonify("The following book and copies were deleted from your cart:", dictionary), 200

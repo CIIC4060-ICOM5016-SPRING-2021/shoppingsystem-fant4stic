@@ -200,8 +200,11 @@ def getCustomerMostExpensiceProduct(customerId):
 def cartController():
     if request.method == 'POST':
         return CartController().addBook(request.json)
+
     if request.method == 'DELETE':
         return CartController().deleteBook(request.json)
+
+    return jsonify("Method not supported"), 405
 
 @app.route('/fant4stic/cart/get_all', methods = ['GET'])
 def getAllCarts():
@@ -259,6 +262,8 @@ def wishlistController():
 
     if request.method == 'DELETE':
         return WishlistController().deleteBook(request.json)
+
+    return jsonify("Method not supported"), 405
 
 
 if __name__ == '__main__':
