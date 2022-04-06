@@ -11,7 +11,7 @@ class UserController:
         user_name = json['Username']
         email = json['Email']
 
-        record = dao.existUser(email)
+        record = dao.existUserEmail(email)
         exist = record[0]
 
         if exist:
@@ -68,3 +68,12 @@ class UserController:
         result['Sex'] = row[8]
         result['PhoneNumber'] = row[9]
         return result
+
+    def getUser(self, userId):
+        dao = UserDAO()
+        user = dao.getUser(userId)
+        if not user:
+            return jsonify("User Not Found"), 404
+        else:
+            user = self.build_dict_user(user)
+            return jsonify(user), 200

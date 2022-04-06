@@ -238,5 +238,13 @@ def getAllRoless():
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/user/crud_operations/<int:userId>', methods=['GET'])
+def userCrud(userId):
+    if request.method == 'GET':
+        return UserController().getUser(userId)
+    else:
+        return jsonify("Method not supported"), 405
+
+
 if __name__ == '__main__':
     app.run()
