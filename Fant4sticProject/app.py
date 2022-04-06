@@ -140,19 +140,26 @@ def getBooksByPrice(order_in):
     else:
         return jsonify("Method not supported"), 405
 
-@app.route('/fant4stic/order/get_all', methods = ['GET'])
-def getOrderHistoryAll():
-    if request.method == 'GET':
-        return OrderController().historyAll()
-    else:
-        return jsonify("Method not supported"), 405
-
 @app.route('/fant4stic/book_order/get_all', methods = ['GET'])
 def getAllBookOrder():
     if request.method == 'GET':
         return OrderController().getAllBookOrder()
     else:
         jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/order/get_all', methods = ['GET'])
+def getAllOrder():
+    if request.method == 'GET':
+        return OrderController().getAllOrder()
+    else:
+        jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/order/historyofallorders', methods = ['GET'])
+def getOrderHistoryAll():
+    if request.method == 'GET':
+        return OrderController().historyAll()
+    else:
+        return jsonify("Method not supported"), 405
 
 @app.route('/fant4stic/order/historyoforders/<int:customerId>', methods = ['GET'])
 def getOrderHistoryCustomer(customerId):

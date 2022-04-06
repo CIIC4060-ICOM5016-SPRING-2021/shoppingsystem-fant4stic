@@ -28,6 +28,16 @@ class OrderController:
             result.append(dict)
         return jsonify(result)
 
+    def getAllOrder(self):
+        dao = OrderDAO()
+        records = dao.getAllOrder()
+        result = []
+        for row in records:
+            dict = self.build_dict_allorder(row)
+            result.append(dict)
+        print(result)
+        return jsonify(result), 200
+
     def customerMostBoughtCat(self,customerId):
         orderdao , userdao = OrderDAO() , UserDAO()
         if(not userdao.isUserCustomer(customerId)):
@@ -138,6 +148,14 @@ class OrderController:
         result['BookId'] = row[1]
         result['NUmberOfCopies'] = row[2]
         result['PaymentForCopies'] = row[3]
+        return result
+
+    def build_dict_allorder(self,row):
+        result = {}
+        result['OrderId'] = row[0]
+        result['UserId'] = row[1]
+        result['OrderDate'] = str(int(row[2])) + "-" + str(int(row[3])) + "-" + str(int(row[4]))
+        result['OrderTime'] = str(int(row[5])) + "-" + str(int(row[6])) + "-" + str(int(row[7]))
         return result
 
     def create_newRow(self,orderId):

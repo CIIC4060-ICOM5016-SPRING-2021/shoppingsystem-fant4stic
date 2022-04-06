@@ -12,7 +12,7 @@ class WishlistController:
         result = {}
         result['WishlistId'] = row[0]
         result['BookId'] = row[1]
-        result['DateAdded'] = row[2]
+        result['DateAdded'] = str(int(row[2])) + "-" + str(int(row[3])) + "-" + str(int(row[4]))
         return result
 
     def getAllWishlists(self):

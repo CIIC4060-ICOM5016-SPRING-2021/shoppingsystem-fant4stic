@@ -41,7 +41,7 @@ class OrderDAO:
         cursor.close()
         return resquery
 
-    # Group orders of customer by category and sum the number of times bought
+    # Rank of top 10 - Group orders of customer by category and sum the number of times bought
     def getCustomerMostBoughtCategories(self,customerId):
         cursor = self.connection.cursor()
         query = "select genre_name , sum(num_items) as times_bought "
@@ -49,7 +49,7 @@ class OrderDAO:
         query += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
         query += "and b.book_id = bog.book_id and bog.genre_id = g.genre_id "
         query += "and user_id =" + str(customerId) + " "
-        query += "group by genre_name order by times_bought DESC;"
+        query += "group by genre_name order by times_bought DESC limit 10;"
         cursor.execute(query)
         resquery = []
         for row in cursor:
@@ -57,14 +57,14 @@ class OrderDAO:
         cursor.close()
         return resquery
 
-    # Group products and sum all the copies of the same book
+    # Rank of top 10 - Group products and sum all the copies of the same book
     def getCustomerMostBoughtProducts(self,customerId):
         cursor = self.connection.cursor()
         query = "select title , sum(num_items) as times_bought "
         query +="from \"Order\" as o, book_order as bor,book as b "
         query +="where o.order_id = bor.order_id and bor.book_id = b.book_id "
         query += "and user_id =" +str(customerId) +" "
-        query += "group by title order by times_bought DESC;"
+        query += "group by title order by times_bought DESC limit 10;"
         cursor.execute(query)
         resquery = []
         for row in cursor:
@@ -115,6 +115,19 @@ class OrderDAO:
     def getAllBookOrder(self):
         cursor = self.connection.cursor()
         cursor.execute("select order_id,book_id,num_items,order_payment from book_order;")
+        resquery = []
+        for row in cursor:
+            resquery.append(row)
+        cursor.close()
+        return resquery
+
+    def getAllOrder(self):
+        cursor = self.connection.cursor()
+        query = "select order_id,user_id, "
+        query += "extract(year from order_date) as year,extract(mon from order_date) as month, extract(day from order_date) as day, "
+        query += "extract(hour from order_time) as hour_time, extract(min from order_time) as min_time, extract(sec from order_time) as sec_time "
+        query += "from \"Order\";"
+        cursor.execute(query)
         resquery = []
         for row in cursor:
             resquery.append(row)
