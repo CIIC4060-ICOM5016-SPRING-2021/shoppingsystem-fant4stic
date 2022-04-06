@@ -4,7 +4,7 @@ class UserDAO():
     def __init__(self):
         self.connection = DatabaseConnect().getConnection()
 
-    def existUser(self, email):
+    def existUserEmail(self, email):
         cursor = self.connection.cursor()
         cursor.execute("select exists (Select email from \"User\" where email = %s);", (email,));
         resquery = cursor.fetchone()
@@ -63,3 +63,11 @@ class UserDAO():
             resquery.append(row)
         cursor.close()
         return resquery
+
+    def getUser(self, userId):
+        cursor = self.connection.cursor()
+        query = "select user_id, role_id, first_name, last_name, user_name, email, password, age, sex, phone_num from \"User\" where user_id = %s;"
+        cursor.execute(query, (userId,))
+        result = cursor.fetchone()
+        return result
+
