@@ -118,3 +118,43 @@ class InventoryController:
         row = [invId, bookId, availableUnits, userId]
         result = self.build_dict_update_available(row)
         return jsonify(result), 200
+
+    def getCheapestProductG(self):
+
+        #Create a dao instance to run the queries
+        dao = InventoryDAO()
+
+        #Get the tuple with the cheapest product
+        result = dao.getCheapestProductGlobally()
+
+        #Now build the dictionary for display
+        dictionary = {}
+        dictionary ['Book_ID'] = result[0]
+        dictionary ['Book_price'] = result[1]
+
+        #Get the title for display
+        title = dao.getBookTitle(result[0])
+
+        dictionary ['Book_title'] = title
+
+        return jsonify("The cheapest product is:", dictionary)
+
+    def getMostExpensiveProductG(self):
+
+        #Create a dao instance to run the queries
+        dao = InventoryDAO()
+
+        #Get the tuple with the most expensive product
+        result = dao.getMostExpensiveProductGlobally()
+
+        #Now build the dictionary for display
+        dictionary = {}
+        dictionary ['Book_ID'] = result[0]
+        dictionary ['Book_price'] = result[1]
+
+        #Get the title for display
+        title = dao.getBookTitle(result[0])
+
+        dictionary ['Book_title'] = title
+
+        return jsonify("The most expensive product is:", dictionary)

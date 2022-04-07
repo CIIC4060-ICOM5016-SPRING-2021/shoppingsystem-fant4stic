@@ -115,6 +115,28 @@ class WishlistDAO:
         self.connection.commit()
         cursor.close()
 
+    def getMostLikedProductGlobally(self):
+        cursor = self.connection.cursor()
+
+        query = "select book_id, count(*) from add_to_wish group by book_id order by count(*) desc"
+
+        cursor.execute(query)
+        result = cursor.fetchone()
+
+        cursor.close()
+        return result
+
+    def getBookTitle(self, bookID):
+        cursor = self.connection.cursor()
+
+        query = "select title from book where book_id = %s;"
+
+        cursor.execute(query, (bookID,))
+        result = cursor.fetchone()[0]
+
+        cursor.close()
+        return result
+
 
 
 

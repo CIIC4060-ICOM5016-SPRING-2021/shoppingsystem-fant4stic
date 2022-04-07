@@ -268,6 +268,41 @@ def wishlistController():
 
     return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/order/most_bought_category', methods = ['GET'])
+def getMostBoughtCategoryG():
+    if request.method == 'GET':
+        return OrderController().getMCategoryGlobally()
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/order/most_bought_product', methods = ['GET'])
+def getMostBoughtProductG():
+    if request.method == 'GET':
+        return OrderController().getMProductGlobally()
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/inventory/get_cheapest_product', methods = ['GET'])
+def getCProduct():
+    if request.method == 'GET':
+        return InventoryController().getCheapestProductG()
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/inventory/get_most_expensive_product', methods = ['GET'])
+def getEProduct():
+    if request.method == 'GET':
+        return InventoryController().getMostExpensiveProductG()
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/wishlist/get_most_liked_product', methods = ['GET'])
+def getLProduct():
+    if request.method == 'GET':
+        return WishlistController().getMostLikedProductG()
+    else:
+        return jsonify("Method not supported"), 405
+
 
 if __name__ == '__main__':
     app.run()

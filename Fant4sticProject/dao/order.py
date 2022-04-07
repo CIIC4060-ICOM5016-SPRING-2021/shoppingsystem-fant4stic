@@ -133,3 +133,36 @@ class OrderDAO:
             resquery.append(row)
         cursor.close()
         return resquery
+
+    def getMostBoughtCategoryGlobally(self):
+        cursor = self.connection.cursor()
+
+        query = "select genre_name, sum(num_items) from book_order natural inner join book_genre natural inner join genre group by genre_name order by sum(num_items) desc"
+
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        cursor.close()
+        return result
+
+    def getMostBoughtProductGlobally(self):
+        cursor = self.connection.cursor()
+
+        query = "select book_id, sum(num_items) from book_order group by book_id order by sum(num_items) desc"
+
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        cursor.close()
+        return result
+
+    def getBookTitle(self, bookID):
+        cursor = self.connection.cursor()
+
+        query = "select title from book where book_id = %s;"
+
+        cursor.execute(query, (bookID,))
+        result = cursor.fetchone()[0]
+
+        cursor.close()
+        return result

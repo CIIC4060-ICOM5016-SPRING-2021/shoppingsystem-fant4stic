@@ -193,3 +193,66 @@ class OrderController:
             newOrderRow.append(totalPrice) #Add totalprice
             resultOrders.append(newOrderRow)
         return resultOrders
+
+    def build_dict_G(self, row, count):
+        result = {}
+        result ['#' + str(count) + ' Genre'] = row[0]
+        result ['Copies_sold:'] = row[1]
+        return result
+
+    def build_dict_GII(self, row, count, title):
+        result = {}
+        result ['#' + str(count) + ' Product ID'] = row[0]
+        result['Title'] = title
+        result ['Copies_sold:'] = row[1]
+        return result
+
+    def getMCategoryGlobally(self):
+
+        #Create an instance of the dao to run the queries
+        dao = OrderDAO()
+
+        #Simply get the value and return them in a dictionary
+        result = dao.getMostBoughtCategoryGlobally()
+
+        #Initialize a count variable to rank the genres
+        count = 1
+
+        #Initialize a variable to store the result
+        rankedGenres = []
+
+        for row in result:
+            dictionary = self.build_dict_G(row, count)
+            rankedGenres.append(dictionary)
+            count = count + 1
+
+        #Now return the jsonified result
+        return jsonify("The most bought categories rank is the following:", rankedGenres)
+
+    def getMProductGlobally(self):
+
+        #Create an instance of the dao to run the queries
+        dao = OrderDAO()
+
+        #Simply get the value and return them in a dictionary
+        result = dao.getMostBoughtProductGlobally()
+
+        #Initialize a count variable to rank the products
+        count = 1
+
+        #Initialize a variable to store the result
+        rankedProducts = []
+
+        for row in result:
+            #For every book get the title to provide it as an output
+            title = dao.getBookTitle(row[0])
+
+            dictionary = self.build_dict_GII(row, count, title)
+            rankedProducts.append(dictionary)
+            count = count + 1
+
+        #Now return the jsonified result
+        return jsonify("The most bought products rank is the following:", rankedProducts)
+
+
+
