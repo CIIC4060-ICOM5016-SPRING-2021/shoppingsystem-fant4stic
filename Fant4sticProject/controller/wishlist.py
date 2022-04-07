@@ -210,3 +210,82 @@ class WishlistController:
             mostLikedProduct.append(dictionary)
 
         return jsonify("The most liked products are:", mostLikedProduct)
+
+    def createWish(self, json):
+        userID = json ['User_id']
+
+        #Create a dao instance to run queries
+        dao = WishlistDAO()
+
+        #Now verify the user exists
+        if(userID):
+            userExists = dao.checkIfUserExists(userID)
+        else:
+            return jsonify("A user ID was not provided"), 400
+
+        if(userExists):
+            #Now verify the user is a customer
+            userRole = dao.getUserRole(userID)
+        else:
+            return jsonify("Your user ID does not belong to a registered user"), 404
+
+        if(userRole != "Customer"):
+            return jsonify("User is unavailable to add items to a cart, because he/she is not a customer"), 405
+
+        #Now Proceed to create the wishlist
+        wishlistID = dao.createWishlist(userID)
+
+        #Verify if a wishlist associated with the customer exists (indicated wishlist was created)
+        wishlistExists = dao.checkIfWishlistExists(userID, wishlistID)
+
+        if(wishlistExists):
+            #Build Json for output
+            result = {}
+            result ["User_id"] = userID
+            result ["Wishlist_id"] = wishlistID
+
+            return jsonify(result), 200
+        else:
+            return jsonify("Wishlist was not created due to an internal error"), 500
+
+    def deleteWish(self, json):
+        userID = json ['User_id']
+        wishlistID = json ['Wishlist_id']
+
+        #Create a dao instance to run queries
+        dao = WishlistDAO()
+
+        #Now verify the user exists
+        if(userID):
+            userExists = dao.checkIfUserExists(userID)
+        else:
+            return jsonify("A user ID was not provided"), 400
+
+        if(userExists):
+            #Now verify the user is a customer
+            userRole = dao.getUserRole(userID)
+        else:
+            return jsonify("Your user ID does not belong to a registered user"), 404
+
+        if(userRole != "Customer"):
+            return jsonify("User is unavailable to add items to a cart, because he/she is not a customer"), 405
+
+        #First we need to delete all items associated to this wishlist
+        dao.deleteWishListProducts(wishlistID)
+
+        #Now Proceed to delete the wishlist
+        dao.deleteWishList(userID, wishlistID)
+
+        #Verify if a wishlist associated with the customer exists (indicated wishlist was created)
+        wishlistExists = dao.checkIfWishlistExists(userID, wishlistID)
+
+        if(not wishlistExists):
+            #Build Json for output
+            result = {}
+            result ["User_id"] = userID
+            result ["Wishlist_id"] = wishlistID
+
+            return jsonify(result), 200
+        else:
+            return jsonify("Wishlist was not created due to an internal error"), 500
+

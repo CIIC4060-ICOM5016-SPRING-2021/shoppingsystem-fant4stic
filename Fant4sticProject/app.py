@@ -305,5 +305,19 @@ def getLProduct():
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/wishlist/create', methods = ['POST'])
+def createWishlist():
+    if request.method == 'POST':
+        return WishlistController().createWish(request.json)
+    else:
+        return jsonify("Method not supported"), 405
+
+@app.route('/fant4stic/wishlist/delete', methods = ['DELETE'])
+def deleteWishlist():
+    if request.method == 'DELETE':
+        return WishlistController().deleteWish(request.json)
+    else:
+        return jsonify("Method not supported"), 405
+
 if __name__ == '__main__':
     app.run()
