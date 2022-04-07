@@ -77,3 +77,10 @@ class UserDAO():
         cursor.execute(query, (first_name, last_name, username, email, password, age, sex, phone_number, user_id))
         self.connection.commit()
         return user_id
+
+    def deleteUser(self, userId):
+        cursor = self.connection.cursor()
+        query = "delete from \"User\" where user_id = %s;"
+        cursor.execute(query, (userId,))
+        self.connection.commit()
+        cursor.close()

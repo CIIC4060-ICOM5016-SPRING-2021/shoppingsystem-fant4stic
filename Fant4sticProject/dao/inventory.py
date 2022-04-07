@@ -55,3 +55,36 @@ class InventoryDAO:
         self.connection.commit()
         cursor.close()
 
+    def getCheapestProductGlobally(self):
+        cursor = self.connection.cursor()
+
+        query = "select book_id, price_unit from inventory where price_unit = (select min(price_unit) from inventory)"
+
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        cursor.close()
+        return result
+
+    def getMostExpensiveProductGlobally(self):
+        cursor = self.connection.cursor()
+
+        query = "select book_id, price_unit from inventory where price_unit = (select max(price_unit) from inventory)"
+
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        cursor.close()
+        return result
+
+    def getBookTitle(self, bookID):
+        cursor = self.connection.cursor()
+
+        query = "select title from book where book_id = %s;"
+
+        cursor.execute(query, (bookID,))
+        result = cursor.fetchone()[0]
+
+        cursor.close()
+        return result
+

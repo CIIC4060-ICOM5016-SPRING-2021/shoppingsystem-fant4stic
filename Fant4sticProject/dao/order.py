@@ -60,11 +60,11 @@ class OrderDAO:
     # Rank of top 10 - Group products and sum all the copies of the same book
     def getCustomerMostBoughtProducts(self,customerId):
         cursor = self.connection.cursor()
-        query = "select title , sum(num_items) as times_bought "
+        query = "select b.book_id, title , sum(num_items) as times_bought "
         query +="from \"Order\" as o, book_order as bor,book as b "
         query +="where o.order_id = bor.order_id and bor.book_id = b.book_id "
         query += "and user_id =" +str(customerId) +" "
-        query += "group by title order by times_bought DESC limit 10;"
+        query += "group by title, b.book_id order by times_bought DESC limit 10;"
         cursor.execute(query)
         resquery = []
         for row in cursor:
@@ -74,40 +74,32 @@ class OrderDAO:
 
     def getCustomerCheapestBoughtProd(self,customerId):
         cursor = self.connection.cursor()
-        # Get cheapest price customer has bought
-        query = "select min(order_payment/num_items) as price_unit "
+        # Get Products that its price are equal to cheapest one
+        query = "select b.book_id, title, order_payment/num_items as price_unit "
         query += "from \"Order\" as o, book_order as bor,book as b "
         query += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
-        query += "and user_id = "+str(customerId)+ ";"
+        query += "and user_id ="+str(customerId)+ " and order_payment/num_items = "
+        # Subquery for getting the cheapest price customer paid for
+        query += "(select min(order_payment/num_items) as price_unit from \"Order\" as o, book_order as bor,book as b "
+        query += "where o.order_id = bor.order_id and bor.book_id = b.book_id and user_id =" + str(customerId) +") "
+        query += "group by b.book_id,title, order_payment/num_items;"
         cursor.execute(query)
-        cheapestPrice = cursor.fetchone()[0]
-        # Get Products that its price are equal to cheapest one
-        queryTwo = "select title, order_payment/num_items as price_unit "
-        queryTwo += "from \"Order\" as o, book_order as bor,book as b "
-        queryTwo += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
-        queryTwo += "and user_id ="+str(customerId)+ " and order_payment/num_items = "+str(cheapestPrice)+ " "
-        queryTwo += "group by title, order_payment/num_items;"
-        cursor.execute(queryTwo)
         resquery = cursor.fetchall()
         cursor.close()
         return resquery
 
     def getCustomerMostExpensiveBoughtProd(self,customerId):
         cursor = self.connection.cursor()
-        # Get most expensive price customer has bought
-        query = "select max(order_payment/num_items) as price_unit "
+        # Get Products that its price are equal to most expensive one
+        query = "select b.book_id, title, order_payment/num_items as price_unit "
         query += "from \"Order\" as o, book_order as bor,book as b "
         query += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
-        query += "and user_id = " + str(customerId) + ";"
+        query += "and user_id =" + str(customerId) + " and order_payment/num_items = "
+        # Subquery for getting the most expensive price customer paid for
+        query += "(select max(order_payment/num_items) as price_unit from \"Order\" as o, book_order as bor,book as b "
+        query += "where o.order_id = bor.order_id and bor.book_id = b.book_id and user_id =" +str(customerId) +") "
+        query += "group by b.book_id,title, order_payment/num_items;"
         cursor.execute(query)
-        mostExpensivePrice = cursor.fetchone()[0]
-        # Get Products that its price are equal to most expensive one
-        queryTwo = "select title, order_payment/num_items as price_unit "
-        queryTwo += "from \"Order\" as o, book_order as bor,book as b "
-        queryTwo += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
-        queryTwo += "and user_id =" + str(customerId) + " and order_payment/num_items = " + str(mostExpensivePrice) + " "
-        queryTwo += "group by title, order_payment/num_items;"
-        cursor.execute(queryTwo)
         resquery = cursor.fetchall()
         cursor.close()
         return resquery
@@ -133,3 +125,40 @@ class OrderDAO:
             resquery.append(row)
         cursor.close()
         return resquery
+
+    def getMostBoughtCategoryGlobally(self):
+        cursor = self.connection.cursor()
+        query = "select genre_name, sum(num_items) from book_order natural inner join book_genre natural inner join genre group by genre_name order by sum(num_items) desc"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
+
+    def getMostBoughtProductGlobally(self):
+        cursor = self.connection.cursor()
+        query = "select book_id, title, sum(num_items) from book_order natural inner join book group by book_id , title order by sum(num_items) desc;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
+
+    def getOrdersID(self, userId):
+        cursor = self.connection.cursor()
+        cursor.execute("select order_id from \"Order\" where user_id = %s;", (userId,))
+        resquery = cursor.fetchall()
+        cursor.close()
+        return resquery
+
+    def clearOrderContent(self, orderId):
+        cursor = self.connection.cursor()
+        query = "delete from book_order where order_id = %s;"
+        cursor.execute(query, (orderId,))
+        self.connection.commit()
+        cursor.close()
+
+    def deleteUserOrders(self, userId):
+        cursor = self.connection.cursor()
+        query = "delete from \"Order\" where user_id = %s;"
+        cursor.execute(query, (userId,))
+        self.connection.commit()
+        cursor.close()

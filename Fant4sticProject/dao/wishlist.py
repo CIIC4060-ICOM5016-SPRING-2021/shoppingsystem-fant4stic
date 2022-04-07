@@ -115,7 +115,79 @@ class WishlistDAO:
         self.connection.commit()
         cursor.close()
 
+    def getMostLikedProductGlobally(self):
+        cursor = self.connection.cursor()
 
+        query = "select book_id, amountLiked from (select book_id, count(*) as amountLiked from add_to_wish group by book_id order by count(*) desc) as tableII where amountLiked = (select max(amountLiked) from (select book_id, count(*) as amountLiked from add_to_wish group by book_id order by count(*) desc) as tableIII)"
 
+        cursor.execute(query)
+        result = cursor.fetchall()
 
+        cursor.close()
+        return result
 
+    def getBookTitle(self, bookID):
+        cursor = self.connection.cursor()
+
+        query = "select title from book where book_id = %s;"
+
+        cursor.execute(query, (bookID,))
+        result = cursor.fetchone()[0]
+
+        cursor.close()
+        return result
+
+    def getWishlistsID(self, userId):
+        cursor = self.connection.cursor()
+        cursor.execute("select wishlist_id from wishlist where user_id = %s;", (userId,));
+        resquery = cursor.fetchall()
+        cursor.close()
+        return resquery
+
+    def clearWishContent(self, wish_id):
+        cursor = self.connection.cursor()
+        query = "delete from add_to_wish where wishlist_id = %s;"
+        cursor.execute(query, (wish_id,))
+        self.connection.commit()
+        cursor.close()
+
+    def deleteUserWishlists(self, userId):
+        cursor = self.connection.cursor()
+        query = "delete from wishlist where user_id = %s;"
+        cursor.execute(query, (userId,))
+        self.connection.commit()
+        cursor.close()
+
+    def createWishlist(self, userID):
+        cursor = self.connection.cursor()
+
+        query = "insert into wishlist(user_id) values(%s) returning wishlist_id"
+
+        cursor.execute(query, (userID,))
+
+        wishlist_id = cursor.fetchone()[0]
+
+        self.connection.commit()
+        cursor.close()
+
+        return wishlist_id
+
+    def deleteWishList(self, userID, wishlistID):
+        cursor = self.connection.cursor()
+
+        query = "delete from wishlist where user_id = %s and wishlist_id = %s;"
+
+        cursor.execute(query, (userID,wishlistID))
+
+        self.connection.commit()
+        cursor.close()
+
+    def deleteWishListProducts(self, wishlistID):
+        cursor = self.connection.cursor()
+
+        query = "delete from add_to_wish where wishlist_id = %s;"
+
+        cursor.execute(query, (wishlistID,))
+
+        self.connection.commit()
+        cursor.close()

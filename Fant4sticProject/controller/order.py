@@ -6,10 +6,11 @@ class OrderController:
 
     def historyOfCustomer(self,customerId):
         dao = OrderDAO()
+        if(not UserDAO().isUserCustomer(customerId)):
+            return jsonify('The value passed is not a valid customerId.'), 404
         exist = dao.existCustomerOrder(customerId)
         if (not exist):
-            print("This CustomerId does not have any orders.")
-            return jsonify("This CustomerId does not have any orders.") , 404
+            return jsonify('This customer does not have any orders yet.') , 404
         records = dao.getOrderHistoryOf(customerId)
         groupRecords = self.groupOrders(records)
         result = []
@@ -118,28 +119,29 @@ class OrderController:
 
     def build_dict_category(self,row,i):
         result = {}
-        result['Position'] = i
-        result['Category'] = row[0]
+        result['#' + str(i) + '_Genre'] = row[0]
         result['AmountBoughtFromCategory'] = row[1]
         return result
 
     def build_dict_product(self,row,i):
         result = {}
-        result['Position'] = i
-        result['Product'] = row[0]
-        result['AmountOfCopiesBought'] = row[1]
+        result['#' + str(i) + '_ProductID'] = row[0]
+        result['Title'] = row[1]
+        result['AmountOfCopiesBought'] = row[2]
         return result
 
     def build_dict_cheapestProduct(self,row):
         result ={}
-        result['CheapestProduct'] = row[0]
-        result['Price'] = round(row[1],2)
+        result['CheapestProductID'] = row[0]
+        result['Title'] = row[1]
+        result['Price'] = round(row[2],2)
         return result
 
     def build_dict_mostExpensiveProduct(self,row):
         result = {}
-        result['MostExpensiveProduct'] = row[0]
-        result['Price'] = round(row[1], 2)
+        result['MostExpensiveProductID'] = row[0]
+        result['Title'] = row[1]
+        result['Price'] = round(row[2], 2)
         return result
 
     def build_dict_bookorder(self,row):
@@ -183,8 +185,8 @@ class OrderController:
                     date = str(int(orders[i][2])) +"-"+ str(int(orders[i][3])) +"-"+ str(int(orders[i][4]))
                     newOrderRow.append(date) #Add order_date
                     time = str(int(orders[i][5])) + "-" + str(int(orders[i][6])) + "-" + str(int(orders[i][7]))
-                    ordIdChanged = False
                     newOrderRow.append(time) #Add order_time
+                    ordIdChanged = False
                 if ordId == orders[i][0]:
                     dict = self.build_dict_book(orders[i])
                     totalPrice += orders[i][10]
@@ -193,3 +195,48 @@ class OrderController:
             newOrderRow.append(totalPrice) #Add totalprice
             resultOrders.append(newOrderRow)
         return resultOrders
+
+    def getMCategoryGlobally(self):
+
+        #Create an instance of the dao to run the queries
+        dao = OrderDAO()
+
+        #Simply get the value and return them in a dictionary
+        result = dao.getMostBoughtCategoryGlobally()
+
+        #Initialize a count variable to rank the genres
+        count = 1
+
+        #Initialize a variable to store the result
+        rankedGenres = []
+
+        for row in result:
+            dictionary = self.build_dict_category(row, count)
+            rankedGenres.append(dictionary)
+            count = count + 1
+
+        #Now return the jsonified result
+        return jsonify("The most bought categories rank is the following:", rankedGenres)
+
+    def getMProductGlobally(self):
+
+        #Create an instance of the dao to run the queries
+        dao = OrderDAO()
+
+        #Simply get the value and return them in a dictionary
+        result = dao.getMostBoughtProductGlobally()
+
+        #Initialize a count variable to rank the products
+        count = 1
+
+        #Initialize a variable to store the result
+        rankedProducts = []
+
+        for row in result:
+            #For every book get the title to provide it as an output
+            dictionary = self.build_dict_product(row, count)
+            rankedProducts.append(dictionary)
+            count = count + 1
+
+        #Now return the jsonified result
+        return jsonify("The most bought products rank is the following:", rankedProducts)

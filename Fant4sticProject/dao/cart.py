@@ -53,7 +53,7 @@ class CartDao:
                        (bookToAdd, str(existingCart), howMuchBooks))
 
         self.connection.commit()
-        cursor.close
+        cursor.close()
 
     def checkIfBookExists(self, bookToAdd, user):
         cursor = self.connection.cursor()
@@ -183,14 +183,14 @@ class CartDao:
 
     def createCart(self,userId):
         cursor = self.connection.cursor()
-        cursor.execute("insert into cart(user_id) values(%s)", (userId,));
+        cursor.execute("insert into cart(user_id) values(%s)", (userId,))
         self.connection.commit()
         cursor.close()
 
     def getCartID(self, userId):
         cursor = self.connection.cursor()
-        cursor.execute("select cart_id from cart where user_id = %s;", (userId,));
-        resquery = cursor.fetchone()[0]
+        cursor.execute("select cart_id from cart where user_id = %s;", (userId,))
+        resquery = cursor.fetchone()
         cursor.close()
         return resquery
 
@@ -248,3 +248,11 @@ class CartDao:
         self.connection.commit()
         cursor.close()
         return result
+
+    def deleteCart(self, cartId):
+        cursor = self.connection.cursor()
+        query = "delete from cart where cart_id = %s;"
+        cursor.execute(query, (cartId,))
+        self.connection.commit()
+        cursor.close()
+
