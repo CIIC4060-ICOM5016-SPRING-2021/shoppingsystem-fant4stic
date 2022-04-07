@@ -1,5 +1,7 @@
 from dao.user import UserDAO
 from dao.cart import CartDao
+from dao.wishlist import  WishlistDAO
+from dao.order import OrderDAO
 from flask import jsonify
 
 class UserController:
@@ -113,3 +115,29 @@ class UserController:
         result['Sex'] = sex
         result['PhoneNumber'] = phone_number
         return result
+
+    def deleteUser(self, userId):
+        dao = UserDAO()
+        user = dao.getUser(userId)
+        if not user:
+            return jsonify("User Not Found"), 404
+
+        role = dao.isUserAdmin(userId)
+        if role:
+            dao.deleteUser(userId)
+            return jsonify("User deleted successfully."), 201
+        else:
+            cart, wishlist, order = CartDao(), WishlistDAO(), OrderDAO()
+            cartID = cart.getCartID(userId)
+            cart.clearCartContent(cartID)
+            cart.deleteCart(cartID)
+            wishlistsId = wishlist.getWishlistsID(userId)
+            for x in wishlistsId:
+                wishlist.clearWishContent(x)
+            wishlist.deleteUserWishlists(userId)
+            ordersId = order.getOrdersID(userId)
+            for x in ordersId:
+                order.clearOrderContent(x)
+            order.deleteUserOrders(userId)
+            dao.deleteUser(userId)
+            return jsonify("User deleted successfully."), 201

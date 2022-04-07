@@ -115,7 +115,23 @@ class WishlistDAO:
         self.connection.commit()
         cursor.close()
 
+    def getWishlistsID(self, userId):
+        cursor = self.connection.cursor()
+        cursor.execute("select wishlist_id from wishlist where user_id = %s;", (userId,));
+        resquery = cursor.fetchall()
+        cursor.close()
+        return resquery
 
+    def clearWishContent(self, wish_id):
+        cursor = self.connection.cursor()
+        query = "delete from add_to_wish where wishlist_id = %s;"
+        cursor.execute(query, (wish_id,))
+        self.connection.commit()
+        cursor.close()
 
-
-
+    def deleteUserWishlists(self, userId):
+        cursor = self.connection.cursor()
+        query = "delete from wishlist where user_id = %s;"
+        cursor.execute(query, (userId,))
+        self.connection.commit()
+        cursor.close()
