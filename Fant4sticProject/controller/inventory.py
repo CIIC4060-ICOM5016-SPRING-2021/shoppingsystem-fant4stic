@@ -63,7 +63,6 @@ class InventoryController:
         if(not exist):
             return jsonify("Book is not in Inventory. No book was deleted."), 409
         # Get the inventoryId of the BookId specified in the input
-        invId = dao.getInventory(bookId)
         is_admin = UserDAO().isUserAdmin(userId)
         if(not is_admin):
             return jsonify("The UserId passed is not an admin. No book was deleted."), 404

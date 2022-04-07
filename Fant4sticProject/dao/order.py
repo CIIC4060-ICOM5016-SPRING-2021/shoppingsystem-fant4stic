@@ -60,11 +60,11 @@ class OrderDAO:
     # Rank of top 10 - Group products and sum all the copies of the same book
     def getCustomerMostBoughtProducts(self,customerId):
         cursor = self.connection.cursor()
-        query = "select title , sum(num_items) as times_bought "
+        query = "select b.book_id, title , sum(num_items) as times_bought "
         query +="from \"Order\" as o, book_order as bor,book as b "
         query +="where o.order_id = bor.order_id and bor.book_id = b.book_id "
         query += "and user_id =" +str(customerId) +" "
-        query += "group by title order by times_bought DESC limit 10;"
+        query += "group by title, b.book_id order by times_bought DESC limit 10;"
         cursor.execute(query)
         resquery = []
         for row in cursor:
@@ -148,7 +148,7 @@ class OrderDAO:
     def getMostBoughtProductGlobally(self):
         cursor = self.connection.cursor()
 
-        query = "select book_id, sum(num_items) from book_order group by book_id order by sum(num_items) desc"
+        query = "select book_id, title, sum(num_items) from book_order natural inner join book group by book_id , title order by sum(num_items) desc;"
 
         cursor.execute(query)
         result = cursor.fetchall()
