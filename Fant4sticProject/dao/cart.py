@@ -200,3 +200,51 @@ class CartDao:
         cursor.execute(query, (cartId,))
         self.connection.commit()
         cursor.close()
+
+    def getAllBooksInCart(self, userId):
+        cursor = self.connection.cursor()
+        cursor.execute("select cart_id from cart where user_id = %s", (userId,))
+        cart = cursor.fetchone()[0]
+        cursor.execute("select book_id, num_addeditems from add_to_cart where cart_id = %s;", (cart,))
+        result = cursor.fetchall()
+        return result
+
+    def getPriceUnitOfBook(self, book_id):
+        cursor = self.connection.cursor()
+        cursor.execute("select price_unit from inventory where book_id = %s", (book_id,))
+        price = cursor.fetchone()[0]
+        return price
+
+    def deleteBookFromCart(self, book_id, cart_id):
+        cursor = self.connection.cursor()
+        cursor.execute("delete from add_to_cart where book_id = %s and cart_id = %s;", (book_id, cart_id))
+        self.connection.commit()
+        cursor.close()
+
+    def buyBookInCart(self, order_id, book_row, price_unit):
+        cursor = self.connection.cursor()
+        cursor.execute("insert into book_order(order_id, book_id, num_items, order_payment) values(%s, %s, %s, %s)", (order_id, book_row[0], book_row[1], book_row[1]*price_unit))
+        self.connection.commit()
+        cursor.close()
+
+    def updateBookInInventory(self, book_id, copies_bought):
+        cursor = self.connection.cursor()
+        cursor.execute("select available_units from inventory where book_id = %s;", (book_id,))
+        available = cursor.fetchone()[0]
+        cursor.execute("update inventory set available_units = %s where book_id = %s;", ((available - copies_bought), book_id,))
+        self.connection.commit()
+        cursor.close()
+
+    def updateCartUnits(self, remainingUnits, cart_id):
+        cursor = self.connection.cursor()
+        cursor.execute("update add_to_cart set num_addeditems = %s where cart_id = %s;", (remainingUnits, cart_id,))
+        self.connection.commit()
+        cursor.close()
+
+    def createAOrder(self, user_id):
+        cursor = self.connection.cursor()
+        order = cursor.execute("insert into \"Order\" (user_id, order_date,order_time) values (" + str(user_id) + ",current_date,current_time) returning order_id;")
+        result = cursor.fetchone()[0]
+        self.connection.commit()
+        cursor.close()
+        return result

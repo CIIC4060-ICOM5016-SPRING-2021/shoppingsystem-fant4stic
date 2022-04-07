@@ -234,6 +234,13 @@ def clearCartContent(userId):
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/user/buy_all/<int:userId>', methods=['POST'])
+def buyAllInCart(userId):
+    if request.method == 'POST':
+        return CartController().buyAllBooks(userId)
+    else:
+        return jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/user/get_all', methods=['GET'])
 def getAllUsers():
     if request.method == 'GET':

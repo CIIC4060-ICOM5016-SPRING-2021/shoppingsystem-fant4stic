@@ -1,6 +1,7 @@
 from flask import jsonify
 from dao.cart import CartDao
 from dao.user import UserDAO
+from dao.inventory import InventoryDAO
 
 class CartController:
     def build_dict(self, row):
@@ -21,6 +22,13 @@ class CartController:
         result['BookId'] = row[0]
         result['CartId'] = row[1]
         result['NumberOfCopies'] = row[2]
+        return result
+
+    def build_dict_buyAllInCart(self,row):
+        result = {}
+        result['UserId'] = row[0]
+        result['OrderDate'] = row[1]
+        result['OrderTime'] = row[2]
         return result
 
     def getAllCarts(self):
@@ -205,3 +213,40 @@ class CartController:
         cartID = cartDao.getCartID(userId)
         cartDao.clearCartContent(cartID)
         return jsonify("Cart cleared successfully"), 201
+
+    def buyAllBooks(self, userId):
+        cartDao, userDao, invDao = CartDao(), UserDAO(), InventoryDAO()
+
+        if not userDao.isUserCustomer(userId):
+            return jsonify('This user is not a customer.'), 404
+
+        cart_books = cartDao.getAllBooksInCart(userId)
+        cart_id = cartDao.getCartID(userId)
+        order_id = ""
+        firstBookToAdd = True
+        for i in range(len(cart_books)):
+            if cart_books[i][1] <= cartDao.getInventoryUnits(cart_books[i][0]):
+                if firstBookToAdd:
+                    order_id = cartDao.createAOrder(userId)
+                    firstBookToAdd = False
+                book_price = cartDao.getPriceUnitOfBook(cart_books[i][0])
+                cartDao.buyBookInCart(order_id, cart_books[i], book_price)
+                cartDao.deleteBookFromCart(cart_books[i][0], cart_id)
+                cartDao.updateBookInInventory(cart_books[i][0], cart_books[i][1])
+
+            elif cartDao.getInventoryUnits(cart_books[i][0]) != 0 and cart_books[i][1] > cartDao.getInventoryUnits(cart_books[i][0]):
+                if firstBookToAdd:
+                    order_id = cartDao.createAOrder(userId)
+                    firstBookToAdd = False
+                remainingUnits = cart_books[i][1] - cartDao.getInventoryUnits(cart_books[i][0])
+                # Settings the units that can be bought
+                book_row = (cart_books[i][0], cartDao.getInventoryUnits(cart_books[i][0]))
+                book_price = cartDao.getPriceUnitOfBook(book_row[0])
+                cartDao.buyBookInCart(order_id, book_row, book_price)
+                cartDao.updateCartUnits(remainingUnits, cart_id)
+                cartDao.updateBookInInventory(book_row[0], book_row[1])
+
+        if not firstBookToAdd:
+            return jsonify("Purchase was successful."), 200
+        else:
+            return jsonify("No purchase was made."), 409
