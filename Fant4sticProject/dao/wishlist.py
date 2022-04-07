@@ -118,10 +118,10 @@ class WishlistDAO:
     def getMostLikedProductGlobally(self):
         cursor = self.connection.cursor()
 
-        query = "select book_id, count(*) from add_to_wish group by book_id order by count(*) desc"
+        query = "select book_id, amountLiked from (select book_id, count(*) as amountLiked from add_to_wish group by book_id order by count(*) desc) as tableII where amountLiked = (select max(amountLiked) from (select book_id, count(*) as amountLiked from add_to_wish group by book_id order by count(*) desc) as tableIII)"
 
         cursor.execute(query)
-        result = cursor.fetchone()
+        result = cursor.fetchall()
 
         cursor.close()
         return result

@@ -118,42 +118,51 @@ class InventoryController:
         result = self.build_dict_update_available(row)
         return jsonify(result), 200
 
+    def build_dict_G(self, row, title):
+        dictionary = {}
+        dictionary ['Book_ID'] = row[0]
+        dictionary ['Book_price'] = row[1]
+        dictionary ['Book_title'] = title
+        return dictionary
+
     def getCheapestProductG(self):
 
         #Create a dao instance to run the queries
         dao = InventoryDAO()
 
-        #Get the tuple with the cheapest product
+        #Get the record with the cheapest products
         result = dao.getCheapestProductGlobally()
 
+        #Create a variable to store the result
+        cheapestBook = []
+
         #Now build the dictionary for display
-        dictionary = {}
-        dictionary ['Book_ID'] = result[0]
-        dictionary ['Book_price'] = result[1]
+        for row in result:
+            #Get the title of the book
+            title = dao.getBookTitle(row[0])
 
-        #Get the title for display
-        title = dao.getBookTitle(result[0])
+            dictionary = self.build_dict_G(row, title)
+            cheapestBook.append(dictionary)
 
-        dictionary ['Book_title'] = title
-
-        return jsonify("The cheapest product is:", dictionary)
+        return jsonify("The cheapest products are:", cheapestBook)
 
     def getMostExpensiveProductG(self):
 
         #Create a dao instance to run the queries
         dao = InventoryDAO()
 
-        #Get the tuple with the most expensive product
+        #Get the record with the most expensive products
         result = dao.getMostExpensiveProductGlobally()
 
-        #Now build the dictionary for display
-        dictionary = {}
-        dictionary ['Book_ID'] = result[0]
-        dictionary ['Book_price'] = result[1]
+        # Create a variable to store the result
+        mostExpensiveBook = []
 
-        #Get the title for display
-        title = dao.getBookTitle(result[0])
+        # Now build the dictionary for display
+        for row in result:
+            # Get the title of the book
+            title = dao.getBookTitle(row[0])
 
-        dictionary ['Book_title'] = title
+            dictionary = self.build_dict_G(row, title)
+            mostExpensiveBook.append(dictionary)
 
-        return jsonify("The most expensive product is:", dictionary)
+        return jsonify("The most expensive products are:", mostExpensiveBook)

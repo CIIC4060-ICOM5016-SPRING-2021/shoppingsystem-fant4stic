@@ -58,10 +58,10 @@ class InventoryDAO:
     def getCheapestProductGlobally(self):
         cursor = self.connection.cursor()
 
-        query = "select book_id, min(price_unit) from inventory group by book_id order by min(price_unit)"
+        query = "select book_id, price_unit from inventory where price_unit = (select min(price_unit) from inventory)"
 
         cursor.execute(query)
-        result = cursor.fetchone()
+        result = cursor.fetchall()
 
         cursor.close()
         return result
@@ -69,10 +69,10 @@ class InventoryDAO:
     def getMostExpensiveProductGlobally(self):
         cursor = self.connection.cursor()
 
-        query = "select book_id, min(price_unit) from inventory group by book_id order by min(price_unit) desc"
+        query = "select book_id, price_unit from inventory where price_unit = (select max(price_unit) from inventory)"
 
         cursor.execute(query)
-        result = cursor.fetchone()
+        result = cursor.fetchall()
 
         cursor.close()
         return result

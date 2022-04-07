@@ -117,10 +117,6 @@ class WishlistController:
         else:
             return jsonify("The book could not be added to you wishlist :("), 500
 
-
-
-
-
     def deleteBook(self, json):
         bookTitle = json['Title']
         userDeletingTheBook = json['Customer_id']
@@ -186,6 +182,14 @@ class WishlistController:
         else:
             return jsonify("The book could not be deleted from your wishlist"), 500
 
+    def build_dict_G(self, row, title):
+        result = {}
+        result ['Book_ID'] = row[0]
+        result ['Book_likes'] = row[1]
+        result ['Book_title'] = title
+
+        return result
+
     def getMostLikedProductG(self):
 
         #Create a dao instance to run the queries
@@ -194,14 +198,15 @@ class WishlistController:
         #Get the tuple with the most expensive product
         result = dao.getMostLikedProductGlobally()
 
+        #Build a variable to store the result
+        mostLikedProduct = []
+
         #Now build the dictionary for display
-        dictionary = {}
-        dictionary ['Book_ID'] = result[0]
-        dictionary ['Book_likes'] = result[1]
+        for row in result:
+            #Get the title of the book for display
+            title = dao.getBookTitle(row[0])
 
-        #Get the title for display
-        title = dao.getBookTitle(result[0])
+            dictionary = self.build_dict_G(row, title)
+            mostLikedProduct.append(dictionary)
 
-        dictionary ['Book_title'] = title
-
-        return jsonify("The most liked product is:", dictionary)
+        return jsonify("The most liked products are:", mostLikedProduct)
