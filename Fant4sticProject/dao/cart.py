@@ -183,20 +183,27 @@ class CartDao:
 
     def createCart(self,userId):
         cursor = self.connection.cursor()
-        cursor.execute("insert into cart(user_id) values(%s)", (userId,));
+        cursor.execute("insert into cart(user_id) values(%s)", (userId,))
         self.connection.commit()
         cursor.close()
 
     def getCartID(self, userId):
         cursor = self.connection.cursor()
-        cursor.execute("select cart_id from cart where user_id = %s;", (userId,));
-        resquery = cursor.fetchone()[0]
+        cursor.execute("select cart_id from cart where user_id = %s;", (userId,))
+        resquery = cursor.fetchone()
         cursor.close()
         return resquery
 
     def clearCartContent(self, cartId):
         cursor = self.connection.cursor()
         query = "delete from add_to_cart where cart_id = %s;"
+        cursor.execute(query, (cartId,))
+        self.connection.commit()
+        cursor.close()
+
+    def deleteCart(self, cartId):
+        cursor = self.connection.cursor()
+        query = "delete from cart where cart_id = %s;"
         cursor.execute(query, (cartId,))
         self.connection.commit()
         cursor.close()

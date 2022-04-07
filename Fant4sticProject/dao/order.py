@@ -141,3 +141,24 @@ class OrderDAO:
         result = cursor.fetchall()
         cursor.close()
         return result
+
+    def getOrdersID(self, userId):
+        cursor = self.connection.cursor()
+        cursor.execute("select order_id from \"Order\" where user_id = %s;", (userId,))
+        resquery = cursor.fetchall()
+        cursor.close()
+        return resquery
+
+    def clearOrderContent(self, orderId):
+        cursor = self.connection.cursor()
+        query = "delete from book_order where order_id = %s;"
+        cursor.execute(query, (orderId,))
+        self.connection.commit()
+        cursor.close()
+
+    def deleteUserOrders(self, userId):
+        cursor = self.connection.cursor()
+        query = "delete from \"Order\" where user_id = %s;"
+        cursor.execute(query, (userId,))
+        self.connection.commit()
+        cursor.close()
