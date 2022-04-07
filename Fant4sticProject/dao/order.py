@@ -74,40 +74,32 @@ class OrderDAO:
 
     def getCustomerCheapestBoughtProd(self,customerId):
         cursor = self.connection.cursor()
-        # Get cheapest price customer has bought
-        query = "select min(order_payment/num_items) as price_unit "
+        # Get Products that its price are equal to cheapest one
+        query = "select b.book_id, title, order_payment/num_items as price_unit "
         query += "from \"Order\" as o, book_order as bor,book as b "
         query += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
-        query += "and user_id = "+str(customerId)+ ";"
+        query += "and user_id ="+str(customerId)+ " and order_payment/num_items = "
+        # Subquery for getting the cheapest price customer paid for
+        query += "(select min(order_payment/num_items) as price_unit from \"Order\" as o, book_order as bor,book as b "
+        query += "where o.order_id = bor.order_id and bor.book_id = b.book_id and user_id =" + str(customerId) +") "
+        query += "group by b.book_id,title, order_payment/num_items;"
         cursor.execute(query)
-        cheapestPrice = cursor.fetchone()[0]
-        # Get Products that its price are equal to cheapest one
-        queryTwo = "select title, order_payment/num_items as price_unit "
-        queryTwo += "from \"Order\" as o, book_order as bor,book as b "
-        queryTwo += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
-        queryTwo += "and user_id ="+str(customerId)+ " and order_payment/num_items = "+str(cheapestPrice)+ " "
-        queryTwo += "group by title, order_payment/num_items;"
-        cursor.execute(queryTwo)
         resquery = cursor.fetchall()
         cursor.close()
         return resquery
 
     def getCustomerMostExpensiveBoughtProd(self,customerId):
         cursor = self.connection.cursor()
-        # Get most expensive price customer has bought
-        query = "select max(order_payment/num_items) as price_unit "
+        # Get Products that its price are equal to most expensive one
+        query = "select b.book_id, title, order_payment/num_items as price_unit "
         query += "from \"Order\" as o, book_order as bor,book as b "
         query += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
-        query += "and user_id = " + str(customerId) + ";"
+        query += "and user_id =" + str(customerId) + " and order_payment/num_items = "
+        # Subquery for getting the most expensive price customer paid for
+        query += "(select max(order_payment/num_items) as price_unit from \"Order\" as o, book_order as bor,book as b "
+        query += "where o.order_id = bor.order_id and bor.book_id = b.book_id and user_id =" +str(customerId) +") "
+        query += "group by b.book_id,title, order_payment/num_items;"
         cursor.execute(query)
-        mostExpensivePrice = cursor.fetchone()[0]
-        # Get Products that its price are equal to most expensive one
-        queryTwo = "select title, order_payment/num_items as price_unit "
-        queryTwo += "from \"Order\" as o, book_order as bor,book as b "
-        queryTwo += "where o.order_id = bor.order_id and bor.book_id = b.book_id "
-        queryTwo += "and user_id =" + str(customerId) + " and order_payment/num_items = " + str(mostExpensivePrice) + " "
-        queryTwo += "group by title, order_payment/num_items;"
-        cursor.execute(queryTwo)
         resquery = cursor.fetchall()
         cursor.close()
         return resquery
@@ -136,33 +128,16 @@ class OrderDAO:
 
     def getMostBoughtCategoryGlobally(self):
         cursor = self.connection.cursor()
-
         query = "select genre_name, sum(num_items) from book_order natural inner join book_genre natural inner join genre group by genre_name order by sum(num_items) desc"
-
         cursor.execute(query)
         result = cursor.fetchall()
-
         cursor.close()
         return result
 
     def getMostBoughtProductGlobally(self):
         cursor = self.connection.cursor()
-
         query = "select book_id, title, sum(num_items) from book_order natural inner join book group by book_id , title order by sum(num_items) desc;"
-
         cursor.execute(query)
         result = cursor.fetchall()
-
-        cursor.close()
-        return result
-
-    def getBookTitle(self, bookID):
-        cursor = self.connection.cursor()
-
-        query = "select title from book where book_id = %s;"
-
-        cursor.execute(query, (bookID,))
-        result = cursor.fetchone()[0]
-
         cursor.close()
         return result

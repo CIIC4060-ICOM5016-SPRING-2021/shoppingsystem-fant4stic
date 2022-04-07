@@ -132,14 +132,16 @@ class OrderController:
 
     def build_dict_cheapestProduct(self,row):
         result ={}
-        result['CheapestProduct'] = row[0]
-        result['Price'] = round(row[1],2)
+        result['CheapestProductID'] = row[0]
+        result['Title'] = row[1]
+        result['Price'] = round(row[2],2)
         return result
 
     def build_dict_mostExpensiveProduct(self,row):
         result = {}
-        result['MostExpensiveProduct'] = row[0]
-        result['Price'] = round(row[1], 2)
+        result['MostExpensiveProductID'] = row[0]
+        result['Title'] = row[1]
+        result['Price'] = round(row[2], 2)
         return result
 
     def build_dict_bookorder(self,row):
@@ -238,6 +240,3 @@ class OrderController:
 
         #Now return the jsonified result
         return jsonify("The most bought products rank is the following:", rankedProducts)
-
-
-
