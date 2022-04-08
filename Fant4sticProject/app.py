@@ -312,7 +312,6 @@ def getLProduct():
     else:
         return jsonify("Method not supported"), 405
 
-<<<<<<< HEAD
 @app.route('/fant4stic/wishlist/create', methods = ['POST'])
 def createWishlist():
     if request.method == 'POST':
