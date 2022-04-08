@@ -25,7 +25,7 @@ class BookDAO:
     def getGenreName(self, genre_id):
         cursor = self.connection.cursor()
         cursor.execute("Select genre_name from genre where genre_id = " + str(genre_id) + ";")
-        genre_name = cursor.fetchall()
+        genre_name = cursor.fetchone()[0]
         return genre_name
 
     def getBooksAscendingOrder(self):
