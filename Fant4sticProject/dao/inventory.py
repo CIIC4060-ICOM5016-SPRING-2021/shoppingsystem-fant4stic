@@ -87,4 +87,3 @@ class InventoryDAO:
 
         cursor.close()
         return result
-
