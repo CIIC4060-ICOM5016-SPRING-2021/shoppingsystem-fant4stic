@@ -30,3 +30,24 @@ class GenreDAO:
             resquery.append(row)
         cursor.close()
         return resquery
+
+    def existGenre(self, genre):
+        cursor = self.connection.cursor()
+        cursor.execute("select exists (Select genre_name from genre where genre_name = %s);", (genre,));
+        resquery = cursor.fetchone()
+        cursor.close()
+        return resquery
+
+    def addNewGenre(self, genre):
+        cursor = self.connection.cursor()
+        cursor.execute("insert into genre(genre_name) values(%s)", (genre,))
+        self.connection.commit()
+        cursor.close()
+        return
+
+    def getGenreId(self, genre):
+        cursor = self.connection.cursor()
+        cursor.execute("select genre_id from genre where genre_name = %s;", (genre,));
+        resquery = cursor.fetchone()[0]
+        cursor.close()
+        return resquery

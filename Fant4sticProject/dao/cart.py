@@ -186,6 +186,7 @@ class CartDao:
         cursor.execute("insert into cart(user_id) values(%s)", (userId,))
         self.connection.commit()
         cursor.close()
+        return
 
     def getCartID(self, userId):
         cursor = self.connection.cursor()
@@ -200,6 +201,7 @@ class CartDao:
         cursor.execute(query, (cartId,))
         self.connection.commit()
         cursor.close()
+        return
 
     def getAllBooksInCart(self, userId):
         cursor = self.connection.cursor()
@@ -255,4 +257,3 @@ class CartDao:
         cursor.execute(query, (cartId,))
         self.connection.commit()
         cursor.close()
-

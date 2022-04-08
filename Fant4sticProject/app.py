@@ -312,6 +312,7 @@ def getLProduct():
     else:
         return jsonify("Method not supported"), 405
 
+<<<<<<< HEAD
 @app.route('/fant4stic/wishlist/create', methods = ['POST'])
 def createWishlist():
     if request.method == 'POST':
@@ -323,6 +324,11 @@ def createWishlist():
 def deleteWishlist():
     if request.method == 'DELETE':
         return WishlistController().deleteWish(request.json)
+
+@app.route('/fant4stic/book/crud_operations', methods=['POST'])
+def addNewBook():
+    if request.method == 'POST':
+        return BookController().addNewBook(request.json)
     else:
         return jsonify("Method not supported"), 405
 
