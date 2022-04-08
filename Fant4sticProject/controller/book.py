@@ -3,6 +3,7 @@ from dao.book import BookDAO
 from dao.author import AuthorDAO
 from dao.genre import GenreDAO
 from dao.inventory import InventoryDAO
+from dao.user import UserDAO
 from flask import jsonify
 # Class Controller for Book table
 class BookController:
@@ -169,13 +170,3 @@ class BookController:
         result['NumberPages'] = num_pages
         result['YearPublished'] = year_publ
         return result
-
-    def deleteBook(self, bookId):
-        dao = InventoryDAO();
-        exist = dao.existBookInv(bookId)
-
-        if exist:
-            dao.updateAvailableUnitsInventory(bookId, 0)
-            return jsonify("Available units set to 0."), 201
-
-        return "Book is already unavailable."
