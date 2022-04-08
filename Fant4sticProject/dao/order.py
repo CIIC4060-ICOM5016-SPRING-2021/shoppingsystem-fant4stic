@@ -172,3 +172,19 @@ class OrderDAO:
         cursor.execute(query, (orderId,))
         result = cursor.fetchone()
         return result
+
+    def deleteFromBook_Order(self, orderId):
+        cursor = self.connection.cursor()
+        query = "delete from book_order where order_id = %s;"
+        cursor.execute(query, (orderId,))
+        self.connection.commit()
+        cursor.close()
+        return
+
+    def deleteFromOrder(self, orderId):
+        cursor = self.connection.cursor()
+        query = "delete from \"Order\" where order_id = %s;"
+        cursor.execute(query, (orderId,))
+        self.connection.commit()
+        cursor.close()
+        return

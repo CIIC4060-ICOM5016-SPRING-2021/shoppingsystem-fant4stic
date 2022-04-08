@@ -257,3 +257,12 @@ class OrderController:
         else:
             order = self.build_dict_one_order(order)
             return jsonify(order), 200
+
+    def deleteOrder(self, orderId):
+        dao = OrderDAO()
+        order = dao.getOrder(orderId)
+        if not order:
+            return jsonify("Order Not Found"), 404
+        dao.deleteFromBook_Order(orderId)
+        dao.deleteFromOrder(orderId)
+        return jsonify("Order deleted successfully."), 201
