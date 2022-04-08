@@ -77,3 +77,10 @@ class BookDAO:
         self.connection.commit()
         cursor.close()
         return
+
+    def getBook(self, bookId):
+        cursor = self.connection.cursor()
+        query = "select book_id, title, language, num_pages, year_publ from book where book_id = %s;"
+        cursor.execute(query, (bookId,))
+        result = cursor.fetchone()
+        return result

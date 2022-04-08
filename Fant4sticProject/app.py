@@ -331,5 +331,12 @@ def addNewBook():
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/book/crud_operations/<int:bookId>', methods=['GET'])
+def bookCRUD(bookId):
+    if request.method == 'GET':
+        return BookController().getBook(bookId)
+    else:
+        return jsonify("Method not supported"), 405
+
 if __name__ == '__main__':
     app.run()

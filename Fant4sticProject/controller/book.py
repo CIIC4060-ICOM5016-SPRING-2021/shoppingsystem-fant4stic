@@ -132,3 +132,12 @@ class BookController:
 
         json['Book_id'] = book_id
         return jsonify(json), 201
+
+    def getBook(self, bookId):
+        dao = BookDAO()
+        book = dao.getBook(bookId)
+        if not book:
+            return jsonify("Book Not Found"), 404
+        else:
+            book = self.build_dict_book(book)
+            return jsonify(book), 200
