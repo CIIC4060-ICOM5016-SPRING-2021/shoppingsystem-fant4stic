@@ -43,6 +43,8 @@ class InventoryController:
         price = json['BookPrice']
         num_units = json['BookNumberUnits']
         dao = InventoryDAO()
+        if(not dao.existBook(bookId)):
+            return jsonify("Not a valid BookId. No book was added."), 409
         exist = dao.existBookInv(bookId)
         if (exist):
             return jsonify("Product is already added to Inventory. No need to add it again."), 409

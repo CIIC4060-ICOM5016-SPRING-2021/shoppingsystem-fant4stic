@@ -11,6 +11,13 @@ class InventoryDAO:
         cursor.close()
         return resquery
 
+    def existBook(self, bookId):
+        cursor = self.connection.cursor()
+        cursor.execute("select exists (Select title from book where book_id = %s);", (bookId,))
+        resquery = cursor.fetchone()[0]
+        cursor.close()
+        return resquery
+
     # Add book and return the inventory's id
     def addBookInv(self,bookId,price,num_units):
         cursor = self.connection.cursor()
