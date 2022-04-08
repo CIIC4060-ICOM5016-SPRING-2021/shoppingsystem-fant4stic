@@ -342,5 +342,12 @@ def bookCRUD(bookId):
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/order/crud_operations/<int:orderId>', methods=['GET'])
+def orderCRUD(orderId):
+    if request.method == 'GET':
+        return OrderController().getOrder(orderId)
+    else:
+        return jsonify("Method not supported"), 405
+
 if __name__ == '__main__':
     app.run()

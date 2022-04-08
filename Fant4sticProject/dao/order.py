@@ -162,3 +162,13 @@ class OrderDAO:
         cursor.execute(query, (userId,))
         self.connection.commit()
         cursor.close()
+
+    def getOrder(self, orderId):
+        cursor = self.connection.cursor()
+        query = "select order_id,user_id, "
+        query += "extract(year from order_date) as year,extract(mon from order_date) as month, extract(day from order_date) as day, "
+        query += "extract(hour from order_time) as hour_time, extract(min from order_time) as min_time, extract(sec from order_time) as sec_time "
+        query += "from \"Order\" where order_id = %s;"
+        cursor.execute(query, (orderId,))
+        result = cursor.fetchone()
+        return result

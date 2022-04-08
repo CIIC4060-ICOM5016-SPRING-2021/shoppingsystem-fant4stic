@@ -110,6 +110,14 @@ class OrderController:
         result['TotalPrice'] = row[5]
         return result
 
+    def build_dict_one_order(self,row):
+        result ={}
+        result['OrderId'] = row[0]
+        result['UserId'] = row[1]
+        result['OrderDate'] = str(int(row[2])) + "-" + str(int(row[3])) + "-" + str(int(row[4]))
+        result['OrderTime'] = str(int(row[5])) + "-" + str(int(row[6])) + "-" + str(int(row[7]))
+        return result
+
     def build_dict_book(self, row):
         result = {}
         result['BookTitle'] = row[8]
@@ -240,3 +248,12 @@ class OrderController:
 
         #Now return the jsonified result
         return jsonify("The most bought products rank is the following:", rankedProducts)
+
+    def getOrder(self, orderId):
+        dao = OrderDAO()
+        order = dao.getOrder(orderId)
+        if not order:
+            return jsonify("Order Not Found"), 404
+        else:
+            order = self.build_dict_one_order(order)
+            return jsonify(order), 200
