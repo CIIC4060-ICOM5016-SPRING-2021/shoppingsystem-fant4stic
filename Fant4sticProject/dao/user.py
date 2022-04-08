@@ -6,14 +6,14 @@ class UserDAO():
 
     def existUserEmail(self, email):
         cursor = self.connection.cursor()
-        cursor.execute("select exists (Select email from \"User\" where email = %s);", (email,));
+        cursor.execute("select exists (Select email from \"User\" where email = %s);", (email,))
         resquery = cursor.fetchone()
         cursor.close()
         return resquery
 
     def existUserType(self, userType):
         cursor = self.connection.cursor()
-        cursor.execute("select exists (Select user_role from roles where user_role = %s);", (userType,));
+        cursor.execute("select exists (Select user_role from roles where user_role = %s);", (userType,))
         resquery = cursor.fetchone()
         cursor.close()
         return resquery
@@ -84,3 +84,4 @@ class UserDAO():
         cursor.execute(query, (userId,))
         self.connection.commit()
         cursor.close()
+        return

@@ -305,5 +305,12 @@ def getLProduct():
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/book/crud_operations', methods=['POST'])
+def addNewBook():
+    if request.method == 'POST':
+        return BookController().addNewBook(request.json)
+    else:
+        return jsonify("Method not supported"), 405
+
 if __name__ == '__main__':
     app.run()

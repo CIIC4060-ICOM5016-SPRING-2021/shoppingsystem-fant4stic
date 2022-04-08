@@ -1,5 +1,7 @@
 from config.databaseConnect import DatabaseConnect
 from dao.book import BookDAO
+from dao.author import AuthorDAO
+from dao.genre import GenreDAO
 from flask import jsonify
 # Class Controller for Book table
 class BookController:
@@ -87,3 +89,46 @@ class BookController:
         result['YearPublished'] = row[4]
         result['Price'] = row[5]
         return result
+
+    def addNewBook(self, json):
+        book, author, genre = BookDAO(), AuthorDAO(), GenreDAO()
+        title = json['Title']
+        language = json['Language']
+        num_pages = json['NumberOfPages']
+        year_publ = json['YearPublished']
+        book_genre = json['Genre']
+        author_first = json['AuthorFirstName']
+        author_last = json['AuthorLastName']
+        author_country = json['AuthorCountry']
+
+        record = book.existBook(title)
+        exist = record[0]
+
+        if exist:
+            return jsonify("This book is already registered.")
+
+        record2 = genre.existGenre(book_genre)
+        exist2 = record2[0]
+
+        if not exist2:
+            genre.addNewGenre(book_genre)
+
+        record3 = author.existAuthor(author_first, author_last)
+        exist3 = record3[0]
+
+        if not exist3:
+            author.addNewAuthor(author_first, author_last, author_country)
+
+        book_id = book.addNewBook(title, language, num_pages, year_publ)
+        genre_id = genre.getGenreId(book_genre)
+        author_id = author.getAuthorId(author_first, author_last)
+        book.addBookGenre(genre_id, book_id)
+        author.addAuthorWrites(author_id, book_id)
+
+        record4 = author.doesAuthorWriteGenre(author_id, genre_id)
+        exist4 = record4[0]
+        if not exist4:
+            author.addAuthorGenre(author_id, genre_id)
+
+        json['Book_id'] = book_id
+        return jsonify(json)

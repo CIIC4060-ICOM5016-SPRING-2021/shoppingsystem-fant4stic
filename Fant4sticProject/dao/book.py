@@ -55,3 +55,25 @@ class BookDAO:
         resquery = cursor.fetchall()
         cursor.close()
         return resquery
+
+    def existBook(self, title):
+        cursor = self.connection.cursor()
+        cursor.execute("select exists (Select title from book where title = %s);", (title,))
+        resquery = cursor.fetchone()
+        cursor.close()
+        return resquery
+
+    def addNewBook(self, title, language, num_pages, year_publ):
+        cursor = self.connection.cursor()
+        cursor.execute("insert into book(title, language, num_pages, year_publ) values(%s, %s, %s, %s) returning book_id", (title, language, num_pages, year_publ,))
+        self.connection.commit()
+        resquery = cursor.fetchone()[0]
+        cursor.close()
+        return resquery
+
+    def addBookGenre(self, genreId, bookId):
+        cursor = self.connection.cursor()
+        cursor.execute("insert into book_genre(genre_id, book_id) values(%s, %s)", (genreId, bookId,))
+        self.connection.commit()
+        cursor.close()
+        return
