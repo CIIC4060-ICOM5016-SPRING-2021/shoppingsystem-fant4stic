@@ -84,3 +84,10 @@ class BookDAO:
         cursor.execute(query, (bookId,))
         result = cursor.fetchone()
         return result
+
+    def updateBook(self, book_id, title, language, num_pages, year_publ):
+        cursor = self.connection.cursor()
+        query = "update book set title = %s, language = %s, num_pages = %s, year_publ = %s where book_id = %s;"
+        cursor.execute(query, (title, language, num_pages, year_publ, book_id,))
+        self.connection.commit()
+        return book_id

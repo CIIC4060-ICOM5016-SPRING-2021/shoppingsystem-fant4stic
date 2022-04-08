@@ -141,3 +141,30 @@ class BookController:
         else:
             book = self.build_dict_book(book)
             return jsonify(book), 200
+
+    def updateBook(self, bookId, json):
+        dao = BookDAO()
+        book = dao.getBook(bookId)
+        if not book:
+            return jsonify("Book Not Found"), 404
+
+        title = json['Title']
+        language = json['Language']
+        num_pages = json['NumberPages']
+        year_publ = json['YearPublished']
+
+        if title and language and num_pages and year_publ:
+            dao.updateBook(bookId, title, language, num_pages, year_publ)
+            result = self.build_book_attributes(bookId, title, language, num_pages, year_publ)
+            return jsonify(result), 200
+        else:
+            return jsonify("Unexpected attributes in update request"), 400
+
+    def build_book_attributes(self, bookId, title, language, num_pages, year_publ):
+        result = {}
+        result['BookID'] = bookId
+        result['Title'] = title
+        result['Language'] = language
+        result['NumberPages'] = num_pages
+        result['YearPublished'] = year_publ
+        return result
