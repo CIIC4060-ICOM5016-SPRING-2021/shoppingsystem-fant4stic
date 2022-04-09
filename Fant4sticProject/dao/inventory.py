@@ -94,3 +94,10 @@ class InventoryDAO:
 
         cursor.close()
         return result
+
+    def getBookPriceAndUnits(self, bookId):
+        cursor = self.connection.cursor()
+        query = "select price_unit, available_units from inventory where book_id = %s;"
+        cursor.execute(query, (bookId,))
+        result = cursor.fetchone()
+        return result

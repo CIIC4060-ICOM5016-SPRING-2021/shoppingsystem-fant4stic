@@ -37,6 +37,12 @@ class InventoryController:
         result['UserId'] = row[3]
         return result
 
+    def build_dict_book_price_availableUnits(self,row):
+        result = {}
+        result['UnitPrice'] = row[0]
+        result['AvailableUnits'] = row[1]
+        return result
+
     def addBookProduct(self,json):
         bookId = json['BookId']
         userId = json['UserId']

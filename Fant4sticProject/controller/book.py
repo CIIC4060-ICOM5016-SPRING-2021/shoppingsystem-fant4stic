@@ -3,8 +3,8 @@ from dao.book import BookDAO
 from dao.author import AuthorDAO
 from dao.genre import GenreDAO
 from dao.inventory import InventoryDAO
-from dao.user import UserDAO
 from flask import jsonify
+from controller.inventory import InventoryController
 # Class Controller for Book table
 class BookController:
     def __init__(self):
@@ -136,13 +136,23 @@ class BookController:
         return jsonify(json), 201
 
     def getBook(self, bookId):
-        dao = BookDAO()
-        book = dao.getBook(bookId)
+        bookDao = BookDAO()
+        book = bookDao.getBook(bookId)
         if not book:
             return jsonify("Book Not Found"), 404
-        else:
+
+        invDao = InventoryDAO()
+        book_inv = invDao.getBookPriceAndUnits(bookId)
+        if not book_inv:
             book = self.build_dict_book(book)
             return jsonify(book), 200
+        else:
+            book = self.build_dict_book(book)
+            book_inv = InventoryController().build_dict_book_price_availableUnits(book_inv)
+            d4 = book.copy()
+            d4.update(book_inv)
+            return jsonify(d4), 200
+
 
     def updateBook(self, bookId, json):
         dao = BookDAO()
