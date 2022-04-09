@@ -1,0 +1,1248 @@
+{
+	"info": {
+		"_postman_id": "4c0df02f-409e-4009-89d2-1ddba5c855d0",
+		"name": "Fant4sticProject Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register New User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"FirstName\": \"Alexa\",\r\n    \"LastName\" : \"PlayDespacito\",\r\n    \"Username\" : \"aleplay\",\r\n    \"Email\" : \"alexaDespa@gmail.com\",\r\n    \"Password\" :\"vkjenrjvnf\",\r\n    \"Age\" : 18,\r\n    \"Sex\" : \"F\",\r\n    \"PhoneNumber\" : \"4153697854\",\r\n    \"UserType\" : \"Admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/register_new_user",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"register_new_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Book In Genre order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book/desiredgenre/1",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book",
+						"desiredgenre",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product ASC and DESC by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book/orderInAscOrDes/descending",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book",
+						"orderInAscOrDes",
+						"descending"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product order by Price",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book/orderInPrice/lowtohigh",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book",
+						"orderInPrice",
+						"lowtohigh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Product to Wishlist",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Title\": \"Tres Cerditos\", \"Customer_id\": \"26\", \"Wishlist_id\": \"11\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/wishlist",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"wishlist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product from Wishlist",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Title\": \"Tres Cerditos\", \"Customer_id\": \"26\", \"Wishlist_id\": \"11\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/wishlist",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"wishlist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Product to Cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Title\": \"Fantastic Four: Antithesis #3\", \"Customer_id\": \"26\", \"Copies\": 9}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/cart",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product from Cart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"Title\": \"Tres Cerditos\", \"Customer_id\": \"26\", \"Copies\": 3}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/cart",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Cart Content",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/clear_cart_content/26",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"clear_cart_content",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy All Stuff in your Cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/buy_all/26",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"buy_all",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get History of Customer Orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/historyoforders/26",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"historyoforders",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All History of Orders for All Customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/historyofallorders",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"historyofallorders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Book to Inventory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"BookId\" :96,\r\n    \"UserId\": 2,\r\n    \"BookPrice\" : 20,\r\n    \"BookNumberUnits\" : 43\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/inventory/addproduct",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"inventory",
+						"addproduct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Book from Inventory",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"BookId\" : 96,\r\n    \"UserId\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/inventory/deleteproduct",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"inventory",
+						"deleteproduct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Book Price",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"BookId\" : 101,\r\n    \"PriceUnit\" : 28,\r\n    \"UserId\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/inventory/updatepriceproduct",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"inventory",
+						"updatepriceproduct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Available Units in Inventory",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"BookId\" : 101,\r\n    \"AvailableUnits\" : 21,\r\n    \"UserId\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/inventory/updateavailableunitsproduct",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"inventory",
+						"updateavailableunitsproduct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer Most Bought Category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/rankcustomercategoriesbought/5",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"rankcustomercategoriesbought",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer Most Bought Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/rankcustomerproductsbought/26",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"rankcustomerproductsbought",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer's Cheapest Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/cheapestproduct/26",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"cheapestproduct",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer's Most Expensive Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/mostexpensiveproduct/5",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"mostexpensiveproduct",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Globally - Most Bought Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/most_bought_category",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"most_bought_category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Globally - Most Bought Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/most_bought_product",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"most_bought_product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Globally - Cheapest Product in Inventory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/inventory/get_cheapest_product",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"inventory",
+						"get_cheapest_product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Globally - The Most Expensive Product in Inventory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/inventory/get_most_expensive_product",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"inventory",
+						"get_most_expensive_product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Globally - Get Most Liked Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/wishlist/get_most_liked_product",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"wishlist",
+						"get_most_liked_product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/crud_operations/13",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"crud_operations",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User by ID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"FirstName\" : \"Pedro Sr.\",\r\n    \"LastName\" : \"Perez\",\r\n    \"Username\" : \"pedron\",\r\n    \"Email\" : \"ped1@gmail.com\",\r\n    \"Password\" : \"ecdscq12\",\r\n    \"Age\" :91,\r\n    \"Sex\" : \"M\",\r\n    \"PhoneNumber\" : \"7877877788\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/crud_operations/30",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"crud_operations",
+						"30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user by ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/crud_operations/30",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"crud_operations",
+						"30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Title\" : \"The Very Hungry Caterpillar\",\r\n    \"Language\" : \"English\",\r\n    \"NumberOfPages\" : \"22\",\r\n    \"YearPublished\" : 1969,\r\n    \"Genre\" : \"Children\",\r\n    \"AuthorFirstName\" : \"Eric\",\r\n    \"AuthorLastName\" : \"Carle\",\r\n    \"AuthorCountry\" : \"United States\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book/crud_operations",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book",
+						"crud_operations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book/crud_operations/80",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book",
+						"crud_operations",
+						"80"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Book",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Title\" : \"Tres Cerditos\",\r\n    \"Language\" : \"Spanish\",\r\n    \"NumberPages\" : \"25\",\r\n    \"YearPublished\" : 2000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book/crud_operations/101",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book",
+						"crud_operations",
+						"101"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/crud_operations/28",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"crud_operations",
+						"28"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Order",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/crud_operations/32",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"crud_operations",
+						"32"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Authors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/author/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"author",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Inventories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/inventory/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"inventory",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Carts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/cart/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"cart",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"order",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Genres",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/genre/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"genre",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Wishlist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/wishlist/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"wishlist",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Roles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/roles/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"roles",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Author_Genre",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/author_genre/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"author_genre",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Book_Genre",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book_genre/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book_genre",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Writes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/writes/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"writes",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Book_Order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book_order/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"book_order",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Add_to_Cart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/addtocart/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"addtocart",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Add_to_wishlist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/addtowishlist/get_all",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"addtowishlist",
+						"get_all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Wishlist",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"User_id\": 5}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/wishlist/create",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"wishlist",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Wishlist",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"User_id\": 5, \"Wishlist_id\": 13}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/wishlist/delete",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"wishlist",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

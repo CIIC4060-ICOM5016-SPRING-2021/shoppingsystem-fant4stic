@@ -12,6 +12,8 @@ class BookController:
 
     def getBookByGenre(self, genre_id):
         dao = BookDAO()
+        if(not dao.existGenre(genre_id)):
+            return jsonify("Invalid GenreId."), 404
         records = dao.getBookByGenre(genre_id)
         result = []
         result.append("Genre: " + dao.getGenreName(genre_id))
