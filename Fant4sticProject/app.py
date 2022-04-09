@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request, json
 from flask_cors import CORS
-from config.databaseConnect import DatabaseConnect
 from controller.inventory import InventoryController
 from controller.book import BookController
 from controller.author import AuthorController
@@ -17,12 +16,6 @@ app.config['JSON_SORT_KEYS'] = False
 
 # Apply CORS to this app
 CORS(app)
-
-# Connect to server
-connection = DatabaseConnect().getConnection()
-
-# Object to operate the DB
-cursor = connection.cursor()
 
 @app.route('/')
 def hello_world():  # put application's code here
