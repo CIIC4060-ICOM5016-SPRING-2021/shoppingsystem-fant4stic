@@ -134,8 +134,7 @@ class CartController:
             row = [bookTitle, bookToAdd, howMuchBooks]
             dictionary = self.build_dict(row)
 
-            return jsonify("The indicated amount of copies of the following book were added to cart",
-                           dictionary), 200
+            return jsonify(dictionary), 200
         else:
             return jsonify("Book could not be added to cart!"), 500
 
@@ -202,7 +201,7 @@ class CartController:
             row = [bookTitle, bookToDelete, copiesStored]
             dictionary = self.build_dict(row)
 
-            return jsonify("The following book and copies were deleted from your cart:", dictionary), 200
+            return jsonify(dictionary), 200
         else:
             return jsonify("Book could not be deleted from cart"), 500
 

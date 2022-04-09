@@ -224,7 +224,7 @@ class OrderController:
             count = count + 1
 
         #Now return the jsonified result
-        return jsonify("The most bought categories rank is the following:", rankedGenres)
+        return jsonify(rankedGenres)
 
     def getMProductGlobally(self):
 
@@ -247,7 +247,7 @@ class OrderController:
             count = count + 1
 
         #Now return the jsonified result
-        return jsonify("The most bought products rank is the following:", rankedProducts)
+        return jsonify(rankedProducts)
 
     def getOrder(self, orderId):
         dao = OrderDAO()

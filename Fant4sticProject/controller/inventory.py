@@ -152,7 +152,7 @@ class InventoryController:
             dictionary = self.build_dict_G(row, title)
             cheapestBook.append(dictionary)
 
-        return jsonify("The cheapest products are:", cheapestBook)
+        return jsonify(cheapestBook)
 
     def getMostExpensiveProductG(self):
 
@@ -173,4 +173,4 @@ class InventoryController:
             dictionary = self.build_dict_G(row, title)
             mostExpensiveBook.append(dictionary)
 
-        return jsonify("The most expensive products are:", mostExpensiveBook)
+        return jsonify(mostExpensiveBook)

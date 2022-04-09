@@ -113,7 +113,7 @@ class WishlistController:
             row = [bookTitle, bookToAdd, wishlistID, todayDate]
             dictionary = self.build_dict_addingBook(row)
 
-            return jsonify("The book was added to indicated wishlist!", dictionary), 200
+            return jsonify(dictionary), 200
         else:
             return jsonify("The book could not be added to you wishlist :("), 500
 
@@ -178,7 +178,7 @@ class WishlistController:
             row = [bookTitle, bookToDelete, wishlistID]
             dictionary = self.build_dict_deletingBook(row)
 
-            return jsonify("The following book was deleted from the indicated wishlist", dictionary), 200
+            return jsonify(dictionary), 200
         else:
             return jsonify("The book could not be deleted from your wishlist"), 500
 
@@ -209,7 +209,7 @@ class WishlistController:
             dictionary = self.build_dict_G(row, title)
             mostLikedProduct.append(dictionary)
 
-        return jsonify("The most liked products are:", mostLikedProduct)
+        return jsonify(mostLikedProduct)
 
     def createWish(self, json):
         userID = json ['User_id']
