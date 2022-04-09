@@ -23,6 +23,10 @@ Hedin García - hedin.garcia@upr.edu
 9. Comics
 10. History
 
+## Hosted REST API address:
+
+* https://fant4stic-books.herokuapp.com
+
 ## Database Credentials:
 
 **_Host:_**       ec2-3-231-254-204.compute-1.amazonaws.com
