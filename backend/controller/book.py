@@ -5,6 +5,7 @@ from dao.genre import GenreDAO
 from dao.inventory import InventoryDAO
 from flask import jsonify
 from controller.inventory import InventoryController
+from dao.user import UserDAO
 # Class Controller for Book table
 class BookController:
     def __init__(self):
@@ -104,10 +105,14 @@ class BookController:
         author_first = json['AuthorFirstName']
         author_last = json['AuthorLastName']
         author_country = json['AuthorCountry']
+        userId = json["UserId"]
+
+        is_admin = UserDAO().isUserAdmin(userId)
+        if (not is_admin):
+            return jsonify("The UserId passed is not an admin. No book was added."), 404
 
         record = book.existBook(title)
         exist = record[0]
-
         if exist:
             return jsonify("This book is already registered.")
 

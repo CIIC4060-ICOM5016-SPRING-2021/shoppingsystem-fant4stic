@@ -131,7 +131,9 @@ def getAllRoless():
 @app.route('/fant4stic/inventory/addproduct', methods = ['POST'])
 def inventoryAddBookProduct():
     if request.method == 'POST':
-        return InventoryController().addBookProduct(request.json)
+        requestjson = request.json
+        BookController().addNewBook(requestjson)
+        return InventoryController().addBookProduct(requestjson)
     else:
         return jsonify("Method not supported"),405
 
@@ -189,13 +191,6 @@ def getBooksInOrder(order_in):
 def getBooksByPrice(order_in):
     if request.method == 'GET':
         return BookController().orderByPrice(order_in)
-    else:
-        return jsonify("Method not supported"), 405
-
-@app.route('/fant4stic/book/crud_operations', methods=['POST'])
-def addNewBook():
-    if request.method == 'POST':
-        return BookController().addNewBook(request.json)
     else:
         return jsonify("Method not supported"), 405
 

@@ -41,6 +41,10 @@ class UserController:
                                               phone_num)
                 cartDao = CartDao()
                 cartDao.createCart(user_id)
+
+                wishlistDAO = WishlistDAO()
+                wishlistDAO.createWishlist(user_id)
+
                 json['User_id'] = user_id
 
         else:

@@ -92,6 +92,20 @@ class BookDAO:
         result = cursor.fetchone()
         return result
 
+    def existBookName(self, bookName):
+        cursor = self.connection.cursor()
+        cursor.execute("select exists (Select book_id from book where title = %s);", (bookName,))
+        resquery = cursor.fetchone()[0]
+        cursor.close()
+        return resquery
+
+    def getBookId(self, bookName):
+        cursor = self.connection.cursor()
+        query = "select book_id from book where title = %s;"
+        cursor.execute(query, (bookName,))
+        result = cursor.fetchone()[0]
+        return result
+
     def updateBook(self, book_id, title, language, num_pages, year_publ):
         cursor = self.connection.cursor()
         query = "update book set title = %s, language = %s, num_pages = %s, year_publ = %s where book_id = %s;"

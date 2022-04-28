@@ -1,5 +1,6 @@
 from dao.inventory import InventoryDAO
 from dao.user import UserDAO
+from dao.book import BookDAO
 from flask import jsonify
 # Class Controller for Inventory table
 class InventoryController:
@@ -44,19 +45,22 @@ class InventoryController:
         return result
 
     def addBookProduct(self,json):
-        bookId = json['BookId']
+        bookName = json['Title']
         userId = json['UserId']
         price = json['BookPrice']
         num_units = json['BookNumberUnits']
         dao = InventoryDAO()
-        if(not dao.existBook(bookId)):
-            return jsonify("Not a valid BookId. No book was added."), 409
-        exist = dao.existBookInv(bookId)
-        if (exist):
-            return jsonify("Product is already added to Inventory. No need to add it again."), 409
+        bdao = BookDAO()
         is_admin = UserDAO().isUserAdmin(userId)
-        if(not is_admin):
-            return jsonify("The UserId passed is not an admin. No book was added."), 404
+        if (not is_admin):
+            return jsonify("The UserId passed is not an admin. No book was added to the inventory."), 404
+        # Check if the book does not exist, if not add it
+        if(not bdao.existBookName(bookName)):
+            return jsonify("Not a valid Book Name."), 409
+        bookId = bdao.getBookId(bookName)
+        existInInv = dao.existBookInv(bookId)
+        if (existInInv):
+            return jsonify("Product is already added to Inventory. No need to add it again."), 409
         # Get the id of the inventory created
         invId = dao.addBookInv(bookId,price,num_units)
         row = [invId,bookId,userId,price,num_units]
