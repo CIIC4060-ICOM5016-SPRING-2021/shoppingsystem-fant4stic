@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"FirstName\": \"Alexa\",\r\n    \"LastName\" : \"PlayDespacito\",\r\n    \"Username\" : \"aleplay\",\r\n    \"Email\" : \"alexaDespa@gmail.com\",\r\n    \"Password\" :\"vkjenrjvnf\",\r\n    \"Age\" : 18,\r\n    \"Sex\" : \"F\",\r\n    \"PhoneNumber\" : \"4153697854\",\r\n    \"UserType\" : \"Admin\"\r\n}",
+					"raw": "{\r\n    \"FirstName\": \"Hansel\",\r\n    \"LastName\" : \"dr\",\r\n    \"Username\" : \"hsdcndy\",\r\n    \"Email\" : \"hacsdy@gmail.com\",\r\n    \"Password\" :\"lmvoncocococo\",\r\n    \"Age\" : 21,\r\n    \"Sex\" : \"M\",\r\n    \"PhoneNumber\" : \"1236547891\",\r\n    \"UserType\" : \"Admin\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -112,7 +112,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"Title\": \"Tres Cerditos\", \"Customer_id\": \"26\", \"Wishlist_id\": \"11\"}",
+					"raw": "{\"Title\": \"We\", \"Customer_id\": \"26\", \"Wishlist_id\": \"10\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -142,7 +142,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"Title\": \"Tres Cerditos\", \"Customer_id\": \"26\", \"Wishlist_id\": \"11\"}",
+					"raw": "{\"Title\": \"Queen of Shadows\", \"Customer_id\": \"39\", \"Wishlist_id\": \"22\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -172,7 +172,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"Title\": \"Fantastic Four: Antithesis #3\", \"Customer_id\": \"26\", \"Copies\": 9}",
+					"raw": "{\"Title\": \"Kingdom of Ash\", \"Customer_id\": \"39\", \"Copies\": 2}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -254,7 +254,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/buy_all/26",
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/buy_all/39",
 					"protocol": "https",
 					"host": [
 						"fant4stic-books",
@@ -265,9 +265,40 @@
 						"fant4stic",
 						"user",
 						"buy_all",
+						"39"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer Wishlist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/getWishlist/26",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"getWishlist",
 						"26"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer Cart",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		},
@@ -323,7 +354,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"BookId\" :96,\r\n    \"UserId\": 2,\r\n    \"BookPrice\" : 20,\r\n    \"BookNumberUnits\" : 43\r\n}",
+					"raw": "{\r\n    \"UserId\": 2,\r\n    \"Title\" : \"The Hidden Girl and Other Stories\",\r\n    \"Language\" : \"English\",\r\n    \"NumberOfPages\" : \"240\",\r\n    \"YearPublished\" : 2020,\r\n    \"Genre\" : \"Fantasy\",\r\n    \"AuthorFirstName\" : \"Ken\",\r\n    \"AuthorLastName\" : \"Lui\",\r\n    \"AuthorCountry\" : \"United States\",\r\n    \"BookPrice\" : 25,\r\n    \"BookNumberUnits\" : 30\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -354,7 +385,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"BookId\" : 96,\r\n    \"UserId\": 2\r\n}",
+					"raw": "{\r\n    \"BookId\" : 115,\r\n    \"UserId\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -385,7 +416,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"BookId\" : 101,\r\n    \"PriceUnit\" : 28,\r\n    \"UserId\" : 2\r\n}",
+					"raw": "{\r\n    \"BookId\" : 115,\r\n    \"PriceUnit\" : 25,\r\n    \"UserId\" : 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -416,7 +447,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"BookId\" : 101,\r\n    \"AvailableUnits\" : 21,\r\n    \"UserId\" : 2\r\n}",
+					"raw": "{\r\n    \"BookId\" : 2,\r\n    \"AvailableUnits\" : 6,\r\n    \"UserId\" : 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -446,7 +477,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/rankcustomercategoriesbought/5",
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/rankcustomercategoriesbought/26",
 					"protocol": "https",
 					"host": [
 						"fant4stic-books",
@@ -457,7 +488,7 @@
 						"fant4stic",
 						"order",
 						"rankcustomercategoriesbought",
-						"5"
+						"26"
 					]
 				}
 			},
@@ -515,7 +546,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/mostexpensiveproduct/5",
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/order/mostexpensiveproduct/26",
 					"protocol": "https",
 					"host": [
 						"fant4stic-books",
@@ -526,7 +557,7 @@
 						"fant4stic",
 						"order",
 						"mostexpensiveproduct",
-						"5"
+						"26"
 					]
 				}
 			},
@@ -715,37 +746,6 @@
 						"user",
 						"crud_operations",
 						"30"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Book",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"Title\" : \"The Very Hungry Caterpillar\",\r\n    \"Language\" : \"English\",\r\n    \"NumberOfPages\" : \"22\",\r\n    \"YearPublished\" : 1969,\r\n    \"Genre\" : \"Children\",\r\n    \"AuthorFirstName\" : \"Eric\",\r\n    \"AuthorLastName\" : \"Carle\",\r\n    \"AuthorCountry\" : \"United States\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/book/crud_operations",
-					"protocol": "https",
-					"host": [
-						"fant4stic-books",
-						"herokuapp",
-						"com"
-					],
-					"path": [
-						"fant4stic",
-						"book",
-						"crud_operations"
 					]
 				}
 			},
@@ -1189,7 +1189,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"User_id\": 5}",
+					"raw": "{\"User_id\": 39}",
 					"options": {
 						"raw": {
 							"language": "json"
