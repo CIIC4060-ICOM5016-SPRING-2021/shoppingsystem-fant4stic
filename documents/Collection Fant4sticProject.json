@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4c0df02f-409e-4009-89d2-1ddba5c855d0",
+		"_postman_id": "f9a9dd4e-e987-4120-afc5-6ad54b43cba0",
 		"name": "Fant4sticProject Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -298,7 +298,22 @@
 			"name": "Get Customer Cart",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "https://fant4stic-books.herokuapp.com/fant4stic/user/getUserCart/29",
+					"protocol": "https",
+					"host": [
+						"fant4stic-books",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"fant4stic",
+						"user",
+						"getUserCart",
+						"29"
+					]
+				}
 			},
 			"response": []
 		},
