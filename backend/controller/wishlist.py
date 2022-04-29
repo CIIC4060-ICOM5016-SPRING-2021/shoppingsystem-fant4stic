@@ -1,5 +1,6 @@
 from flask import jsonify
 from dao.wishlist import WishlistDAO
+from dao.user import UserDAO
 from datetime import date
 # Class Controller for Wishlist table
 class WishlistController:
@@ -289,3 +290,52 @@ class WishlistController:
         else:
             return jsonify("Wishlist was not created due to an internal error"), 500
 
+    def build_dict_CustomerWishlist(self,row):
+        result = {}
+        result['WishlistId'] = row[0]
+        result['CustomerId'] = row[1]
+        result['ListOfProducts'] = row[2]
+        return result
+
+    def getProdsInWishlist(self,userId):
+        dao = WishlistDAO()
+        if (not UserDAO().isUserCustomer(userId)):
+            return jsonify('The value passed is not a valid customerId.'), 404
+        wishlists = dao.getUserWishlist(userId)
+        groupedWishList = self.groupWishlist(wishlists,userId)
+        result = []
+        for wishlist in groupedWishList:
+            dict =  self.build_dict_CustomerWishlist(wishlist)
+            result.append(dict)
+        return jsonify(result), 200
+
+    def create_newRow(self,wishlistID):
+        newRow = []
+        newRow.append(wishlistID)
+        return newRow
+
+    def build_dict_WishListBook(self,row):
+        result = {}
+        result['BookTitle'] = row[1]
+        result['DateAdded'] = str(int(row[2])) +"-"+ str(int(row[3])) +"-"+ str(int(row[4]))
+        return result
+
+    def groupWishlist(self,wishlists,userId):
+        difWishlistId = []
+        # Generate list of distinct wishlist_id
+        for row in wishlists:
+            if difWishlistId.count(row[0]) == 0:
+                difWishlistId.append(row[0])
+        resultWishlists = []
+
+        for wishlistId in difWishlistId:
+            newWishlistRow = self.create_newRow(wishlistId)  # Add wishlist_id
+            newWishlistRow.append(userId) # Add CustomerID
+            listProducts = []
+            for i in range(len(wishlists)):
+                if(wishlistId == wishlists[i][0]):
+                    dict = self.build_dict_WishListBook(wishlists[i])
+                    listProducts.append(dict)
+            newWishlistRow.append(listProducts)  # Add listProducts
+            resultWishlists.append(newWishlistRow)
+        return resultWishlists

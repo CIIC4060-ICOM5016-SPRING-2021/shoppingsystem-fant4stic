@@ -191,3 +191,13 @@ class WishlistDAO:
 
         self.connection.commit()
         cursor.close()
+
+    def getUserWishlist(self,userId):
+        cursor = self.connection.cursor()
+        query = "select wishlist_id, title,  extract(year from date_added) as year,extract(mon from date_added) as month, "
+        query += "extract(day from date_added) as day from book natural inner join add_to_wish natural inner join wishlist where user_id =" + str(userId) + " "
+        query += "order by wishlist_id;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result

@@ -295,6 +295,13 @@ def getProductsInCart(userId):
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/user/getWishlist/<int:userId>', methods=['GET'])
+def getProductsInWishlist(userId):
+    if request.method == 'GET':
+        return WishlistController().getProdsInWishlist(userId)
+    else:
+        return jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/user/clear_cart_content/<int:userId>', methods=['DELETE'])
 def clearCartContent(userId):
     if request.method == 'DELETE':
