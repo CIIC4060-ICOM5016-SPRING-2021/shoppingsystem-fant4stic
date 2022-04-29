@@ -11,6 +11,14 @@ class CartController:
         result['Copies'] = row[2]
         return result
 
+    def build_dict_getProds(self, row):
+        result = {}
+        result['Title'] = row[0]
+        result['Copies'] = row[1]
+        result['BookPrice'] = row[2]
+        return result
+
+
     def build_dict_cart(self,row):
         result = {}
         result['CartId'] = row[0]
@@ -204,6 +212,19 @@ class CartController:
             return jsonify(dictionary), 200
         else:
             return jsonify("Book could not be deleted from cart"), 500
+
+    def getProdsInCart(self, userId):
+        cartDao, userDao = CartDao(), UserDAO()
+        listOfBooks = []
+        if not userDao.isUserCustomer(userId):
+            return jsonify('This user is not a customer.'), 404
+        cartID = cartDao.getCartID(userId)[0]
+        cartContent = cartDao.getProdsCart(userId)
+        for row in cartContent:
+            dict = self.build_dict_getProds(row)
+            listOfBooks.append(dict)
+        result = {"UserID": userId, "CartID": cartID, "BooksInCart": listOfBooks}
+        return jsonify(result)
 
     def clearCartContent(self, userId):
         cartDao, userDao = CartDao(), UserDAO()

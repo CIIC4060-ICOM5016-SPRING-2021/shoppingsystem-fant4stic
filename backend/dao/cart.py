@@ -74,6 +74,13 @@ class CartDao:
         self.connection.commit()
         cursor.close()
 
+    def getProdsCart(self, userId):
+        cursor = self.connection.cursor()
+        cursor.execute("select title, num_addeditems, price_unit from add_to_cart natural inner join book natural inner join cart natural inner join inventory where user_id = %s", (userId,))
+        cartProducts = cursor.fetchall()
+        cursor.close()
+        return cartProducts
+
     def getBookID(self, bookTitle):
         cursor = self.connection.cursor()
 

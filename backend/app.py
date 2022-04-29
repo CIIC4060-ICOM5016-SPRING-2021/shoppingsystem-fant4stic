@@ -288,6 +288,13 @@ def registerNewUser():
     else:
         return jsonify("Method not supported"), 405
 
+@app.route('/fant4stic/user/getUserCart/<int:userId>', methods=['GET'])
+def getProductsInCart(userId):
+    if request.method == 'GET':
+        return CartController().getProdsInCart(userId)
+    else:
+        return jsonify("Method not supported"), 405
+
 @app.route('/fant4stic/user/clear_cart_content/<int:userId>', methods=['DELETE'])
 def clearCartContent(userId):
     if request.method == 'DELETE':
