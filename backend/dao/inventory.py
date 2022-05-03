@@ -95,6 +95,13 @@ class InventoryDAO:
         cursor.close()
         return result
 
+    def getBookTitleAndPrice(self):
+        cursor = self.connection.cursor()
+        cursor.execute("Select title, price_unit from book natural inner join inventory;")
+        result = cursor.fetchall()
+        cursor.close()
+        return result
+
     def getBookPriceAndUnits(self, bookId):
         cursor = self.connection.cursor()
         query = "select price_unit, available_units from inventory where book_id = %s;"

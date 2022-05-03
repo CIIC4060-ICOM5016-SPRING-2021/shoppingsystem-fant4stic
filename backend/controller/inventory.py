@@ -22,6 +22,12 @@ class InventoryController:
         result['AvailableUnits'] = row[3]
         return result
 
+    def build_dict_titleInventory(self,row):
+        result = {}
+        result['Title'] = row[0]
+        result['UnitPrice'] = row[1]
+        return result
+
     def build_dict_update_price(self,row):
         result = {}
         result['InventoryId'] = row[0]
@@ -87,6 +93,15 @@ class InventoryController:
         result = []
         for row in records:
             dict = self.build_dict_inventory(row)
+            result.append(dict)
+        return jsonify(result), 200
+
+    def getBookInventory(self):
+        dao = InventoryDAO()
+        records = dao.getBookTitleAndPrice()
+        result = []
+        for row in records:
+            dict = self.build_dict_titleInventory(row)
             result.append(dict)
         return jsonify(result), 200
 
