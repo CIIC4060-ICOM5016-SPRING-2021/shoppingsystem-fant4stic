@@ -1,26 +1,59 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
-
-
+import Axios from "axios";
 
 function HomePage() {
     const [open, setOpen] = useState(false);
+    const [inputEmail, setInputEmail] = useState('');
+    const [inputPassword, setInputPassword] = useState('');
+    const [allUsers, setAllUsers] = useState([])
+    var roleId;
     console.log(open);
-    const handleChange = (event, newValue) => {
-        setOpen(true);
+    console.log(inputEmail)
+    console.log(inputPassword)
+    const navigate = useNavigate();
+
+    const handleChangeEmail = (event) =>{
+        setInputEmail(event.target.value)
+    }
+    const handleChangePassword = (event) =>{
+        setInputPassword(event.target.value)
+    }
+    const handleChange = (event) => {
+        roleId = isUserRegistered(inputEmail,inputPassword,allUsers);
+        //Change view corresponding with the roleId of the user
+        if(roleId === 1){
+            navigate("/CustomerView");
+        }
+        else if(roleId === 2){
+            navigate("/AdminView");
+        }
+        else {
+            console.log(event.target.value)
+            setOpen(true);
+        }
     }
 
-    return (<Segment><Header dividing textAlign="center" size="huge">Welcome to DB Demo</Header>
+    useEffect(() => {
+        Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
+            .then(res => {
+                console.log("Getting from ::::", res.data)
+                setAllUsers(res.data)
+            }).catch(err => console.log(err))
+    }, [])
+
+    return (<Segment><Header dividing textAlign="center" size="huge">Welcome to the Fant4stic Book Store</Header>
             <Modal
                 centered={false}
                 open={open}
                 onClose={() => setOpen(false)}
                 onOpen={() => setOpen(true)}
             >
-                <Modal.Header>Needs changing!</Modal.Header>
+                <Modal.Header>Invalid User</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
-                        This is a modal but it serves to show how buttons and functions can be implemented.
+                        Invalid user information. Please re-enter email and password.
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
@@ -33,16 +66,19 @@ function HomePage() {
                     <Grid.Column>
                         <Form>
                             <Form.Input
-                                icon='user'
+                                icon='mail outline'
                                 iconPosition='left'
-                                label='Username'
-                                placeholder='Username'
+                                label='Email'
+                                placeholder='Email'
+                                onChange = {handleChangeEmail}
                             />
                             <Form.Input
                                 icon='lock'
                                 iconPosition='left'
                                 label='Password'
                                 type='password'
+                                placeholder ='Password'
+                                onChange = {handleChangePassword}
                             />
                             <Button content='Login' primary onClick={handleChange}/>
                         </Form>
@@ -58,5 +94,18 @@ function HomePage() {
     )
 }
 
+//Check if User is registered if so return 1 for customer, 2 for admin, and 0 if the user is not registered.
+function isUserRegistered(userEmail, userPassword, arrAllUsers){
+    var isRegistered = 0;
+    for(let i = 0 ; i < arrAllUsers.length ; i++){
+        if((userEmail === arrAllUsers[i].Email) && (userPassword === arrAllUsers[i].Password)  && (1 === arrAllUsers[i].RoleId) ){
+            isRegistered =1; //Is a Customer
+        }
+        else if((userEmail === arrAllUsers[i].Email) && (userPassword === arrAllUsers[i].Password)  && (2 === arrAllUsers[i].RoleId) ){
+            isRegistered =2; //Is an Admin
+        }
+    }
+    return isRegistered;
+}
 
 export default HomePage;
