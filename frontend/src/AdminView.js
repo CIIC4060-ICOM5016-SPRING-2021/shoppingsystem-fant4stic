@@ -6,6 +6,13 @@ import Products from "./Products";
 function AdminView(){
     const [isAuth, setIsAuth] = useState(true)
     const [notShow, setNotShow] = useState(false)
+    //Retrieve info of admin login values, same thing should be done for registered values:
+    const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
+    const email = loginvalues['inputEmail'];
+    console.log("Email Stored: " + email);
+    const password = loginvalues['inputPassword'];
+    console.log("Password Stored: " + password);
+
     const panes = [
         {
             menuItem: 'Products', render: () => (

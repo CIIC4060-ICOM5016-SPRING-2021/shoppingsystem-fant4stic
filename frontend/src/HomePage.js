@@ -3,25 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
 import Axios from "axios";
 
+function getLoginValues(){
+    const storedVals = localStorage.getItem('loginValues');
+    if(!storedVals){
+        return {inputEmail: '', inputPassword : ''};
+    }
+    return JSON.parse(storedVals);
+}
+
 function HomePage() {
     const [open, setOpen] = useState(false);
-    const [inputEmail, setInputEmail] = useState('');
-    const [inputPassword, setInputPassword] = useState('');
+    const [values, setValues] = useState(getLoginValues);
     const [allUsers, setAllUsers] = useState([])
     var roleId;
     console.log(open);
-    console.log(inputEmail)
-    console.log(inputPassword)
+    console.log(values.inputEmail)
+    console.log(values.inputPassword)
     const navigate = useNavigate();
 
-    const handleChangeEmail = (event) =>{
-        setInputEmail(event.target.value)
-    }
-    const handleChangePassword = (event) =>{
-        setInputPassword(event.target.value)
-    }
     const handleChange = (event) => {
-        roleId = isUserRegistered(inputEmail,inputPassword,allUsers);
+        roleId = isUserRegistered(values.inputEmail,values.inputPassword,allUsers)
         //Change view corresponding with the roleId of the user
         if(roleId === 1){
             navigate("/CustomerView");
@@ -34,6 +35,10 @@ function HomePage() {
             setOpen(true);
         }
     }
+
+    useEffect(()=>{
+        localStorage.setItem('loginValues',JSON.stringify(values))
+    },[values]);
 
     useEffect(() => {
         Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
@@ -50,14 +55,14 @@ function HomePage() {
                 onClose={() => setOpen(false)}
                 onOpen={() => setOpen(true)}
             >
-                <Modal.Header>Invalid User</Modal.Header>
+                <Modal.Header>Login Failed</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
                         Invalid user information. Please re-enter email and password.
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={() => setOpen(false)}>OK</Button>
+                    <Button color='red' onClick={() => setOpen(false)}>OK</Button>
                 </Modal.Actions>
             </Modal>
             <Segment placeholder>
@@ -70,7 +75,8 @@ function HomePage() {
                                 iconPosition='left'
                                 label='Email'
                                 placeholder='Email'
-                                onChange = {handleChangeEmail}
+                                value = {values.inputEmail}
+                                onChange = {e => setValues({...values, inputEmail: e.target.value})}
                             />
                             <Form.Input
                                 icon='lock'
@@ -78,13 +84,14 @@ function HomePage() {
                                 label='Password'
                                 type='password'
                                 placeholder ='Password'
-                                onChange = {handleChangePassword}
+                                value = {values.inputPassword}
+                                onChange = {e => setValues({...values, inputPassword: e.target.value})}
                             />
                             <Button content='Login' primary onClick={handleChange}/>
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle'>
-                        <Button content='Sign up' icon='signup' size='big' onClick={handleChange}/>
+                        <Button content='Sign up' icon='signup' size='big' color='orange' onClick={handleChange}/>
                     </Grid.Column>
                 </Grid>
 

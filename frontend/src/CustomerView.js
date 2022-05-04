@@ -8,6 +8,12 @@ function CustomerView(){
     const [isAuth, setIsAuth] = useState(true)
     const [notShow, setNotShow] = useState(false)
     const [data, setDate] = useState([])
+    //Retrieve info of customer login values, same thing should be done for registered values:
+    const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
+    const email = loginvalues['inputEmail'];
+    console.log("Email Stored: " + email);
+    const password = loginvalues['inputPassword'];
+    console.log("Password Stored: " + password);
 
     useEffect(() => {
         Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
