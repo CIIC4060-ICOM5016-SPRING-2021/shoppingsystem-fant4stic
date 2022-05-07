@@ -91,7 +91,7 @@ function HomePage() {
                         </Form>
                     </Grid.Column>
                     <Grid.Column verticalAlign='middle'>
-                        <Button content='Sign up' icon='signup' size='big' color='orange' onClick={handleChange}/>
+                        <Button content='Sign up' icon='signup' size='big' color='orange' onClick={() => {setOpen(false); navigate('/Register');}}/>
                     </Grid.Column>
                 </Grid>
 

@@ -7,6 +7,7 @@ import HomePage from "./HomePage";
 import CustomerView from "./CustomerView";
 import AdminView from "./AdminView";
 import Dashboard from "./Dashboard";
+import Register from "./Register";
 
 
 const root = ReactDOM.createRoot( document.getElementById('root') );
@@ -14,6 +15,7 @@ root.render(
     <BrowserRouter>
         <Routes>
             <Route exact path="/Home" element={<HomePage/>} />
+            <Route exact path="/Register" element={<Register/>} />
             <Route exact path="/CustomerView" element={<CustomerView/>} />
             <Route exact path="/AdminView" element={<AdminView/>} />
             <Route exact path="/Dashboard" element={<Dashboard/>} />
