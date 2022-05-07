@@ -2,18 +2,37 @@ import React, {Component, useState, useEffect} from 'react';
 import {Button, Card, Container, Divider, Header, Icon, Modal, Tab} from "semantic-ui-react";
 import Dashboard from "./Dashboard";
 import Products from "./Products";
+import { useNavigate } from 'react-router-dom';
 import Axios from "axios";
 
 function CustomerView(){
     const [isAuth, setIsAuth] = useState(true)
-    const [notShow, setNotShow] = useState(false)
+    const [verifyLogOut, setVerifyLogOut] = useState(false)
+    const [view, setView] = useState('/CustomerView')
     const [data, setDate] = useState([])
+    const navigate = useNavigate();
     //Retrieve info of customer login values, same thing should be done for registered values:
     const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
     const email = loginvalues['inputEmail'];
     console.log("Email Stored: " + email);
     const password = loginvalues['inputPassword'];
     console.log("Password Stored: " + password);
+
+    const handleChange = (event) => {
+        setVerifyLogOut(true)
+    }
+
+    const logOut = (event) =>{
+        if(view === '/CustomerView'){
+            // When login out reset login values used to enter to website
+            localStorage.setItem('loginValues',JSON.stringify({inputEmail: "", inputPassword : ""}))
+            setView('/')
+            navigate('/')
+        }
+        else if(view === '/'){
+            setView('/CustomerView')
+        }
+    }
 
     useEffect(() => {
         Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
@@ -60,6 +79,18 @@ function CustomerView(){
         {
             menuItem: 'Profile', render: () => (
                 <Tab.Pane active={isAuth}>
+                    <Modal
+                        centered={false}
+                        open={verifyLogOut}
+                        onClose={() => setVerifyLogOut(false)}
+                        onOpen={() => setVerifyLogOut(true)}
+                    >
+                        <Modal.Header>Are you sure you want to Logout?</Modal.Header>
+                        <Modal.Actions>
+                            <Button color='green' onClick={logOut}>YES</Button>
+                            <Button color='red' onClick={() => {setVerifyLogOut(false)}}>NO</Button>
+                        </Modal.Actions>
+                    </Modal>
                     <Header as='h2' color='red'>
                         <Icon name='address card'/>Customer's Profile
                     </Header>
@@ -76,6 +107,7 @@ function CustomerView(){
                         {arr}
 
                     </table>
+                    <Button content = 'LogOut' color='red' onClick={handleChange}/>
                 </Tab.Pane>
 
             )
