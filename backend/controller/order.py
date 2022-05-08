@@ -48,7 +48,7 @@ class OrderController:
         records = orderdao.getCustomerMostBoughtCategories(customerId)
         result =[]
         for i in range(len(records)):
-            dict = self.build_dict_category(records[i],i+1)
+            dict = self.build_dict_category(records[i])
             result.append(dict)
         return jsonify(result)
 
@@ -61,7 +61,7 @@ class OrderController:
         records = orderdao.getCustomerMostBoughtProducts(customerId)
         result = []
         for i in range(len(records)):
-            dict = self.build_dict_product(records[i], i + 1)
+            dict = self.build_dict_product(records[i])
             result.append(dict)
         return jsonify(result)
 
@@ -125,15 +125,15 @@ class OrderController:
         result['BookPrice'] = row[10]/row[9] # Unit Price of Book
         return result
 
-    def build_dict_category(self,row,i):
+    def build_dict_category(self,row):
         result = {}
-        result['#' + str(i) + '_Genre'] = row[0]
+        result['Genre'] = row[0]
         result['AmountBoughtFromCategory'] = row[1]
         return result
 
-    def build_dict_product(self,row,i):
+    def build_dict_product(self,row):
         result = {}
-        result['#' + str(i) + '_ProductID'] = row[0]
+        result['ProductID'] = row[0]
         result['Title'] = row[1]
         result['AmountOfCopiesBought'] = row[2]
         return result
