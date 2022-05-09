@@ -3,6 +3,7 @@ import {Button, Card, Container, Divider, Header, Icon, Modal, Tab} from "semant
 import Dashboard from "./Dashboard";
 import Products from "./Products";
 import { useNavigate } from 'react-router-dom';
+import CustomerStatistics from "./CustomerStatistics";
 import Axios from "axios";
 
 function CustomerView(){
@@ -94,6 +95,9 @@ function CustomerView(){
                     <Header as='h2' color='red'>
                         <Icon name='address card'/>Customer's Profile
                     </Header>
+                    <div style={{float: 'right'}}>
+                        <Button content = 'LogOut' color='red' onClick={handleChange}/>
+                    </div>
                     <table>
                         <tr>
                             <th>First Name</th>
@@ -107,7 +111,7 @@ function CustomerView(){
                         {arr}
 
                     </table>
-                    <Button content = 'LogOut' color='red' onClick={handleChange}/>
+                    <CustomerStatistics/>
                 </Tab.Pane>
 
             )

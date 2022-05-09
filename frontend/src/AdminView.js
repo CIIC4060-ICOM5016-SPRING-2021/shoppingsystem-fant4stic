@@ -61,7 +61,9 @@ function AdminView(){
                     <Header as='h2' color='blue'>
                     <Icon name='briefcase'/>Admin's Profile
                     </Header>
+                    <div style={{float: 'right'}}>
                     <Button content = 'LogOut' color='red' onClick={handleChange}/>
+                    </div>
                 </Tab.Pane>
             )
         },
