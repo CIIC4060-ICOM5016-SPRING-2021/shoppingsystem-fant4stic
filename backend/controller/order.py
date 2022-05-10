@@ -212,16 +212,12 @@ class OrderController:
         #Simply get the value and return them in a dictionary
         result = dao.getMostBoughtCategoryGlobally()
 
-        #Initialize a count variable to rank the genres
-        count = 1
-
         #Initialize a variable to store the result
         rankedGenres = []
 
         for row in result:
-            dictionary = self.build_dict_category(row, count)
+            dictionary = self.build_dict_category(row)
             rankedGenres.append(dictionary)
-            count = count + 1
 
         #Now return the jsonified result
         return jsonify(rankedGenres)
@@ -234,17 +230,13 @@ class OrderController:
         #Simply get the value and return them in a dictionary
         result = dao.getMostBoughtProductGlobally()
 
-        #Initialize a count variable to rank the products
-        count = 1
-
         #Initialize a variable to store the result
         rankedProducts = []
 
         for row in result:
             #For every book get the title to provide it as an output
-            dictionary = self.build_dict_product(row, count)
+            dictionary = self.build_dict_product(row)
             rankedProducts.append(dictionary)
-            count = count + 1
 
         #Now return the jsonified result
         return jsonify(rankedProducts)
