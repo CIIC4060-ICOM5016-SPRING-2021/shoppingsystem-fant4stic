@@ -3,11 +3,16 @@ import {Button, Card, Container, Divider, Header, Modal, Tab, Icon} from "semant
 import Dashboard from "./Dashboard";
 import Products from "./Products";
 import { useNavigate } from 'react-router-dom';
+import Axios from "axios";
 
 function AdminView(){
     const [isAuth, setIsAuth] = useState(true)
     const [verifyLogOut, setVerifyLogOut] = useState(false)
     const [view, setView] = useState('/AdminView')
+    const [allUsers, setAllUsers] = useState([])
+    const [admin, setAdmin] = useState({"UserId": "","RoleId": "","FirstName": "","LastName": "",
+        "UserName": "","Email": "","Password": "","Age": "","Sex": "","PhoneNumber": ""})
+    console.log(admin)
     const navigate = useNavigate();
     //Retrieve info of admin login values, same thing should be done for registered values:
     const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
@@ -31,6 +36,18 @@ function AdminView(){
             setView('/AdminView')
         }
     }
+
+    useEffect(() => {
+        Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
+            .then(res => {
+                console.log("All Users:", res.data)
+                setAllUsers(res.data)
+            }).catch(err => console.log(err))
+    }, [])
+
+    useEffect(()=>{
+        setAdmin(getUserInfo(email,password,allUsers))
+    },[allUsers]);
 
     const panes = [
         {
@@ -64,6 +81,26 @@ function AdminView(){
                     <div style={{float: 'right'}}>
                     <Button content = 'LogOut' color='red' onClick={handleChange}/>
                     </div>
+                    <table>
+                        <tr>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Age</th>
+                            <th>Sex</th>
+                            <th>Phone number</th>
+                        </tr>
+                        <tr>
+                            <td>{admin.FirstName}</td>
+                            <td>{admin.LastName}</td>
+                            <td>{admin.UserName}</td>
+                            <td>{admin.Email}</td>
+                            <td>{admin.Age}</td>
+                            <td>{admin.Sex}</td>
+                            <td>{admin.PhoneNumber}</td>
+                        </tr>
+                    </table>
                 </Tab.Pane>
             )
         },
@@ -77,4 +114,16 @@ function AdminView(){
     return <Tab panes={panes}/>
 
 }
+
+function getUserInfo(email, password, arrAllUsers){
+    let user = {"UserId": "","RoleId": "","FirstName": "","LastName": "","UserName": "","Email": "",
+        "Password": "","Age": "","Sex": "","PhoneNumber": ""}
+    for(let i = 0 ; i < arrAllUsers.length ; i++){
+        if((email === arrAllUsers[i].Email) && (password === arrAllUsers[i].Password)){
+            user = arrAllUsers[i]; //Store all the information of match user
+        }
+    }
+    return user;
+}
+
 export default AdminView;

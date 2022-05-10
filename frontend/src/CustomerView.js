@@ -10,7 +10,10 @@ function CustomerView(){
     const [isAuth, setIsAuth] = useState(true)
     const [verifyLogOut, setVerifyLogOut] = useState(false)
     const [view, setView] = useState('/CustomerView')
-    const [data, setDate] = useState([])
+    const [allUsers, setAllUsers] = useState([])
+    const [customer, setCustomer] = useState({"UserId": "","RoleId": "","FirstName": "","LastName": "",
+        "UserName": "","Email": "","Password": "","Age": "","Sex": "","PhoneNumber": ""})
+    console.log(customer)
     const navigate = useNavigate();
     //Retrieve info of customer login values, same thing should be done for registered values:
     const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
@@ -38,24 +41,26 @@ function CustomerView(){
     useEffect(() => {
         Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
             .then(res => {
-                console.log("Getting from ::::", res.data)
-                setDate(res.data)
+                console.log("All Users:", res.data)
+                setAllUsers(res.data)
             }).catch(err => console.log(err))
     }, [])
 
-    const arr = data.map((data, index) => {
-        return (
-            <tr>
-               <td>{data.FirstName}</td>
-                <td>{data.LastName}</td>
-                <td>{data.UserName}</td>
-                <td>{data.Email}</td>
-                <td>{data.Age}</td>
-                <td>{data.Sex}</td>
-                <td>{data.PhoneNumber}</td>
-            </tr>
-        )
-    })
+    useEffect(()=>{
+        setCustomer(getUserInfo(email,password,allUsers))
+    },[allUsers]);
+
+    // useEffect(()=>{
+    //     const customerId = customer.UserId;
+    //     if(customerId !== "") {
+    //         Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/order/rankcustomercategoriesbought/' + String(customerId))
+    //             .then(res => {
+    //                 console.log("Most Bought Categories", res.data)
+    //                 setRankMostBoughtCat(res.data)
+    //             }).catch(err => console.log(err))
+    //     }
+    // },[customer]);
+
     const panes = [
         {
             menuItem: 'Products', render: () => (
@@ -100,16 +105,23 @@ function CustomerView(){
                     </div>
                     <table>
                         <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                            <th>First name</th>
+                            <th>Last name</th>
                             <th>Username</th>
                             <th>Email</th>
                             <th>Age</th>
                             <th>Sex</th>
                             <th>Phone number</th>
                         </tr>
-                        {arr}
-
+                        <tr>
+                            <td>{customer.FirstName}</td>
+                            <td>{customer.LastName}</td>
+                            <td>{customer.UserName}</td>
+                            <td>{customer.Email}</td>
+                            <td>{customer.Age}</td>
+                            <td>{customer.Sex}</td>
+                            <td>{customer.PhoneNumber}</td>
+                        </tr>
                     </table>
                     <CustomerStatistics/>
                 </Tab.Pane>
@@ -126,4 +138,16 @@ function CustomerView(){
     return <Tab panes={panes}/>
 
 }
+
+function getUserInfo(email, password, arrAllUsers){
+    let user = {"UserId": "","RoleId": "","FirstName": "","LastName": "","UserName": "","Email": "",
+        "Password": "","Age": "","Sex": "","PhoneNumber": ""}
+    for(let i = 0 ; i < arrAllUsers.length ; i++){
+        if((email === arrAllUsers[i].Email) && (password === arrAllUsers[i].Password)){
+            user = arrAllUsers[i]; //Store all the information of match user
+        }
+    }
+    return user;
+}
+
 export default CustomerView;
