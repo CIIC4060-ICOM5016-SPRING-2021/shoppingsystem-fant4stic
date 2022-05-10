@@ -50,17 +50,6 @@ function CustomerView(){
         setCustomer(getUserInfo(email,password,allUsers))
     },[allUsers]);
 
-    // useEffect(()=>{
-    //     const customerId = customer.UserId;
-    //     if(customerId !== "") {
-    //         Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/order/rankcustomercategoriesbought/' + String(customerId))
-    //             .then(res => {
-    //                 console.log("Most Bought Categories", res.data)
-    //                 setRankMostBoughtCat(res.data)
-    //             }).catch(err => console.log(err))
-    //     }
-    // },[customer]);
-
     const panes = [
         {
             menuItem: 'Products', render: () => (
@@ -80,6 +69,11 @@ function CustomerView(){
         {
             menuItem: 'Cart', render: () => (
                 <Tab.Pane active={isAuth}><Products/></Tab.Pane>
+            )
+        },
+        {
+            menuItem: 'Dashboard - Global Statistics', render: () => (
+                <Tab.Pane active={isAuth}><Dashboard/></Tab.Pane>
             )
         },
         {
@@ -126,11 +120,6 @@ function CustomerView(){
                     <CustomerStatistics/>
                 </Tab.Pane>
 
-            )
-        },
-        {
-            menuItem: 'Dashboard', render: () => (
-                <Tab.Pane active={isAuth}><Dashboard/></Tab.Pane>
             )
         }
     ]

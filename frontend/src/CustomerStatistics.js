@@ -81,9 +81,6 @@ function CustomerStatistics(){
         }
     },[customer]);
 
-    let renderLabel = function(entry) {
-        return entry.Title;
-    }
 
     return (
         <>
