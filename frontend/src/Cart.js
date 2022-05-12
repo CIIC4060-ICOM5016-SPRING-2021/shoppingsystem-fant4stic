@@ -76,7 +76,7 @@ function CartProduct() {
     console.log(data)
 
     return <Card.Group>
-        <CartProducts info={data}/>
+        <CartProducts info={data} userId = {user.UserId}/>
     </Card.Group>
 }
 

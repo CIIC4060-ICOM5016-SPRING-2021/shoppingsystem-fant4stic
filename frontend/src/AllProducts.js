@@ -1,5 +1,7 @@
 import React, {Component, useState} from 'react';
 import {Button, Card, Container, Header, Modal, Tab} from "semantic-ui-react";
+import Axios from "axios";
+import CartProduct from "./Cart";
 
 function AllProducts(props) {
     console.log(props)
@@ -26,6 +28,7 @@ function AllProducts(props) {
 }
 
 function CartProducts(props){
+    const result = []
     console.log(props)
     props.info.forEach(value => console.log(value.Title));
     return props.info.map(value => {return <Card>
@@ -38,10 +41,20 @@ function CartProducts(props){
         </Card.Content>
         <Card.Content extra>
             <div className='ui two buttons'>
-                <Button basic color='green'>
+                <Button basic color='green' onClick={() => {console.log("Added Book:"); console.log(value.Title);
+                    var wishListId = window. prompt("On which Wishlist?: "); alert("The indicated Wishlist is: " + wishListId);
+                    Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/wishlist',
+                         {"Title": String(value.Title), "Customer_id": String(props.userId), "Wishlist_id": String(wishListId)}).then(() => console.log('Addition successful'))
+                        .catch(err => {console.log(err);
+                            alert("Invalid Wishlist provided or book was already on the indicated Wishlist")} )
+                    setTimeout("location.reload(true);",1000) /*document.location.reload(true)*/}}>
                     Add to Wish List
                 </Button>
-                <Button basic color='red'>
+
+                <Button basic color='red' onClick={() => {console.log("Deleted Book:"); console.log(value.Title);
+                    Axios.delete('https://fant4stic-books.herokuapp.com/fant4stic/cart',
+                        {data: {"Title": String(value.Title), "Customer_id": String(props.userId)}}).then(() => console.log('Delete successful'));
+                    setTimeout("location.reload(true);",1000) /*document.location.reload(true)*/}}>
                     Remove from Cart
                 </Button>
             </div>
