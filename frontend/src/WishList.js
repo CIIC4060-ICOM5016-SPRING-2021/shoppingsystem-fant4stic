@@ -47,59 +47,8 @@ function WishListProducts() {
     console.log("Here II")
     console.log(data)
 
-    const random = [
-        {
-            "WishlistId": 10,
-            "CustomerId": 26,
-            "ListOfProducts": [
-                {
-                    "BookTitle": "Queen of Shadows",
-                    "DateAdded": "2022-4-29"
-                },
-                {
-                    "BookTitle": "We",
-                    "DateAdded": "2022-4-29"
-                }
-            ]
-        },
-        {
-            "WishlistId": 11,
-            "CustomerId": 26,
-            "ListOfProducts": [
-                {
-                    "BookTitle": "Harry Potter and the Sorcerer's Stone",
-                    "DateAdded": "2022-4-13"
-                },
-                {
-                    "BookTitle": "Throne of Glass",
-                    "DateAdded": "2022-4-7"
-                },
-                {
-                    "BookTitle": "Cézanne",
-                    "DateAdded": "2022-4-13"
-                },
-                {
-                    "BookTitle": "The Martian",
-                    "DateAdded": "2022-4-13"
-                },
-                {
-                    "BookTitle": "The Subtle Art of Not Giving a F*ck: A Counterintuitive Approach to Living a Good Life",
-                    "DateAdded": "2022-4-13"
-                },
-                {
-                    "BookTitle": "Interview with the Vampire",
-                    "DateAdded": "2022-4-13"
-                },
-                {
-                    "BookTitle": "Queen of Shadows",
-                    "DateAdded": "2022-4-8"
-                }
-            ]
-        }
-    ]
-
     return <Card.Group>
-        <WishProducts info={data}/>
+        <WishProducts info={data} userId={user.UserId}/>
     </Card.Group>
 }
 export default WishListProducts
