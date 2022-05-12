@@ -1,6 +1,6 @@
 import React, {Component, useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import {Button, Card, Modal, List} from 'semantic-ui-react';
+import {Button, Card, Modal, Transition, Table} from 'semantic-ui-react';
 import Axios from "axios";
 import {getUserInfo} from "./CustomerView"
 
@@ -37,28 +37,70 @@ function CustomerOrders(){
             }).catch(err => console.log(err))
     },[customer]);
 
-    return (
-        <Card.Group>
-            {historyOrders.map((value) => (
-                <Card
-                    header={'Order # '+String(value.OrderId)}
-                    meta={'Order Date and Time: '+value.OrderDate+'/'+value.OrderTime}
-                    description={'Total Price of Order: $'+String(value.TotalPrice)}
-                    extra={<Modal
-                        trigger={<Button color='gray'>Products Bought</Button>}
-                        header={'Products from Order #'+String(value.OrderId)}
-                        content={value.ListOfProductsBought.map((val=>(
-                            (<List bulleted>
-                                <List.Item>Book Title: {val.BookTitle}, Copies: {val.NumberOfQuantities}, Book Price: ${val.BookPrice}</List.Item>
-                            </List>
-                            )
-                        )))}
-                        actions={[{ key: 'done', content: 'Done', positive: true }]}
-                    />}
-                />
-            ))}
-        </Card.Group>
-    )
+    function tableProductsBought(arrayOrders){
+        return (<div><Table attached='top' celled stripped>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>Book Title</Table.HeaderCell>
+                    <Table.HeaderCell>Copies</Table.HeaderCell>
+                    <Table.HeaderCell>Book Price</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            {arrayOrders.ListOfProductsBought.map((val=>((
+                <Table.Body>
+                    <Table.Row>
+                        <Table.Cell >{val.BookTitle}</Table.Cell>
+                        <Table.Cell>{val.NumberOfQuantities}</Table.Cell>
+                        <Table.Cell positive>${val.BookPrice}</Table.Cell>
+                    </Table.Row>
+                </Table.Body>
+            ))))}
+            </Table>
+            <Table attached='bottom' celled>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell >Total Payment of Order</Table.HeaderCell>
+                        </Table.Row>
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell positive>${arrayOrders.TotalPrice}</Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table.Header>
+            </Table>
+            </div>
+        )
+    }
+    //Display only if Customer has orders
+    if(historyOrders.length !==0) {
+        return (
+            <Card.Group>
+                {historyOrders.map((value) => (
+                    <Card
+                        header={'Order # ' + String(value.OrderId)}
+                        meta={'Order Date and Time: ' + value.OrderDate + '/' + value.OrderTime}
+                        description={'Total Price of Order: $' + String(value.TotalPrice)}
+                        extra={<Modal
+                            trigger={<Button color='gray'>Products Bought</Button>}
+                            header={'Products from Order #' + String(value.OrderId)}
+                            content={tableProductsBought(value)}
+                            actions={[{key: 'done', content: 'Done', positive: true}]}
+                        />}
+                    />
+                ))}
+            </Card.Group>
+        )
+    }else{
+        return (
+                <Card.Group>
+                    <Card
+                        header='This Customer does not have any orders yet'
+                        meta='Consider making a purchase'
+                        description='Go to our product section and purchase whatever you like'
+                    />
+                </Card.Group>
+        )
+    }
 }
 
 export default CustomerOrders;

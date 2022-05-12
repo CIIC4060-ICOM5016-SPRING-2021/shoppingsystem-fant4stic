@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import Products from "./Products";
 import { useNavigate } from 'react-router-dom';
 import Axios from "axios";
+import AllCustomerOrders from "./AllCustomerOrders";
 
 function AdminView(){
     const [isAuth, setIsAuth] = useState(true)
@@ -105,7 +106,15 @@ function AdminView(){
             )
         },
         {
-            menuItem: 'Dashboard', render: () => (
+            menuItem: 'History of Orders', render: () => (
+                <Tab.Pane active={isAuth}><Header as='h4'>
+                    <Icon name='shopping bag'/>
+                    Orders of All Customers
+                </Header><AllCustomerOrders/></Tab.Pane>
+            )
+        },
+        {
+            menuItem: 'Dashboard - Global Statistics', render: () => (
                 <Tab.Pane active={isAuth}><Dashboard/></Tab.Pane>
             )
         }
