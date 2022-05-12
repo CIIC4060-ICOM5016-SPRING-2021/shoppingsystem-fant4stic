@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CustomerStatistics from "./CustomerStatistics";
 import Axios from "axios";
 import CartProduct from "./Cart";
+import WishListProducts from "./WishList";
 
 function CustomerView(){
     const [isAuth, setIsAuth] = useState(true)
@@ -64,7 +65,10 @@ function CustomerView(){
         },
         {
             menuItem: 'WishList', render: () => (
-                <Tab.Pane active={isAuth}><Products/></Tab.Pane>
+                <Tab.Pane active={isAuth}><Header as='h4' height="50">
+                    <Icon name='add to cart'/>
+                    Wishlists:
+                </Header><WishListProducts/></Tab.Pane>
             )
         },
         {
