@@ -108,3 +108,11 @@ class InventoryDAO:
         cursor.execute(query, (bookId,))
         result = cursor.fetchone()
         return result
+
+    def getBooksShowCard(self):
+        cursor = self.connection.cursor()
+        query = "select title, first_name, last_name, language, num_pages, year_publ, price_unit "
+        query += "from book natural inner join inventory natural inner join author natural inner join writes;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result

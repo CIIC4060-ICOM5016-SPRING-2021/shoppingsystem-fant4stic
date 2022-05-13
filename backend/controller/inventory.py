@@ -50,6 +50,17 @@ class InventoryController:
         result['AvailableUnits'] = row[1]
         return result
 
+    def build_dict_showBook(self, row):
+        result = {}
+        result['Title'] = row[0]
+        result['AuthorFirstName'] = row[1]
+        result['AuthorLastName'] = row[2]
+        result['Language'] = row[3]
+        result['NumPages'] = row[4]
+        result['YearPublished'] = row[5]
+        result['PriceUnit'] = row[6]
+        return result
+
     def addBookProduct(self,json):
         bookName = json['Title']
         userId = json['UserId']
@@ -102,6 +113,15 @@ class InventoryController:
         result = []
         for row in records:
             dict = self.build_dict_titleInventory(row)
+            result.append(dict)
+        return jsonify(result), 200
+
+    def getAllBooksShow(self):
+        dao = InventoryDAO()
+        records = dao.getBooksShowCard()
+        result = []
+        for row in records:
+            dict = self.build_dict_showBook(row)
             result.append(dict)
         return jsonify(result), 200
 

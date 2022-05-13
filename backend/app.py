@@ -29,6 +29,13 @@ def getAllBooks():
     else:
         jsonify("Method not supported"),405
 
+@app.route('/fant4stic/inventory/get_all/show', methods = ['GET'])
+def getAllBooksShow():
+    if request.method == 'GET':
+        return InventoryController().getAllBooksShow()
+    else:
+        jsonify("Method not supported"),405
+
 @app.route('/fant4stic/author/get_all', methods = ['GET'])
 def getAllAuthors():
     if request.method == 'GET':
