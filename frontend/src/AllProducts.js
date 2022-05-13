@@ -5,21 +5,22 @@ import CartProduct from "./Cart";
 
 function AllProducts(props) {
     console.log(props)
-    props.info.forEach(value => console.log(value.pname));
+    props.info.forEach(value => console.log(value.Title));
     return props.info.map(value => {return <Card>
         <Card.Content>
-            <Card.Header>{value.pname}</Card.Header>
-            <Card.Meta>{value.pprice}</Card.Meta>
-            <Card.Description>
-                {value.pname}
-            </Card.Description>
+            <Card.Header>{value.Title}</Card.Header>
+            <Card.Meta>Author: {value.AuthorFirstName} {value.AuthorLastName}</Card.Meta>
+            <Card.Meta>Language: {value.Language}</Card.Meta>
+            <Card.Meta>Pages: {value.NumPages}</Card.Meta>
+            <Card.Meta>Year: {value.YearPublished}</Card.Meta>
+            <Card.Meta>${value.PriceUnit}</Card.Meta>
         </Card.Content>
         <Card.Content extra>
             <div className='ui two buttons'>
                 <Button basic color='green'>
                     Add to Wish List
                 </Button>
-                <Button basic color='green'>
+                <Button basic color='blue'>
                     Add to Cart
                 </Button>
             </div>
