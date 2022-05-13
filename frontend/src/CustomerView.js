@@ -8,7 +8,6 @@ import Axios from "axios";
 import CartProduct from "./Cart";
 import WishListProducts from "./WishList";
 import CustomerOrders from "./CustomerOrders";
-import * as url from "url";
 
 function CustomerView(){
     const [isAuth, setIsAuth] = useState(true)
