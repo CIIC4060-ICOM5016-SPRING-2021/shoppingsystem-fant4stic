@@ -77,6 +77,16 @@ function CustomerView(){
                 <Tab.Pane active={isAuth}><Header as='h4'>
                     <Icon name='add to cart'/>
                     Books in Cart
+                    <div style={{float: 'right'}}>
+                    <Button type={"button"} color={"red"} negative onClick={() => {
+                        const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
+                        const email = loginvalues['inputEmail'];
+                        const password = loginvalues['inputPassword'];
+
+                        const user = getUserInfo(email,password,allUsers)
+                        Axios.delete("https://fant4stic-books.herokuapp.com/fant4stic/user/clear_cart_content/" + String(user.UserId)); setTimeout("location.reload(true);",1000)}}>
+                        Clear Cart Content</Button>
+                    </div>
                 </Header><CartProduct/></Tab.Pane>
             )
         },

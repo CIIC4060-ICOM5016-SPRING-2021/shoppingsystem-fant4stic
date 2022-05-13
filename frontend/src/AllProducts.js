@@ -1,5 +1,5 @@
-import React, {Component, useState} from 'react';
-import {Button, Card, Container, Header, Modal, Tab} from "semantic-ui-react";
+import React, {Component, useEffect, useState} from 'react';
+import {Button, Card, CardContent, CardHeader, Container, Header, Modal, Tab} from "semantic-ui-react";
 import Axios from "axios";
 import CartProduct from "./Cart";
 
@@ -28,7 +28,15 @@ function AllProducts(props) {
 }
 
 function CartProducts(props){
-    const result = []
+    const [wishArray, setWish] = useState([""])
+    var idsArray = []
+    var count = -1
+
+    useEffect(() => {Axios.get("https://fant4stic-books.herokuapp.com/fant4stic/wishlist/get_all")
+        .then(res => {console.log("Wishlists:", res.data); setWish(res.data)})}, [])
+
+    wishArray.forEach(value => {if(value.CustomerId == props.userId){idsArray.push(value.WishlistId)}})
+
     console.log(props)
     props.info.forEach(value => console.log(value.Title));
     return props.info.map(value => {return <Card>
@@ -42,12 +50,12 @@ function CartProducts(props){
         <Card.Content extra>
             <div className='ui two buttons'>
                 <Button basic color='green' onClick={() => {console.log("Added Book:"); console.log(value.Title);
-                    var wishListId = window. prompt("On which Wishlist?: "); alert("The indicated Wishlist is: " + wishListId);
+                    var wishListId = window. prompt("On which of the following Wishlists? : " + idsArray.toString()); alert("The indicated Wishlist is: " + wishListId);
                     Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/wishlist',
                          {"Title": String(value.Title), "Customer_id": String(props.userId), "Wishlist_id": String(wishListId)}).then(() => console.log('Addition successful'))
                         .catch(err => {console.log(err);
                             alert("Invalid Wishlist provided or book was already on the indicated Wishlist")} )
-                    /*setTimeout("location.reload(true);",1000)*/ /*document.location.reload(true)*/}}>
+                    /*setTimeout("location.reload(true);",1000)*/ /*document.location.reload(true)*/ count = -1}}>
                     Add to Wish List
                 </Button>
 
@@ -63,8 +71,28 @@ function CartProducts(props){
 }
 
 function WishProducts(props){
+    const [wishArray, setWish] = useState([""])
+    var idsArray = []
+    var count = -1
+
     console.log(props)
     props.info.forEach(value => console.log(value.WishlistId));
+
+    useEffect(() => {Axios.get("https://fant4stic-books.herokuapp.com/fant4stic/wishlist/get_all")
+        .then(res => {console.log("Wishlists:", res.data); setWish(res.data)})}, [])
+
+    wishArray.forEach(value => {if(value.CustomerId == props.userId){idsArray.push(value.WishlistId)}})
+
+    console.log("Array Ids:")
+    console.log(idsArray)
+    console.log(props.info)
+
+    if(props.info.length == 0){console.log("If works"); return idsArray.map(value => {count ++; return <Card>
+        <CardContent>
+            <Card.Header>Wishlist #{idsArray[count]}</Card.Header>
+        </CardContent>
+    </Card>})}
+
     return props.info.map(WishList => {return <div> <Header>Wishlist #{WishList.WishlistId}</Header> {WishList.ListOfProducts.map(value => {return <Card>
         <Card.Content>
             <Card.Header>{value.BookTitle}</Card.Header>
