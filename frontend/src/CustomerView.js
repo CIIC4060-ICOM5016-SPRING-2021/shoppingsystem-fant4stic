@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
-import {Button, Card, Container, Divider, Header, Icon, Modal, Segment, Tab, Input, Form, Grid} from "semantic-ui-react";
+import {Button, Card, Container, Divider, Header, Icon, Modal, Segment, Tab, Input, Form, Grid, Table} from "semantic-ui-react";
 import Dashboard from "./Dashboard";
 import Products from "./Products";
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ function CustomerView(){
     const [isAuth, setIsAuth] = useState(true)
     const [verifyLogOut, setVerifyLogOut] = useState(false)
     const [verifyUpdate, setVerifyUpdate] = useState(false)
+    const [verifyDelete, setVerifyDelete] = useState(false)
     const [view, setView] = useState('/CustomerView')
     const [allUsers, setAllUsers] = useState([])
     const [customer, setCustomer] = useState({"UserId": "","RoleId": "","FirstName": "","LastName": "",
@@ -34,6 +35,10 @@ function CustomerView(){
 
     const handleChange1 = (event) => {
         setVerifyUpdate(true)
+    }
+
+    const handleChange2 = (event) => {
+        setVerifyDelete(true)
     }
 
     const logOut = (event) =>{
@@ -136,6 +141,15 @@ function CustomerView(){
         customer.PhoneNumber = customerData.PhoneNumber
     }
 
+    const deleteAccount = () =>{
+        Axios.delete("https://fant4stic-books.herokuapp.com/fant4stic/user/crud_operations/" + String(customer.UserId))
+            .then((response) => {
+                logOut()
+            },(error) => {
+                console.log(error);
+            });
+    }
+
     const panes = [
         {
             menuItem: 'Products', render: () => (
@@ -201,14 +215,29 @@ function CustomerView(){
                             <Button color='red' onClick={() => {setVerifyLogOut(false)}}>NO</Button>
                         </Modal.Actions>
                     </Modal>
+                    <Modal
+                        centered={false}
+                        open={verifyDelete}
+                        onClose={() => setVerifyDelete(false)}
+                        onOpen={() => setVerifyDelete(true)}
+                    >
+                        <Modal.Header>Are you sure you want to delete your account?</Modal.Header>
+                        <Modal.Actions>
+                            <Button color='green' onClick={deleteAccount}>Confirm</Button>
+                            <Button color='red' onClick={() => {setVerifyDelete(false)}}>Cancel</Button>
+                        </Modal.Actions>
+                    </Modal>
                     <Header as='h2' color='red'>
                         <Icon name='address card'/>Customer's Profile
                     </Header>
                     <div style={{float: 'right'}}>
                         <Button content = 'LogOut' color='red' onClick={handleChange}/>
                     </div>
-                    <div style={{float: 'right'}}>
+                    <div style={{float: 'left'}}>
                         <Button content = 'Update Profile' color='blue' onClick={handleChange1}/>
+                    </div>
+                    <div style={{float: 'right'}}>
+                        <Button content = 'Delete Account' color='black' onClick={handleChange2}/>
                     </div>
 
                     <Modal
@@ -284,26 +313,31 @@ function CustomerView(){
                         </Modal.Actions>
                     </Modal>
 
-                    <table>
-                        <tr>
-                            <th>First name</th>
-                            <th>Last name</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Phone number</th>
-                        </tr>
-                        <tr>
-                            <td>{customer.FirstName}</td>
-                            <td>{customer.LastName}</td>
-                            <td>{customer.UserName}</td>
-                            <td>{customer.Email}</td>
-                            <td>{customer.Age}</td>
-                            <td>{customer.Sex}</td>
-                            <td>{customer.PhoneNumber}</td>
-                        </tr>
-                    </table>
+                    <Table celled fixed singleLine>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>First name</Table.HeaderCell>
+                                <Table.HeaderCell>Last name</Table.HeaderCell>
+                                <Table.HeaderCell>Username</Table.HeaderCell>
+                                <Table.HeaderCell>Email</Table.HeaderCell>
+                                <Table.HeaderCell>Age</Table.HeaderCell>
+                                <Table.HeaderCell>Sex</Table.HeaderCell>
+                                <Table.HeaderCell>Phone number</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell>{customer.FirstName}</Table.Cell>
+                                <Table.Cell>{customer.LastName}</Table.Cell>
+                                <Table.Cell>{customer.UserName}</Table.Cell>
+                                <Table.Cell>{customer.Email}</Table.Cell>
+                                <Table.Cell>{customer.Age}</Table.Cell>
+                                <Table.Cell>{customer.Sex}</Table.Cell>
+                                <Table.Cell>{customer.PhoneNumber}</Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
                     <CustomerStatistics/>
                 </Tab.Pane>
 

@@ -11,7 +11,7 @@ import {
     Segment,
     Grid,
     Form,
-    Input
+    Input, Table
 } from "semantic-ui-react";
 import Dashboard from "./Dashboard";
 import Products from "./Products";
@@ -23,6 +23,7 @@ function AdminView(){
     const [isAuth, setIsAuth] = useState(true)
     const [verifyLogOut, setVerifyLogOut] = useState(false)
     const [verifyUpdate, setVerifyUpdate] = useState(false)
+    const [verifyDelete, setVerifyDelete] = useState(false)
     const [view, setView] = useState('/AdminView')
     const [allUsers, setAllUsers] = useState([])
     const [admin, setAdmin] = useState({"UserId": "","RoleId": "","FirstName": "","LastName": "",
@@ -44,6 +45,10 @@ function AdminView(){
 
     const handleChange1 = (event) => {
         setVerifyUpdate(true)
+    }
+
+    const handleChange2 = (event) => {
+        setVerifyDelete(true)
     }
 
     const logOut = (event) =>{
@@ -146,6 +151,15 @@ function AdminView(){
         admin.PhoneNumber = adminData.PhoneNumber
     }
 
+    const deleteAccount = () =>{
+        Axios.delete("https://fant4stic-books.herokuapp.com/fant4stic/user/crud_operations/" + String(admin.UserId))
+            .then((response) => {
+                logOut()
+            },(error) => {
+                console.log(error);
+            });
+    }
+
     const panes = [
         {
             menuItem: 'Products', render: () => (
@@ -155,6 +169,19 @@ function AdminView(){
                         <Divider/>
                     </Container>
                     <Products/></Tab.Pane>
+            )
+        },
+        {
+            menuItem: 'History of Orders', render: () => (
+                <Tab.Pane active={isAuth}><Header as='h4'>
+                    <Icon name='shopping bag'/>
+                    Orders of All Customers
+                </Header><AllCustomerOrders/></Tab.Pane>
+            )
+        },
+        {
+            menuItem: 'Dashboard - Global Statistics', render: () => (
+                <Tab.Pane active={isAuth}><Dashboard/></Tab.Pane>
             )
         },
         {
@@ -172,14 +199,29 @@ function AdminView(){
                             <Button color='red' onClick={() => {setVerifyLogOut(false)}}>NO</Button>
                         </Modal.Actions>
                     </Modal>
+                    <Modal
+                        centered={false}
+                        open={verifyDelete}
+                        onClose={() => setVerifyDelete(false)}
+                        onOpen={() => setVerifyDelete(true)}
+                    >
+                        <Modal.Header>Are you sure you want to delete your account?</Modal.Header>
+                        <Modal.Actions>
+                            <Button color='green' onClick={deleteAccount}>Confirm</Button>
+                            <Button color='red' onClick={() => {setVerifyDelete(false)}}>Cancel</Button>
+                        </Modal.Actions>
+                    </Modal>
                     <Header as='h2' color='blue'>
-                    <Icon name='briefcase'/>Admin's Profile
+                        <Icon name='briefcase'/>Admin's Profile
                     </Header>
                     <div style={{float: 'right'}}>
-                    <Button content = 'LogOut' color='red' onClick={handleChange}/>
+                        <Button content = 'LogOut' color='red' onClick={handleChange}/>
+                    </div>
+                    <div style={{float: 'left'}}>
+                        <Button content = 'Update Profile' color='blue' onClick={handleChange1}/>
                     </div>
                     <div style={{float: 'right'}}>
-                        <Button content = 'Update Profile' color='blue' onClick={handleChange1}/>
+                        <Button content = 'Delete Account' color='black' onClick={handleChange2}/>
                     </div>
 
                     <Modal
@@ -254,40 +296,32 @@ function AdminView(){
                             <Button color='red' onClick={resetCustomerData}>Cancel</Button>
                         </Modal.Actions>
                     </Modal>
-                    <table>
-                        <tr>
-                            <th>First name</th>
-                            <th>Last name</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Phone number</th>
-                        </tr>
-                        <tr>
-                            <td>{admin.FirstName}</td>
-                            <td>{admin.LastName}</td>
-                            <td>{admin.UserName}</td>
-                            <td>{admin.Email}</td>
-                            <td>{admin.Age}</td>
-                            <td>{admin.Sex}</td>
-                            <td>{admin.PhoneNumber}</td>
-                        </tr>
-                    </table>
+                    <Table celled fixed singleLine>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>First name</Table.HeaderCell>
+                                <Table.HeaderCell>Last name</Table.HeaderCell>
+                                <Table.HeaderCell>Username</Table.HeaderCell>
+                                <Table.HeaderCell>Email</Table.HeaderCell>
+                                <Table.HeaderCell>Age</Table.HeaderCell>
+                                <Table.HeaderCell>Sex</Table.HeaderCell>
+                                <Table.HeaderCell>Phone number</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell>{admin.FirstName}</Table.Cell>
+                                <Table.Cell>{admin.LastName}</Table.Cell>
+                                <Table.Cell>{admin.UserName}</Table.Cell>
+                                <Table.Cell>{admin.Email}</Table.Cell>
+                                <Table.Cell>{admin.Age}</Table.Cell>
+                                <Table.Cell>{admin.Sex}</Table.Cell>
+                                <Table.Cell>{admin.PhoneNumber}</Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
                 </Tab.Pane>
-            )
-        },
-        {
-            menuItem: 'History of Orders', render: () => (
-                <Tab.Pane active={isAuth}><Header as='h4'>
-                    <Icon name='shopping bag'/>
-                    Orders of All Customers
-                </Header><AllCustomerOrders/></Tab.Pane>
-            )
-        },
-        {
-            menuItem: 'Dashboard - Global Statistics', render: () => (
-                <Tab.Pane active={isAuth}><Dashboard/></Tab.Pane>
             )
         }
     ]
