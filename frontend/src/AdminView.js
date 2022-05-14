@@ -24,12 +24,16 @@ function AdminView(){
     const [verifyLogOut, setVerifyLogOut] = useState(false)
     const [verifyUpdate, setVerifyUpdate] = useState(false)
     const [verifyDelete, setVerifyDelete] = useState(false)
+    const [verifyAdd, setVerifyAdd] = useState(false)
     const [view, setView] = useState('/AdminView')
     const [allUsers, setAllUsers] = useState([])
     const [admin, setAdmin] = useState({"UserId": "","RoleId": "","FirstName": "","LastName": "",
         "UserName": "","Email": "","Password": "","Age": "","Sex": "","PhoneNumber": ""})
     const [adminData, setAdminData] = useState({"FirstName": "","LastName": "",
         "Username": "","Email": "","Password": "","Age": "","Sex": "","PhoneNumber": ""}) //Used for update form
+    const [bookData, setBookData] = useState({"UserId": "", "Title": "", "Language": "", "NumberOfPages": "",
+        "YearPublished": "", "Genre": "", "AuthorFirstName": "", "AuthorLastName": "", "AuthorCountry": "", "BookPrice": "",
+        "BookNumberUnits": ""}) //Used for add product form
     console.log(admin)
     const navigate = useNavigate();
     //Retrieve info of admin login values, same thing should be done for registered values:
@@ -51,16 +55,8 @@ function AdminView(){
         setVerifyDelete(true)
     }
 
-    const logOut = (event) =>{
-        if(view === '/AdminView'){
-            // When login out reset login values used to enter to website
-            localStorage.setItem('loginValues',JSON.stringify({inputEmail: "", inputPassword : ""}))
-            setView('/')
-            navigate('/')
-        }
-        else if(view === '/'){
-            setView('/AdminView')
-        }
+    const handleChange3 = (event) => {
+        setVerifyAdd(true)
     }
 
     useEffect(() => {
@@ -75,7 +71,19 @@ function AdminView(){
         setAdmin(getUserInfo(email,password,allUsers))
     },[allUsers]);
 
-    const resetCustomerData = () =>{
+    const logOut = (event) =>{
+        if(view === '/AdminView'){
+            // When login out reset login values used to enter to website
+            localStorage.setItem('loginValues',JSON.stringify({inputEmail: "", inputPassword : ""}))
+            setView('/')
+            navigate('/')
+        }
+        else if(view === '/'){
+            setView('/AdminView')
+        }
+    }
+
+    const resetAdminData = () =>{
         adminData.FirstName = "";
         adminData.LastName = "";
         adminData.UserName = "";
@@ -160,12 +168,117 @@ function AdminView(){
             });
     }
 
+    const addProduct = () =>{
+        const book = {
+            UserId: admin.UserId,
+            Title: bookData.Title,
+            Language: bookData.Language,
+            NumberOfPages: String(bookData.NumberOfPages),
+            YearPublished: parseInt(bookData.YearPublished),
+            Genre: bookData.Genre,
+            AuthorFirstName: bookData.AuthorFirstName,
+            AuthorLastName: bookData.AuthorLastName,
+            AuthorCountry: bookData.AuthorCountry,
+            BookPrice: parseInt(bookData.BookPrice),
+            BookNumberUnits: parseInt(bookData.BookNumberUnits)
+        }
+        console.log(book)
+        Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/inventory/addproduct', book)
+            .then(res=> console.log('Posting Data',res))
+            .catch(err=>console.log(err))
+        setVerifyAdd(false)
+        setTimeout("location.reload(true);",1000)
+    }
+
     const panes = [
         {
             menuItem: 'Products', render: () => (
                 <Tab.Pane active={isAuth}>
                     <Container>
+                        <Modal
+                            centered={false}
+                            open={verifyAdd}
+                            onClose={() => setVerifyAdd(false)}
+                            onOpen={() => setVerifyAdd(true)}
+                        >
+                            <Modal.Header>Enter book information</Modal.Header>
+                            <Segment placeholder>
+                                <Grid columns={1} relaxed='very' stackable>
+                                    <Grid.Column verticalAlign='middle'>
+                                        <Form>
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Title'
+                                                placeholder={bookData.Title}
+                                                onChange = {e => setBookData({...bookData, Title: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Language'
+                                                placeholder={bookData.Language}
+                                                onChange = {e => setBookData({...bookData, Language: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Number of pages'
+                                                placeholder={bookData.NumberOfPages}
+                                                onChange = {e => setBookData({...bookData, NumberOfPages: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Year published'
+                                                placeholder={bookData.YearPublished}
+                                                onChange = {e => setBookData({...bookData, YearPublished: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Genre'
+                                                placeholder={bookData.Genre}
+                                                onChange = {e => setBookData({...bookData, Genre: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Author first name'
+                                                placeholder={bookData.AuthorFirstName}
+                                                onChange = {e => setBookData({...bookData, AuthorFirstName: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Author last name'
+                                                placeholder={bookData.AuthorLastName}
+                                                onChange = {e => setBookData({...bookData, AuthorLastName: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Author country'
+                                                placeholder={bookData.AuthorCountry}
+                                                onChange = {e => setBookData({...bookData, AuthorCountry: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Price'
+                                                placeholder={bookData.BookPrice}
+                                                onChange = {e => setBookData({...bookData, BookPrice: e.target.value})}
+                                            />
+                                            <Form.Field
+                                                control = {Input}
+                                                label='Number of units'
+                                                placeholder={bookData.BookNumberUnits}
+                                                onChange = {e => setBookData({...bookData, BookNumberUnits: e.target.value})}
+                                            />
+                                        </Form>
+                                    </Grid.Column>
+                                </Grid>
+                            </Segment>
+                            <Modal.Actions>
+                                <Button color='green' onClick={addProduct}>Add product</Button>
+                                <Button color='red' onClick={() => {setVerifyAdd(false)}}>Cancel</Button>
+                            </Modal.Actions>
+                        </Modal>
                         <Header>Modify Fant4stic Store Products:</Header>
+                        <div style={{float: 'inline-start'}}>
+                            <Button content = 'Add new product' color='orange' onClick={handleChange3}/>
+                        </div>
                         <Divider/>
                     </Container>
                     <Products/></Tab.Pane>
@@ -293,7 +406,7 @@ function AdminView(){
                         </Segment>
                         <Modal.Actions>
                             <Button color='green' onClick={updateProfile}>Confirm</Button>
-                            <Button color='red' onClick={resetCustomerData}>Cancel</Button>
+                            <Button color='red' onClick={resetAdminData}>Cancel</Button>
                         </Modal.Actions>
                     </Modal>
                     <Table celled fixed singleLine>
