@@ -85,6 +85,33 @@ function AllProductsAdmin(props) {
                     setTimeout("location.reload(true);",1000)
                 }
                 }/>
+                <Button content = 'Edit book info' basic color='red' onClick={() => {
+                    books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
+                    var Title = window.prompt("Enter book title: ");
+                    if (Title === null){
+                        Title = value.Title
+                    }
+                    var language = window.prompt("Enter book language: ")
+                    if (language === null){
+                        language = value.Language
+                    }
+                    var numPages = window.prompt("Enter number of pages: ")
+                    if (numPages === null){
+                        numPages = value.NumPages
+                    }
+                    var yearPubl = window.prompt("Enter year published: ")
+                    if (yearPubl === null){
+                        yearPubl = value.YearPublished
+                    }
+                    Axios.put('https://fant4stic-books.herokuapp.com/fant4stic/book/crud_operations/' + String(bookId),{"Title": Title, "Language": language, "NumberPages": numPages, "YearPublished": yearPubl})
+                        .then((response) => {
+                            console.log(response);
+                        }, (error) => {
+                            console.log(error);
+                        });
+                    setTimeout("location.reload(true);",1000)
+                }
+                }/>
             </div>
         </Card.Content>
     </Card>
