@@ -14,7 +14,7 @@ import {
     Input, Table
 } from "semantic-ui-react";
 import Dashboard from "./Dashboard";
-import Products from "./Products";
+import ProductsAdmin from "./ProductsAdmin";
 import { useNavigate } from 'react-router-dom';
 import Axios from "axios";
 import AllCustomerOrders from "./AllCustomerOrders";
@@ -281,7 +281,7 @@ function AdminView(){
                         </div>
                         <Divider/>
                     </Container>
-                    <Products/></Tab.Pane>
+                    <ProductsAdmin/></Tab.Pane>
             )
         },
         {
