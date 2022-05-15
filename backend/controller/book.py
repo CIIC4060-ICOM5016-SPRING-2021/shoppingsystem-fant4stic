@@ -13,34 +13,37 @@ class BookController:
 
     def getBookByGenre(self, genre_id):
         dao = BookDAO()
+        inventoryController = InventoryController()
         if(not dao.existGenre(genre_id)):
             return jsonify("Invalid GenreId."), 404
         records = dao.getBookByGenre(genre_id)
         result = []
-        result.append("Genre: " + dao.getGenreName(genre_id))
         if not records:
             return jsonify("Genre not found"), 404
         else:
-            for i in range(len(records)):
-                dict = self.build_dict_book(records[i])
+            groupRecords = inventoryController.groupBooks(records)
+            for row in groupRecords:
+                dict = inventoryController.build_dict_showBook(row)
                 result.append(dict)
             return jsonify(result), 200
 
     def orderByTitle(self, order_in):
         cursor = self.connection.cursor()
         dao = BookDAO()
+        inventoryController = InventoryController()
         result = []
-        result.append(order_in)
         if order_in == 'Ascending' or order_in == 'ascending':
             records = dao.getBooksAscendingOrder()
-            for i in range(len(records)):
-                dict = self.build_dict_book(records[i])
+            groupRecords = inventoryController.groupBooks(records)
+            for row in groupRecords:
+                dict = inventoryController.build_dict_showBook(row)
                 result.append(dict)
             return jsonify(result), 200
         elif order_in == 'Descending' or order_in == 'descending':
             records = dao.getBooksDescendingOrder()
-            for i in range(len(records)):
-                dict = self.build_dict_book(records[i])
+            groupRecords = inventoryController.groupBooks(records)
+            for row in groupRecords:
+                dict = inventoryController.build_dict_showBook(row)
                 result.append(dict)
             return jsonify(result), 200
         else:
@@ -49,18 +52,20 @@ class BookController:
     def orderByPrice(self, order_in):
         cursor = self.connection.cursor()
         dao = BookDAO()
+        inventoryController = InventoryController()
         result = []
-        result.append(order_in)
         if order_in == "lowtohigh" or order_in == 'low to high':
             records = dao.getBooksFromLowToHigh()
-            for i in range(len(records)):
-                dict = self.build_dict_bookAndinventory(records[i])
+            groupRecords = inventoryController.groupBooks(records)
+            for row in groupRecords:
+                dict = inventoryController.build_dict_showBook(row)
                 result.append(dict)
             return jsonify(result), 200
         elif order_in == 'hightolow' or order_in == 'high to low':
             records = dao.getBooksFromHighToLow()
-            for i in range(len(records)):
-                dict = self.build_dict_bookAndinventory(records[i])
+            groupRecords = inventoryController.groupBooks(records)
+            for row in groupRecords:
+                dict = inventoryController.build_dict_showBook(row)
                 result.append(dict)
             return jsonify(result), 200
         else:
