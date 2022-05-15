@@ -1,7 +1,13 @@
 import React, {Component, useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab} from 'semantic-ui-react';
+import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab, Image} from 'semantic-ui-react';
 import Axios from "axios";
+import logo from "./images/ProjectsLogoHomePage.png"
+import giomar from "./images/giomar.jpeg"
+import hedin from "./images/hedin.jpeg"
+import jeremy from "./images/jeremy.jpeg"
+import william from "./images/william.png"
+import './HomePage.css'
 
 function getLoginValues(){
     const storedVals = localStorage.getItem('loginValues');
@@ -48,7 +54,8 @@ function HomePage() {
             }).catch(err => console.log(err))
     }, [])
 
-    return (<Segment><Header dividing textAlign="center" size="huge">Welcome to the Fant4stic Book Store</Header>
+    return (<Segment><Header dividing textAlign="center" size="huge" color='light blue'>
+            Welcome to the Fant4stic Book Store <Image src={logo} size='2140*1200'/></Header>
             <Modal
                 centered={false}
                 open={open}
@@ -96,6 +103,23 @@ function HomePage() {
                 </Grid>
 
                 <Divider vertical>Or</Divider>
+            </Segment>
+
+            <Segment color='orange'>
+                <Header textAlign='centered' size="medium">
+                    "Books have allowed me to travel way more than my passport."
+                </Header>
+                <Header textAlign='centered' size="medium">
+                    "The best is when you find a book you can't put down."
+                </Header>
+                <Header textAlign='centered' size='small'>
+                    Store founded by:
+                </Header>
+                <p align='center' size='small'>Hedin García <Image src={hedin} size ='small'/></p>
+                <p align='center' size='small'>Jeremy Márquez <Image src={jeremy} size='small'/></p>
+                <p align='center' size='small'>William Negrón <Image src={william} size='small'/></p>
+                <p align='center' size='small'>Giomar Santiago <Image src={giomar} size='small'/></p>
+
             </Segment>
         </Segment>
     )
