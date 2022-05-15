@@ -57,7 +57,7 @@ function AllProductsAdmin(props) {
             <Card.Meta>Unit Price: ${value.PriceUnit}</Card.Meta>
         </Card.Content>
         <Card.Content extra>
-            <div className='ui three buttons'>
+            <div className='ui four buttons'>
                 <Button content = 'Edit price' basic color='green' onClick={() => {
                     books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
                     var bookPrice = window. prompt("Enter new book price: ");
@@ -73,9 +73,12 @@ function AllProductsAdmin(props) {
                     setTimeout("location.reload(true);",1000)
                 }
                 }/>
-                <Button content = 'Edit available units' basic color='blue' onClick={() => {
+                <Button content = 'Edit stock' basic color='blue' onClick={() => {
                     books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
                     var bookUnits = window. prompt("Enter available units: ");
+                    if(bookUnits === null){
+                        bookUnits = value.AvailableUnits
+                    }
                     Axios.put('https://fant4stic-books.herokuapp.com/fant4stic/inventory/updateavailableunitsproduct',{"BookId": bookId, "AvailableUnits": bookUnits, "UserId": admin.UserId})
                         .then((response) => {
                             console.log(response);
@@ -83,6 +86,54 @@ function AllProductsAdmin(props) {
                             console.log(error);
                         });
                     setTimeout("location.reload(true);",1000)
+                }
+                }/>
+            </div>
+            <div className='ui four buttons'>
+                <Button content = 'Edit book' basic color='black' onClick={() => {
+                    books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
+                    var Title = window.prompt("Enter book title: ");
+                    if (Title === null){
+                        Title = value.Title
+                    }
+                    var language = window.prompt("Enter book language: ")
+                    if (language === null){
+                        language = value.Language
+                    }
+                    var numPages = window.prompt("Enter number of pages: ")
+                    if (numPages === null){
+                        numPages = value.NumPages
+                    }
+                    var yearPubl = window.prompt("Enter year published: ")
+                    if (yearPubl === null){
+                        yearPubl = value.YearPublished
+                    }
+                    Axios.put('https://fant4stic-books.herokuapp.com/fant4stic/book/crud_operations/' + String(bookId),{"Title": Title, "Language": language, "NumberPages": numPages, "YearPublished": yearPubl})
+                        .then((response) => {
+                            console.log(response);
+                        }, (error) => {
+                            console.log(error);
+                        });
+                    setTimeout("location.reload(true);",1000)
+                }
+                }/>
+                <Button content = 'Delete book' basic color='red' onClick={() => {
+                    books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
+                    var decision = window.prompt("Are you sure you want to delete this book? (Yes/No): ")
+                    if (decision === "Yes"){
+                        const data = {
+                            "BookId": bookId,
+                            "UserId": admin.UserId
+                        }
+                        Axios.delete('https://fant4stic-books.herokuapp.com/fant4stic/inventory/deleteproduct',{data})
+                            .then((response) => {
+                                console.log(response);
+                            }, (error) => {
+                                console.log(error);
+                            });
+                        setTimeout("location.reload(true);",1000)
+                    }
+
                 }
                 }/>
             </div>

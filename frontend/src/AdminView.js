@@ -264,7 +264,7 @@ function AdminView(){
                         </Modal>
                         <Header>Modify Fant4stic Store Products:</Header>
                         <div style={{float: 'inline-start'}}>
-                            <Button content = 'Add new product' color='orange' onClick={handleChange3}/>
+                            <Button content = 'Add new book' color='orange' onClick={handleChange3}/>
                         </div>
                         <Divider/>
                     </Container>
