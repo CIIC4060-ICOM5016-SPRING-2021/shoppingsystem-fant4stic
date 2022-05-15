@@ -82,6 +82,18 @@ function AllProducts(props) {
                     setTimeout("location.reload(true);",1000)
                 }
                 }/>
+                <Button content = 'Edit available units' basic color='blue' onClick={() => {
+                    books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
+                    var bookUnits = window. prompt("Enter available units: ");
+                    Axios.put('https://fant4stic-books.herokuapp.com/fant4stic/inventory/updateavailableunitsproduct',{"BookId": bookId, "AvailableUnits": bookUnits, "UserId": admin.UserId})
+                        .then((response) => {
+                            console.log(response);
+                        }, (error) => {
+                            console.log(error);
+                        });
+                    setTimeout("location.reload(true);",1000)
+                }
+                }/>
             </div>
         </Card.Content>
     </Card>
