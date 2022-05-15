@@ -4,12 +4,21 @@ import Axios from "axios";
 import CartProduct from "./Cart";
 
 function AllProducts(props) {
-    console.log(props)
+    const [wishArray, setWish] = useState([""])
+    var idsArray = []
+    var count = -1
+
+    useEffect(() => {Axios.get("https://fant4stic-books.herokuapp.com/fant4stic/wishlist/get_all")
+        .then(res => {console.log("Wishlists:", res.data); setWish(res.data)})}, [])
+
+    wishArray.forEach(value => {if(value.CustomerId == props.userId){idsArray.push(value.WishlistId)}})
+
+    console.log(props.info)
     props.info.forEach(value => console.log(value.Title));
-    return props.info.map(value => {return <Card>
+    return props.info.map(value => {console.log("Author Value:"); console.log(value); return <Card>
         <Card.Content>
             <Card.Header>{value.Title}</Card.Header>
-            <Card.Meta>Author: {value.AuthorFirstName} {value.AuthorLastName}</Card.Meta>
+            <Card.Meta>Author:</Card.Meta>
             <Card.Meta>Language: {value.Language}</Card.Meta>
             <Card.Meta>Pages: {value.NumPages}</Card.Meta>
             <Card.Meta>Year: {value.YearPublished}</Card.Meta>
@@ -17,10 +26,25 @@ function AllProducts(props) {
         </Card.Content>
         <Card.Content extra>
             <div className='ui two buttons'>
-                <Button basic color='green'>
+                <Button basic color='blue' onClick={() => {console.log("Added Book:"); console.log(value.Title);
+                    var wishListId = window. prompt("On which of the following Wishlists? : " + idsArray.toString()); alert("The indicated Wishlist is: " + wishListId);
+                    Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/wishlist',
+                        {"Title": String(value.Title), "Customer_id": String(props.userId), "Wishlist_id": String(wishListId)}).then(() => console.log('Addition successful'))
+                        .catch(err => {console.log(err);
+                            alert("Invalid Wishlist provided or book was already on the indicated Wishlist")} )
+                    /*setTimeout("location.reload(true);",1000)*/ /*document.location.reload(true)*/ count = -1}}>
                     Add to Wish List
                 </Button>
-                <Button basic color='blue'>
+                <Button basic color='yellow' onClick={() => {console.log("Added Book:"); console.log(value.Title);
+                    var numOfCopies = window. prompt("How much Copies?: "); alert("The indicated amount of copies is: " + numOfCopies)
+                    console.log(value.Title)
+                    console.log(props.userId)
+                    console.log(numOfCopies)
+                    const num = numOfCopies
+                    Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/cart',
+                        {"Title": String(value.Title), "Customer_id": String(props.userId), "Copies": parseInt(numOfCopies)}).then(() => console.log('Addition successful'))
+                        .catch(err => {console.log(err); alert("The amount of specified units exceed book availability, book was already on cart, or desired amount of copies was not specified")});
+                    /*setTimeout("location.reload(true);",1000)*/ /*document.location.reload(true)*/}}>
                     Add to Cart
                 </Button>
             </div>
