@@ -21,6 +21,7 @@ function AllProducts(props) {
             <Card.Meta>Language: {value.Language}</Card.Meta>
             <Card.Meta>Number of Pages: {value.NumPages}</Card.Meta>
             <Card.Meta>Year Published: {value.YearPublished}</Card.Meta>
+            <Card.Meta>Genre: {value.GenreName}</Card.Meta>
             {value.Authors.map((val)=>{
                 return <Card.Meta>Author: {val.AuthorName}</Card.Meta>
             })}

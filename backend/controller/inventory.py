@@ -59,7 +59,9 @@ class InventoryController:
         result['YearPublished'] = row[4]
         result['PriceUnit'] = row[5]
         result['AvailableUnits'] = row[6]
-        result['Authors'] = row[7]
+        result['GenreId'] = row[7]
+        result['GenreName'] = row[8]
+        result['Authors'] = row[9]
         return result
 
     def addBookProduct(self,json):
@@ -149,6 +151,8 @@ class InventoryController:
                     newBookRow.append(books[i][6])  # Add YearPubl
                     newBookRow.append(books[i][7])  # Add Price Unit
                     newBookRow.append(books[i][8])  # Add Available Units
+                    newBookRow.append(books[i][9])  # Add GenreId
+                    newBookRow.append(books[i][10])  # Add GenreName
                     bookIdChanged = False
                 if bookId == books[i][0]:
                     dict = self.build_dict_authorName(books[i])
