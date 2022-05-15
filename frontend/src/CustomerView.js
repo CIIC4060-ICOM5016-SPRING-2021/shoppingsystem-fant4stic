@@ -220,6 +220,17 @@ function CustomerView(){
                         Axios.delete("https://fant4stic-books.herokuapp.com/fant4stic/user/clear_cart_content/" + String(user.UserId)); setTimeout("location.reload(true);",1000)}}>
                         Clear Cart Content</Button>
                     </div>
+
+                    <div style={{float: 'right'}}>
+                        <Button type={"button"} color={"green"} positive onClick={() => {
+                            const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
+                            const email = loginvalues['inputEmail'];
+                            const password = loginvalues['inputPassword'];
+
+                            const user = getUserInfo(email,password,allUsers)
+                            Axios.post("https://fant4stic-books.herokuapp.com/fant4stic/user/buy_all/" + String(user.UserId)); alert("When purchased, any remaining books in cart mean they could not be bought due to lack of availability at the moment"); setTimeout("location.reload(true);",1000)}}>
+                            Buy Everything</Button>
+                    </div>
                 </Header><CartProduct/></Tab.Pane>
             )
         },
