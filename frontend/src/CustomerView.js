@@ -28,6 +28,9 @@ function CustomerView(){
     console.log("Email Stored: " + email);
     const password = loginvalues['inputPassword'];
     console.log("Password Stored: " + password);
+    const [wishArray, setWish] = useState([""])
+
+
 
     const handleChange = (event) => {
         setVerifyLogOut(true)
@@ -64,6 +67,12 @@ function CustomerView(){
     useEffect(()=>{
         setCustomer(getUserInfo(email,password,allUsers))
     },[allUsers]);
+
+    useEffect(() => {Axios.get("https://fant4stic-books.herokuapp.com/fant4stic/wishlist/get_all")
+        .then(res => {
+            console.log("Wishlists:", res.data);
+            setWish(res.data)})
+    }, [])
 
     const resetCustomerData = () =>{
         customerData.FirstName = "";
@@ -166,6 +175,33 @@ function CustomerView(){
                 <Tab.Pane active={isAuth}><Header as='h4' height="50">
                     <Icon name='add to cart'/>
                     Wishlists:
+                    <div style={{float: 'right'}}>
+                        <Button type={"button"} color={"red"} negative onClick={() => {
+                            const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
+                            const email = loginvalues['inputEmail'];
+                            const password = loginvalues['inputPassword'];
+                            var idsArray = []
+
+                            const user = getUserInfo(email,password,allUsers)
+
+                            wishArray.forEach(value => {if(value.CustomerId == user.UserId){idsArray.push(value.WishlistId)}})
+
+                            var wishListId = window. prompt("Which of the following Wishlists? : " + idsArray.toString()); alert("The indicated Wishlist is: " + wishListId);
+                            Axios.delete("https://fant4stic-books.herokuapp.com/fant4stic/wishlist/delete",{ data:{"User_id": parseInt(user.UserId), "Wishlist_id": parseInt(wishListId)}})
+                                .catch(err => {console.log(err); alert("The indicated Wishlist(" + String(wishListId) + ") is not valid")}); setTimeout("location.reload(true);",1000)}}>
+                            Delete Wishlist</Button>
+                    </div>
+
+                    <div style={{float: 'right'}}>
+                        <Button type={"button"} color={"green"} positive onClick={() => {
+                            const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
+                            const email = loginvalues['inputEmail'];
+                            const password = loginvalues['inputPassword'];
+
+                            const user = getUserInfo(email,password,allUsers)
+                            Axios.post("https://fant4stic-books.herokuapp.com/fant4stic/wishlist/create",{"User_id": parseInt(user.UserId)}); setTimeout("location.reload(true);",1000)}}>
+                            Create Wishlist</Button>
+                    </div>
                 </Header><WishListProducts/></Tab.Pane>
             )
         },
