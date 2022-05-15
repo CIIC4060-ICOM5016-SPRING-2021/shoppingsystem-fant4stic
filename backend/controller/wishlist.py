@@ -271,16 +271,16 @@ class WishlistController:
         if(userRole != "Customer"):
             return jsonify("User is unavailable to add items to a cart, because he/she is not a customer"), 405
 
-        #First we need to delete all items associated to this wishlist
-        dao.deleteWishListProducts(wishlistID)
-
-        #Now Proceed to delete the wishlist
-        dao.deleteWishList(userID, wishlistID)
-
-        #Verify if a wishlist associated with the customer exists (indicated wishlist was created)
+        #Verify if a wishlist associated with the customer exists (indicated wishlist was deleted)
         wishlistExists = dao.checkIfWishlistExists(userID, wishlistID)
 
-        if(not wishlistExists):
+        if(wishlistExists):
+            #Empty the table containing information about the non-existing wishlist
+            dao.deleteWishListProducts(wishlistID)
+
+            # Now Proceed to delete the wishlist
+            dao.deleteWishList(userID, wishlistID)
+
             #Build Json for output
             result = {}
             result ["User_id"] = userID
@@ -288,7 +288,7 @@ class WishlistController:
 
             return jsonify(result), 200
         else:
-            return jsonify("Wishlist was not created due to an internal error"), 500
+            return jsonify("Wishlist does not belong to this customer"), 500
 
     def build_dict_CustomerWishlist(self,row):
         result = {}
