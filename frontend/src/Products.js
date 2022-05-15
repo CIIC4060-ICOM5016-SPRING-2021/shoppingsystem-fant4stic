@@ -6,6 +6,27 @@ import Axios from "axios";
 function Products() {
     const [allProducts, setAllProducts] = useState([]);
     console.log(allProducts)
+    const [allUsers, setAllUsers] = useState([])
+    const loginvalues = JSON.parse(localStorage.getItem('loginValues'));
+    const email = loginvalues['inputEmail'];
+    const password = loginvalues['inputPassword'];
+
+    useEffect(() => {
+        Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
+            .then(res => {
+                console.log("All Users:", res.data)
+                setAllUsers(res.data)
+            }).catch(err => console.log(err))
+    }, [])
+
+    let user = {"UserId": "","RoleId": "","FirstName": "","LastName": "","UserName": "","Email": "",
+        "Password": "","Age": "","Sex": "","PhoneNumber": ""}
+    for(let i = 0 ; i < allUsers.length ; i++){
+        if((email === allUsers[i].Email) && (password === allUsers[i].Password)){
+            user = allUsers[i]; //Store all the information of match user
+        }
+    }
+
     useEffect(() => {
         Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/inventory/get_all/show')
             .then(res => {
@@ -15,7 +36,7 @@ function Products() {
     }, [])
 
     return <Card.Group>
-        <AllProducts info={allProducts}/>
+        <AllProducts info={allProducts} userId = {user.UserId}/>
     </Card.Group>
 }
 
