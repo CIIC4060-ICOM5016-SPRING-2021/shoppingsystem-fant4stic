@@ -15,7 +15,7 @@ import {
 import Axios from "axios";
 import CartProduct from "./Cart";
 
-function AllProducts(props) {
+function AllProductsAdmin(props) {
     const [books, setBooks] = useState([""])
     const [bookPrice, setBookPrice] = useState("")
     const [allUsers, setAllUsers] = useState([])
@@ -42,21 +42,6 @@ function AllProducts(props) {
     },[allUsers]);
 
 
-    const updateBookPrice = (value, bookId) => {
-        let data = {
-            BookId: bookId,
-            PriceUnit: bookPrice,
-            UserId: admin.UserId
-        }
-        console.log(data)
-        Axios.put('https://fant4stic-books.herokuapp.com/fant4stic/inventory/updatepriceproduct',data)
-            .then((response) => {
-                console.log(response);
-            }, (error) => {
-                console.log(error);
-            });
-    }
-
     console.log(props)
     props.info.forEach(value => console.log(value.Title));
     return props.info.map(value => {return <Card>
@@ -73,6 +58,9 @@ function AllProducts(props) {
                 <Button content = 'Edit price' basic color='green' onClick={() => {
                     books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
                     var bookPrice = window. prompt("Enter new book price: ");
+                    if (bookPrice === null){
+                        bookPrice = value.PriceUnit
+                    }
                     Axios.put('https://fant4stic-books.herokuapp.com/fant4stic/inventory/updatepriceproduct',{"BookId": bookId, "PriceUnit": bookPrice, "UserId": admin.UserId})
                         .then((response) => {
                             console.log(response);
@@ -208,5 +196,5 @@ function getUserInfo(email, password, arrAllUsers){
     return user;
 }
 
-export default AllProducts;
+export default AllProductsAdmin;
 export {CartProducts, WishProducts}
