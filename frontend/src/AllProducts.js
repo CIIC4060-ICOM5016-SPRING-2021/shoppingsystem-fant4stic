@@ -6,14 +6,18 @@ import CartProduct from "./Cart";
 function AllProducts(props) {
     console.log(props)
     props.info.forEach(value => console.log(value.Title));
-    return props.info.map(value => {return <Card>
+    return props.info.map(value => {
+        return <div> <Card>
         <Card.Content>
             <Card.Header>{value.Title}</Card.Header>
-            <Card.Meta>Author: {value.AuthorFirstName} {value.AuthorLastName}</Card.Meta>
             <Card.Meta>Language: {value.Language}</Card.Meta>
-            <Card.Meta>Pages: {value.NumPages}</Card.Meta>
-            <Card.Meta>Year: {value.YearPublished}</Card.Meta>
-            <Card.Meta>${value.PriceUnit}</Card.Meta>
+            <Card.Meta>Number of Pages: {value.NumPages}</Card.Meta>
+            <Card.Meta>Year Published: {value.YearPublished}</Card.Meta>
+            {value.Authors.map((val)=>{
+                return <Card.Meta>Author: {val.AuthorName}</Card.Meta>
+            })}
+            <Card.Meta>Available Copies: {value.AvailableUnits}</Card.Meta>
+            <Card.Meta>Unit Price: ${value.PriceUnit}</Card.Meta>
         </Card.Content>
         <Card.Content extra>
             <div className='ui two buttons'>
@@ -25,7 +29,8 @@ function AllProducts(props) {
                 </Button>
             </div>
         </Card.Content>
-    </Card>});
+    </Card>
+        </div>});
 }
 
 function CartProducts(props){

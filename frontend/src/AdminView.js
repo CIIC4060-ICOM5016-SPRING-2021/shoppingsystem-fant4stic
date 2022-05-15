@@ -1,18 +1,5 @@
 import React, {Component, useEffect, useState} from 'react';
-import {
-    Button,
-    Card,
-    Container,
-    Divider,
-    Header,
-    Modal,
-    Tab,
-    Icon,
-    Segment,
-    Grid,
-    Form,
-    Input, Table
-} from "semantic-ui-react";
+import {Button,Card,Container, Divider, Header, Modal, Tab, Icon, Segment, Grid, Form, Input, Table} from "semantic-ui-react";
 import Dashboard from "./Dashboard";
 import ProductsAdmin from "./ProductsAdmin";
 import { useNavigate } from 'react-router-dom';
