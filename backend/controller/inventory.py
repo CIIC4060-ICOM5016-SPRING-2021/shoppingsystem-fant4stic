@@ -52,13 +52,14 @@ class InventoryController:
 
     def build_dict_showBook(self, row):
         result = {}
-        result['Title'] = row[0]
-        result['AuthorFirstName'] = row[1]
-        result['AuthorLastName'] = row[2]
-        result['Language'] = row[3]
-        result['NumPages'] = row[4]
-        result['YearPublished'] = row[5]
-        result['PriceUnit'] = row[6]
+        result['BookId'] = row[0]
+        result['Title'] = row[1]
+        result['Language'] = row[2]
+        result['NumPages'] = row[3]
+        result['YearPublished'] = row[4]
+        result['PriceUnit'] = row[5]
+        result['AvailableUnits'] = row[6]
+        result['Authors'] = row[7]
         return result
 
     def addBookProduct(self,json):
@@ -120,10 +121,51 @@ class InventoryController:
         dao = InventoryDAO()
         records = dao.getBooksShowCard()
         result = []
-        for row in records:
+        # Put Authors inside an Array
+        bookrecords = self.groupBooks(records)
+        for row in bookrecords:
             dict = self.build_dict_showBook(row)
             result.append(dict)
         return jsonify(result), 200
+
+    # Group books with same authors
+    def groupBooks(self,books):
+        difBookId= []
+        # Generate list of distinct book_id
+        for row in books:
+            if difBookId.count(row[0]) == 0:
+                difBookId.append(row[0])
+        resultOrders = []
+        # Group authors together that have the same title
+        for bookId in difBookId:
+            newBookRow = self.create_newRow(bookId)  # Add book_id
+            listAuthors = []
+            bookIdChanged = True
+            for i in range(len(books)):
+                if bookIdChanged == True and bookId == books[i][0]:
+                    newBookRow.append(books[i][1])  # Add book_title
+                    newBookRow.append(books[i][4]) # Add Language
+                    newBookRow.append(books[i][5])  # Add NumPages
+                    newBookRow.append(books[i][6])  # Add YearPubl
+                    newBookRow.append(books[i][7])  # Add Price Unit
+                    newBookRow.append(books[i][8])  # Add Available Units
+                    bookIdChanged = False
+                if bookId == books[i][0]:
+                    dict = self.build_dict_authorName(books[i])
+                    listAuthors.append(dict)
+            newBookRow.append(listAuthors)  # Add listAuthor
+            resultOrders.append(newBookRow)
+        return resultOrders
+
+    def build_dict_authorName(self,row):
+        result = {}
+        result['AuthorName'] = row[2] + " " +row[3]
+        return result
+
+    def create_newRow(self,bookId):
+        newRow = []
+        newRow.append(bookId)
+        return newRow
 
     def updatePriceInventory(self, json):
         bookId = json['BookId']
