@@ -7,12 +7,13 @@ import {
     Container,
     Form,
     Grid,
-    Header,
+    Header, Image,
     Input,
     Modal, Segment,
     Tab
 } from "semantic-ui-react";
 import Axios from "axios";
+import {getImage} from "./AllProducts";
 
 function AllProductsAdmin(props) {
     const [books, setBooks] = useState([""])
@@ -46,6 +47,9 @@ function AllProductsAdmin(props) {
     return props.info.map(value => {return <Card>
         <Card.Content>
             <Card.Header>{value.Title}</Card.Header>
+            <div>
+                <Card.Meta><Image src= {getImage(value.GenreName)} alt={String(value.GenreName)} centered verticalAlign='middle'/></Card.Meta>
+            </div>
             <Card.Meta>Language: {value.Language}</Card.Meta>
             <Card.Meta>Number of Pages: {value.NumPages}</Card.Meta>
             <Card.Meta>Year Published: {value.YearPublished}</Card.Meta>
