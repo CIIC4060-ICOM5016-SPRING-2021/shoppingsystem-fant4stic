@@ -1,7 +1,19 @@
 import React, {Component, useEffect, useState} from 'react';
-import {Button, Card, CardContent, CardHeader, Container, Header, Modal, Tab} from "semantic-ui-react";
+import {Button, Card, CardContent, CardHeader, Container, Header, Image, Modal, Tab} from "semantic-ui-react";
 import Axios from "axios";
 import CartProduct from "./Cart";
+import Art from "./images/Art.png"
+import Children from "./images/Children.png"
+import Comics from "./images/Comics.png"
+import Default from "./images/Default.png"
+import Development from "./images/Development.png"
+import Dystopian from "./images/Dystopian.png"
+import Fantasy from "./images/Fantasy.png"
+import Health from "./images/Health.png"
+import History from "./images/History.png"
+import Horror from "./images/Horror.png"
+import Romance from "./images/Romance.png"
+import ScienceFiction from "./images/Science Fiction.png"
 
 function AllProducts(props) {
     const [wishArray, setWish] = useState([""])
@@ -18,6 +30,9 @@ function AllProducts(props) {
     return props.info.map(value => {return <Card>
         <Card.Content>
             <Card.Header>{value.Title}</Card.Header>
+            <div>
+            <Card.Meta><Image src= {getImage(value.GenreName)} alt={String(value.GenreName)} centered verticalAlign='middle'/></Card.Meta>
+            </div>
             <Card.Meta>Language: {value.Language}</Card.Meta>
             <Card.Meta>Number of Pages: {value.NumPages}</Card.Meta>
             <Card.Meta>Year Published: {value.YearPublished}</Card.Meta>
@@ -153,5 +168,46 @@ function WishProducts(props){
     </Card>})}</div>});
 }
 
+function getImage(genreName) {
+    switch (genreName) {
+        case "Art":
+            return Art
+            break;
+        case "Children":
+            return Children
+            break;
+        case "Comics":
+            return Comics
+            break;
+        case "Development":
+            return Development
+            break;
+        case "Dystopian":
+            return Dystopian
+            break;
+        case "Fantasy":
+            return Fantasy
+            break;
+        case "Health":
+            return Health
+            break;
+        case "History":
+            return History
+            break;
+        case "Horror":
+            return Horror
+            break;
+        case "Romance":
+            return Romance
+            break;
+        case "Science fiction":
+            return ScienceFiction
+            break;
+        default:
+            return Default
+            break;
+    }
+}
+
 export default AllProducts;
-export {CartProducts, WishProducts}
+export {CartProducts, WishProducts, getImage}
