@@ -1,7 +1,8 @@
 import React, {Component, useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab, Checkbox, Input} from 'semantic-ui-react';
+import {Button, Divider, Form, Grid, Header, Modal, Segment, Tab, Checkbox, Input, Image} from 'semantic-ui-react';
 import Axios from "axios";
+import logo from './images/ProjectsLogoRegister.png'
 
 function getRegisterValues(){
     const storedVals = localStorage.getItem('RegisterValues');
@@ -75,7 +76,12 @@ function Register(){
         }
     }
 
-    return (<Segment><Header dividing textAlign="center" size="huge" content = 'Join Fant4stic' subheader='Create your account today'/>
+    return (<Segment inverted color = 'light green'>
+            <Image src={logo} size='small' centered/>
+            <Header dividing
+                             color = 'white'
+                             textAlign="center" size="huge"
+                             content = 'Join Fant4stic' subheader='Create your account today'/>
             <Modal
                 centered={false}
                 open={open}
@@ -170,7 +176,7 @@ function Register(){
                                 value = {registVal.phoneNumber}
                                 onChange = {e => setRegistVal({...registVal, phoneNumber: e.target.value})}
                             />
-                            <Button type = 'submit' content='Register' icon='signup' size='small' color='orange' onClick={handleChange}/>
+                            <Button type = 'submit' content='Register' icon='signup' size='small' color='dark green' onClick={handleChange}/>
                         </Form>
                     </Grid.Column>
                 </Grid>
