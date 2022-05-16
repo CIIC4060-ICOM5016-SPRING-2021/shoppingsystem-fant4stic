@@ -13,9 +13,11 @@ function getRegisterValues(){
 }
 function Register(){
     const [open, setOpen] = useState(false);
+    const [openEmailPrompt, setOpenEmailPrompt] = useState(false);
     const [submit, setSubmit] = useState(false);
     const [view, setView] = useState('/Register');
     const [registVal, setRegistVal] = useState(getRegisterValues);
+    const [allUsers, setAllUsers] = useState([])
     const navigate = useNavigate();
     console.log(open);
 
@@ -38,8 +40,28 @@ function Register(){
 
     },[submit]);
 
+    useEffect(() => {
+        Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
+            .then(res => {
+                console.log("Getting from ::::", res.data)
+                setAllUsers(res.data)
+            }).catch(err => console.log(err))
+    }, [])
+
+    function emailExist(email){
+        for( var i =0 ; i < allUsers.length; i++){
+            if(email === allUsers[i].Email){
+                return true
+            }
+        }
+        return false;
+    }
+
     const handleChange = (event) => {
-        if(registVal){
+        if(emailExist(registVal.email)){
+            setOpenEmailPrompt(true)
+        }
+        else if(registVal){
             setSubmit(true);
             setOpen(true);
             //Change loginValues with the information stored in RegisterdValues
@@ -63,6 +85,17 @@ function Register(){
                 <Modal.Header>Successfully Created your Account</Modal.Header>
                 <Modal.Actions>
                     <Button color='green' onClick={() => {setOpen(false); navigate(view);}}>Continue</Button>
+                </Modal.Actions>
+            </Modal>
+            <Modal
+                centered={false}
+                open={openEmailPrompt}
+                onClose={() => setOpenEmailPrompt(false)}
+                onOpen={() => setOpenEmailPrompt(true)}
+            >
+                <Modal.Header>Email already exists. Please try another one.</Modal.Header>
+                <Modal.Actions>
+                    <Button color='red' onClick={() => {setOpenEmailPrompt(false)}}>Close</Button>
                 </Modal.Actions>
             </Modal>
             <Segment placeholder>
