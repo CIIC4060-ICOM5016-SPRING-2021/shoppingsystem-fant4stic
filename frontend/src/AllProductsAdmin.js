@@ -61,8 +61,8 @@ function AllProductsAdmin(props) {
             <Card.Meta>Unit Price: ${value.PriceUnit}</Card.Meta>
         </Card.Content>
         <Card.Content extra>
-            <div className='ui four buttons'>
-                <Button content = 'Edit price' basic color='green' onClick={() => {
+            <div className='ui two buttons'>
+                <Button content = 'Edit price' basic color='blue' onClick={() => {
                     books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
                     var bookPrice = window. prompt("Enter new book price: ");
                     if (bookPrice === null){
@@ -93,8 +93,8 @@ function AllProductsAdmin(props) {
                 }
                 }/>
             </div>
-            <div className='ui four buttons'>
-                <Button content = 'Edit book' basic color='black' onClick={() => {
+            <div className='ui two buttons'>
+                <Button content = 'Edit book' basic color='blue' onClick={() => {
                     books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
                     var Title = window.prompt("Enter book title: ");
                     if (Title === null){
@@ -121,7 +121,7 @@ function AllProductsAdmin(props) {
                     setTimeout("location.reload(true);",1000)
                 }
                 }/>
-                <Button content = 'Delete book' basic color='red' onClick={() => {
+                <Button content = 'Delete book' basic color='black' onClick={() => {
                     books.forEach( val=> {if (value.Title === val.BookTitle) {bookId = val.BookId}});
                     var decision = window.prompt("Are you sure you want to delete this book? (Yes/No): ")
                     if (decision === "Yes"){
