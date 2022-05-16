@@ -59,10 +59,11 @@ function Register(){
     }
 
     const handleChange = (event) => {
-        if(emailExist(registVal.email)){
+        var existEmail = emailExist(registVal.email)
+        if(existEmail){
             setOpenEmailPrompt(true)
         }
-        else if(registVal){
+        else if(registVal && !(existEmail)){
             setSubmit(true);
             setOpen(true);
             //Change loginValues with the information stored in RegisterdValues
