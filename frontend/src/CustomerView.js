@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
-import {Button, Card, Container, Divider, Header, Icon, Modal, Segment, Tab, Input, Form, Grid, Table} from "semantic-ui-react";
+import {Button, Card, Container, Divider, Header, Icon, Modal, Segment, Tab, Input, Form, Grid, Table, Image} from "semantic-ui-react";
 import Dashboard from "./Dashboard";
 import Products from "./Products";
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,8 @@ import Axios from "axios";
 import CartProduct from "./Cart";
 import WishListProducts from "./WishList";
 import CustomerOrders from "./CustomerOrders";
+import './CustomerAndAdminView.css';
+import logo from './images/ProjectsLogoHomePage.png'
 
 function CustomerView(){
     const [isAuth, setIsAuth] = useState(true)
@@ -164,7 +166,9 @@ function CustomerView(){
             menuItem: 'Products', render: () => (
                 <Tab.Pane active={isAuth}>
                     <Container>
-                        <Header>Fant4stic Store Products:</Header>
+                        <Header size="huge" textAlign='centered'>
+                            <Image src={logo} size='2140*1200'/> Fant4stic Store Products <Image src={logo} size='2140*1200'/>
+                        </Header>
                         <Divider/>
                     </Container>
                     <Products/></Tab.Pane>

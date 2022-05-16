@@ -1,10 +1,12 @@
 import React, {Component, useEffect, useState} from 'react';
-import {Button,Card,Container, Divider, Header, Modal, Tab, Icon, Segment, Grid, Form, Input, Table} from "semantic-ui-react";
+import {Button,Card,Container, Divider, Header, Modal, Tab, Icon, Segment, Grid, Form, Input, Table, Image} from "semantic-ui-react";
 import Dashboard from "./Dashboard";
 import ProductsAdmin from "./ProductsAdmin";
 import { useNavigate } from 'react-router-dom';
 import Axios from "axios";
 import AllCustomerOrders from "./AllCustomerOrders";
+import './CustomerAndAdminView.css';
+import logo from './images/ProjectsLogoHomePage.png'
 
 function AdminView(){
     const [isAuth, setIsAuth] = useState(true)
@@ -189,7 +191,7 @@ function AdminView(){
                             onOpen={() => setVerifyAdd(true)}
                         >
                             <Modal.Header>Enter book information</Modal.Header>
-                            <Segment placeholder>
+                            <Segment placeholder color='cornflower blue'>
                                 <Grid columns={1} relaxed='very' stackable>
                                     <Grid.Column verticalAlign='middle'>
                                         <Form>
@@ -262,9 +264,10 @@ function AdminView(){
                                 <Button color='red' onClick={() => {setVerifyAdd(false)}}>Cancel</Button>
                             </Modal.Actions>
                         </Modal>
-                        <Header>Modify Fant4stic Store Products:</Header>
-                        <div style={{float: 'inline-start'}}>
-                            <Button content = 'Add new book' color='orange' onClick={handleChange3}/>
+                        <Header size="huge" textAlign='centered'><Image src={logo} size='2140*1200'/>
+                            Modify Fant4stic Store Products <Image src={logo} size='2140*1200'/></Header>
+                        <div style={{float: 'inline-start'}} align='center'>
+                            <Button content = 'Add new book' color='cornflower blue' onClick={handleChange3}/>
                         </div>
                         <Divider/>
                     </Container>
