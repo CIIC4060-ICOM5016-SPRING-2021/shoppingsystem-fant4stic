@@ -25,7 +25,10 @@ Hedin García - hedin.garcia@upr.edu
 
 ## Hosted REST API address:
 
-* https://fant4stic-books.herokuapp.com
+* Backend: https://fant4stic-books.herokuapp.com
+
+## Hosted Web Application:
+* Frontend: https://frontend-fant4stic-books.herokuapp.com
 
 ## Database Credentials:
 
