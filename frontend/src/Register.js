@@ -15,7 +15,6 @@ function getRegisterValues(){
 function Register(){
     const [open, setOpen] = useState(false);
     const [openEmailPrompt, setOpenEmailPrompt] = useState(false);
-    const [submit, setSubmit] = useState(false);
     const [view, setView] = useState('/Register');
     const [registVal, setRegistVal] = useState(getRegisterValues);
     const [allUsers, setAllUsers] = useState([])
@@ -25,21 +24,6 @@ function Register(){
     useEffect(()=>{
         localStorage.setItem('RegisterValues',JSON.stringify(registVal))
     },[registVal]);
-
-    useEffect(()=>{
-        const user = {"FirstName": registVal.firstName,
-            "LastName" :registVal.lastName,
-            "Username" : registVal.userName,
-            "Email" : registVal.email,
-            "Password" :registVal.password,
-            "Age" : registVal.age,
-            "Sex" : registVal.sex,
-            "PhoneNumber" : registVal.phoneNumber,
-            "UserType" : registVal.role}
-        Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/user/register_new_user',user).then(res=>
-            console.log('Posting Data',res)).catch(err=>console.log(err))
-
-    },[submit]);
 
     useEffect(() => {
         Axios.get('https://fant4stic-books.herokuapp.com/fant4stic/user/get_all')
@@ -59,20 +43,34 @@ function Register(){
     }
 
     const handleChange = (event) => {
-        var existEmail = emailExist(registVal.email)
-        if(existEmail){
-            setOpenEmailPrompt(true)
-        }
-        else if(registVal && !(existEmail)){
-            setSubmit(true);
-            setOpen(true);
-            //Change loginValues with the information stored in RegisterdValues
-            localStorage.setItem('loginValues',JSON.stringify({inputEmail: registVal.email, inputPassword : registVal.password}))
-            if(registVal.role === 'Admin'){
-                setView('/AdminView')
+        if(registVal){
+            if(emailExist(registVal.email)){
+                setOpenEmailPrompt(true)
             }
-            else if(registVal.role === 'Customer'){
-                setView('/CustomerView')
+            else {
+                setOpen(true);
+                //Create User
+                const user = {"FirstName": registVal.firstName,
+                    "LastName" :registVal.lastName,
+                    "Username" : registVal.userName,
+                    "Email" : registVal.email,
+                    "Password" :registVal.password,
+                    "Age" : registVal.age,
+                    "Sex" : registVal.sex,
+                    "PhoneNumber" : registVal.phoneNumber,
+                    "UserType" : registVal.role}
+                Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/user/register_new_user',user).then(res=>
+                    console.log('Posting Data',res)).catch(err=>console.log(err))
+                //Change loginValues with the information stored in RegisterdValues
+                localStorage.setItem('loginValues', JSON.stringify({
+                    inputEmail: registVal.email,
+                    inputPassword: registVal.password
+                }))
+                if (registVal.role === 'Admin') {
+                    setView('/AdminView')
+                } else if (registVal.role === 'Customer') {
+                    setView('/CustomerView')
+                }
             }
         }
     }
