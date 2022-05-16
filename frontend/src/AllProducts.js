@@ -83,35 +83,67 @@ function CartProducts(props){
 
     console.log(props)
     props.info.forEach(value => console.log(value.Title));
-    return props.info.map(value => {return <Card>
-        <Card.Content>
-            <Card.Header>{value.Title}</Card.Header>
-            <Card.Meta>Price: ${value.BookPrice}</Card.Meta>
-            <Card.Description>
-                Copies: {value.Copies}
-            </Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-            <div className='ui two buttons'>
-                <Button basic color='green' onClick={() => {console.log("Added Book:"); console.log(value.Title);
-                    var wishListId = window. prompt("On which of the following Wishlists? : " + idsArray.toString()); alert("The indicated Wishlist is: " + wishListId);
-                    Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/wishlist',
-                         {"Title": String(value.Title), "Customer_id": String(props.userId), "Wishlist_id": String(wishListId)}).then(() => console.log('Addition successful'))
-                        .catch(err => {console.log(err);
-                            alert("Invalid Wishlist provided or book was already on the indicated Wishlist")} )
-                    /*setTimeout("location.reload(true);",1000)*/ /*document.location.reload(true)*/ count = -1}}>
-                    Add to Wish List
-                </Button>
+    if(props.info.length > 0) {
+        return props.info.map(value => {
+            return <Card>
+                <Card.Content>
+                    <Card.Header>{value.Title}</Card.Header>
+                    <Card.Meta>Price: ${value.BookPrice}</Card.Meta>
+                    <Card.Description>
+                        Copies: {value.Copies}
+                    </Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                    <div className='ui two buttons'>
+                        <Button basic color='green' onClick={() => {
+                            console.log("Added Book:");
+                            console.log(value.Title);
+                            var wishListId = window.prompt("On which of the following Wishlists? : " + idsArray.toString());
+                            alert("The indicated Wishlist is: " + wishListId);
+                            Axios.post('https://fant4stic-books.herokuapp.com/fant4stic/wishlist',
+                                {
+                                    "Title": String(value.Title),
+                                    "Customer_id": String(props.userId),
+                                    "Wishlist_id": String(wishListId)
+                                }).then(() => console.log('Addition successful'))
+                                .catch(err => {
+                                    console.log(err);
+                                    alert("Invalid Wishlist provided or book was already on the indicated Wishlist")
+                                })
+                            /*setTimeout("location.reload(true);",1000)*/ /*document.location.reload(true)*/
+                            count = -1
+                        }}>
+                            Add to Wish List
+                        </Button>
 
-                <Button basic color='red' onClick={() => {console.log("Deleted Book:"); console.log(value.Title);
-                    Axios.delete('https://fant4stic-books.herokuapp.com/fant4stic/cart',
-                        {data: {"Title": String(value.Title), "Customer_id": String(props.userId)}}).then(() => console.log('Delete successful'));
-                    setTimeout("location.reload(true);",1000) /*document.location.reload(true)*/}}>
-                    Remove from Cart
-                </Button>
-            </div>
-        </Card.Content>
-    </Card>});
+                        <Button basic color='red' onClick={() => {
+                            console.log("Deleted Book:");
+                            console.log(value.Title);
+                            Axios.delete('https://fant4stic-books.herokuapp.com/fant4stic/cart',
+                                {
+                                    data: {
+                                        "Title": String(value.Title),
+                                        "Customer_id": String(props.userId)
+                                    }
+                                }).then(() => console.log('Delete successful'));
+                            setTimeout("location.reload(true);", 1000) /*document.location.reload(true)*/
+                        }}>
+                            Remove from Cart
+                        </Button>
+                    </div>
+                </Card.Content>
+            </Card>
+        });
+    }
+    else{
+        return <Card.Group>
+            <Card
+                header='This Customer does not have any products in Cart'
+                meta='Consider making a purchase'
+                description='Go to our product section and select whatever you like'
+            />
+        </Card.Group>
+    }
 }
 
 function WishProducts(props){
